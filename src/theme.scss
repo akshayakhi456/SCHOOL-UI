@@ -1,0 +1,82 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$my-custom-typography-config: mat.define-typography-config(
+  $body-2:
+    mat.define-typography-level(
+      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-weight: 400,
+      $font-size: 14px,
+      $line-height: 1.5,
+      $letter-spacing: normal,
+    ),
+  $subtitle-2:
+    mat.define-typography-level(
+      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-weight: 500,
+      $font-size: 12px,
+      $line-height: 1,
+      $letter-spacing: normal,
+    ),
+  $caption:
+    mat.define-typography-level(
+      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-weight: 400,
+      $font-size: 12px,
+      $letter-spacing: normal,
+    ),
+  $button:
+    mat.define-typography-level(
+      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-weight: 500,
+      $font-size: 14px,
+      $line-height: 1,
+      $letter-spacing: 'normal',
+    ),
+  $body-1:
+    mat.define-typography-level(
+      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-weight: 400,
+      $font-size: 14px,
+      $line-height: 1.8,
+      $letter-spacing: 'normal',
+    ),
+);
+
+// Define a dark theme
+$dark-theme: mat.define-dark-theme((
+ color: (
+   primary: mat.define-palette(mat.$pink-palette),
+   accent: mat.define-palette(mat.$blue-grey-palette),
+ ),
+  // Only include `typography` and `density` in the default dark theme.
+//   typography: mat.define-typography-config(),
+//   density: 0,
+ typography: $my-custom-typography-config,
+ density: 0,
+));
+
+// Define a light theme
+$light-theme: mat.define-light-theme((
+ color: (
+   primary: mat.define-palette(mat.$indigo-palette),
+   accent: mat.define-palette(mat.$pink-palette),
+ ),
+ typography: $my-custom-typography-config,
+ density: 0,
+));
+
+// Apply the dark theme by default
+@include mat.core-theme($light-theme);
+@include mat.button-theme($light-theme);
+
+@include mat.all-component-themes($light-theme);
+@include mat.form-field-density(-3);
+// Apply the light theme only when the user prefers light themes.
+@media (prefers-color-scheme: light) {
+ // Use the `-color` mixins to only apply color styles without reapplying the same
+ // typography and density styles.
+ @include mat.core-color($light-theme);
+ @include mat.button-color($light-theme);
+}

@@ -1,0 +1,47 @@
+<div class="today-collection-report">
+    <div class="header">
+        <h1>TODAY'S COLLECTION</h1>
+        <div class="header-sub-section">
+            <span>Last updated at 10:30 AM, 6th February 2024</span>
+            <span>Collected amount of previous date is not considered here. Cancelled and refunded amounts are not
+                included here.</span>
+        </div>
+    </div>
+    <div class="body">
+        <div class="report-filters">
+            <mat-form-field appearance="outline">
+                <mat-label>Academic Session</mat-label>
+                <mat-select>
+                    @for (academic of academicSession; track academic) {
+                    <mat-option [value]="academic.value">{{academic.viewValue}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Payment Date</mat-label>
+                <mat-select>
+                    @for (dList of paymentDateList; track dList) {
+                    <mat-option [value]="dList.value">{{dList.viewValue}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <!-- @if (true) { -->
+                <mat-form-field appearance="outline">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate placeholder="Start date">
+                        <input matEndDate placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            <!-- } -->
+        </div>
+        <div class="report-links">
+            <a>Collection Report</a>
+            <a>Cancel Report</a>
+            <a>Refund Report</a>
+        </div>
+    </div>
+</div>

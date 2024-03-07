@@ -1,0 +1,31 @@
+.vehicle-vancancy {
+    border: 1px solid #ffff;
+    margin-left: 50px;
+    margin-top: 50px;
+    border-radius: 17.5px;
+    background-color: #ffff;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px;
+
+        h1 {
+            margin-bottom: auto !important;
+        }
+
+        .header-right-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 250px;
+    }
+}

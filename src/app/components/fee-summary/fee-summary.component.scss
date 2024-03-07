@@ -1,0 +1,31 @@
+.fee-summary {
+    border: 1px solid #ffff;
+    margin: 50px 50px 0px;
+    border-radius: 17.5px;
+    background-color: #ffff;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px;
+
+        h1 {
+            margin-bottom: auto !important;
+        }
+
+        .header-right-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .body {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: column;
+        height: 250px;
+    }
+}

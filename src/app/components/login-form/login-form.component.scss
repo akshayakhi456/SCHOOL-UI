@@ -1,0 +1,97 @@
+.auth-container {
+    height: 100vh;
+    // background-image: url('../../../../../assets/IELoginBackground.jpg');
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+}
+
+.auth-card {
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+
+    .auth-card-header {
+        .auth-card-header-container {
+            display: flex;
+            flex-flow: column;
+            align-content: center;
+            justify-items: center;
+            align-items: center;
+            padding: 25px 0 25px 0;
+
+            .eci-logo {
+                width: 100%;
+                padding: 4px 24px
+            }
+
+            .auth-title {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .auth-card-body {
+        width: 100%;
+        padding: 0;
+
+        mat-form-field, button {
+            width: 100%;
+        }
+    }
+}
+
+/* normal larger devices */
+@media only screen and (min-width : 768px) {
+    .auth-card {
+        width: 448px;
+    }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+    .auth-card {
+        width: 100%;
+        min-height: 100%;
+        padding: 0;
+        border-radius: 0;
+        position: absolute;
+        box-shadow: none !important;
+    }
+}
+
+@media only screen and (max-height: 810px) {
+    .auth-container {
+        overflow-y: auto;
+    }
+
+    .new-password {
+        justify-content: normal;
+    }
+}
+
+@media only screen and (max-height: 585px) {
+    .sign-in {
+        justify-content: normal;
+    }
+}
+
+@media only screen and (max-height: 550px) {
+    .reset-password {
+        justify-content: normal;
+    }
+}
+
+/* Safari styles */
+@media screen and (min-color-index:0) and (-webkit-min-device-pixel-ratio:0) {
+    @media screen {
+        .auth-card {
+            display: block;
+        }
+    }
+}

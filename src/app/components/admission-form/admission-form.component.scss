@@ -1,0 +1,41 @@
+.enquiry {
+    border: 1px solid #ffff;
+    margin: 30px 30px;
+    border-radius: 17.5px;
+    background-color: #ffff;
+
+    .header {
+        margin: 10px;
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+
+        .details {
+            // display: flex;
+        }
+
+        fieldSet, form {
+            display: flex;
+            border-radius: 5px;
+            gap: 10px;
+            flex-wrap: wrap;
+            // width: 50%;
+        }
+
+        .Sibiling-col{
+            display: flex;
+            flex-direction: column;
+            div {
+                display: flex;
+                gap: 10px;
+            }
+        }
+
+        .gap-10 {
+            display: flex;
+            gap: 10px;
+        }
+    }
+}

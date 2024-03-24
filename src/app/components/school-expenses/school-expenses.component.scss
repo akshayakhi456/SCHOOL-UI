@@ -1,23 +1,19 @@
-.today-collection {
+.school-expenses {
     border: 1px solid #ffff;
-    margin: 50px 50px 0px;
+    margin: 30px 30px;
     border-radius: 17.5px;
     background-color: #ffff;
 
     .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         margin: 10px;
 
         h1 {
             margin-bottom: auto !important;
         }
 
-        .header-right-section {
+        .header-sub-section {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
         }
     }
 
@@ -25,6 +21,16 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        height: 250px;
+        // height: 250px;
+
+        .expenses-filters{
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .expenses-table {
+            width: 100%;
+        }
     }
 }

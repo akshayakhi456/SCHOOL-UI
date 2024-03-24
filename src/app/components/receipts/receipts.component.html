@@ -1,0 +1,143 @@
+<h1 mat-dialog-title>Receipt - {{stdInfo!.firstName}} {{stdInfo!.lastName}} - AD.No: {{stdInfo!.id}}</h1>
+<mat-dialog-content>
+  @if(receiptRecord && dataSource.data.length > 1) {
+    <button mat-flat-button color="primary" (click)="receiptRecord = !receiptRecord; isSingleReceipt = false">Bulk Print</button>
+  }
+  @if(receiptRecord) {
+    <table mat-table [dataSource]="dataSource">
+  
+      <!--- Note that these columns can be defined in any order.
+                    The actual rendered columns are set as a property on the row definition" -->
+  
+      <!-- invoiceId Column -->
+      <ng-container matColumnDef="invoiceId">
+        <th mat-header-cell *matHeaderCellDef> Receipt No. </th>
+        <td mat-cell *matCellDef="let element"> {{element.invoiceId}} </td>
+      </ng-container>
+
+       <!-- purpose Column feeName-->
+       <ng-container matColumnDef="feeName">
+        <th mat-header-cell *matHeaderCellDef> Purpose </th>
+        <td mat-cell *matCellDef="let element"> {{element.feeName}} </td>
+      </ng-container>
+  
+      <!-- DOP Column feeName-->
+      <ng-container matColumnDef="dateOfPayment">
+        <th mat-header-cell *matHeaderCellDef> DOP </th>
+        <td mat-cell *matCellDef="let element"> {{element.dateOfPayment | date:"d/M/YYYY"}} </td>
+      </ng-container>
+  
+      <!-- Amount Column -->
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef> Amount </th>
+        <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+      </ng-container>
+  
+      <!-- Payment Column -->
+      <ng-container matColumnDef="paymentType">
+        <th mat-header-cell *matHeaderCellDef> Payment Mode </th>
+        <td mat-cell *matCellDef="let element"> {{element.paymentType}} </td>
+      </ng-container>
+  
+      <!-- Remarks Column -->
+      <ng-container matColumnDef="remarks">
+        <th mat-header-cell *matHeaderCellDef> Remarks </th>
+        <td mat-cell *matCellDef="let element"> {{element.remarks}} </td>
+      </ng-container>
+  
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-icon (click)="openReceiptPreview(element)">print</mat-icon>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    @if(dataSource.data.length == 0){
+      <div class="no-record">No Records Found</div>
+    }
+  }
+  @else {
+    <div #receipt>
+      <div class="receipt-download">
+        <h1>FATIMAH ZAHARA (R.A.) SCHOOL</h1>
+        <p>English Medium School For Girls</p>
+        <p>B/h. Royal Appartment, Junighadi, Vadodara, Gujarat-390006.</p>
+        <p>Phone No.: 0205-2518677</p>
+      </div>
+    
+      <div class="std-info">
+        <div>
+          @if(isSingleReceipt){
+          <p>Receipt No: {{selectedReceipt.invoiceId}}</p>
+          }
+          <p>Student Name: {{stdInfo.firstName}} {{stdInfo.lastName}}</p>
+          <p>Class: {{stdInfo.className}}  Sec: {{stdInfo.section}}</p>
+        </div>
+        <div>
+          <p>DATE: {{todayDate | date:"d/M/YYYY"}}</p>
+        </div>
+      </div>
+    
+      <table class="fee-structure">
+        <thead>
+          <tr>
+            <th style="text-align: left;">Sr.</th>
+            <th style="text-align: left;">Particulars</th>
+            <th style="text-align: right;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if(!isSingleReceipt){
+            @for(item of originalReceipt; track item; let index = $index){
+              <tr>
+                <td>{{index + 1}}</td>
+                <td>{{item.feeName}}</td>
+                <td style="text-align: right;">{{item.amount}}</td>
+              </tr>
+            }
+          }
+          @else {
+            <tr>
+              <td>1</td>
+              <td>{{selectedReceipt.feeName}}</td>
+              <td style="text-align: right;">{{selectedReceipt.amount}}</td>
+            </tr>
+          }
+        </tbody>
+        @if(isSingleReceipt){
+        <tfoot>
+          <tr>
+            <th colspan="1" style="text-align: left;">Payment By:</th>
+            <th colspan="1" style="text-align: right;">Total Amount Rs.</th>
+            <td style="text-align: right;">2440</td>
+          </tr>
+          <tr>
+            <th colspan="2" style="text-align: right;">Fees Paid Amount</th>
+            <td style="text-align: right;">1200</td>
+          </tr>
+          <tr>
+            <th colspan="2" style="text-align: right;">Fees Balance Amount</th>
+            <td style="text-align: right;">7640.00</td>
+          </tr>
+        </tfoot>
+        }
+      </table>
+  
+      <div class="signature">
+        <p style="text-align: right;">Fees/Amount once paid will not be refundable or transferable.</p>
+        <p style="text-align: right;">Sign</p>
+      </div>
+    </div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  @if(!receiptRecord) {
+    <button mat-button (click)="receiptRecord = true">Back</button>
+    <button mat-flat-button color="primary" (click)="downloadReceipt()">Download</button>
+  }
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

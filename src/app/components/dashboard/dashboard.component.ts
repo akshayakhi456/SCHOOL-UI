@@ -4,8 +4,8 @@ import { SideMenuComponent } from '../side-menu/side-menu.component';
 import { SharedModule } from '../../shared/shared.module';
 import { TodaysCollectionComponent } from '../todays-collection/todays-collection.component';
 import { FeeSummaryComponent } from '../fee-summary/fee-summary.component';
-import { VehicleVacancyComponent } from '../vehicle-vacancy/vehicle-vacancy.component';
-import { AttendanceComponent } from '../attendance/attendance.component';
+import {  } from '../receipts/receipts.component';
+import { ExpensesGraphComponent } from '../expenses-graph/expenses-graph.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,9 +14,8 @@ import { AttendanceComponent } from '../attendance/attendance.component';
     SideMenuComponent,
     SharedModule,
     TodaysCollectionComponent,
+    ExpensesGraphComponent,
     FeeSummaryComponent,
-    VehicleVacancyComponent,
-    AttendanceComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

@@ -1,0 +1,65 @@
+<div class="create-student">
+    <div class="header">
+        <h1>Enquiry Form</h1>
+    </div>
+    <div class="body">
+        <form [formGroup]="enquiryForm">
+            <div class="student-fields">
+                <mat-form-field appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName="lastName"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Father Name/Mother Name</mat-label>
+                    <input matInput formControlName="guardian"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Date of Birth</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dob">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Class</mat-label>
+                    <mat-select formControlName="className">
+                        @for (class of classList; track class) {
+                        <mat-option [value]="class.value">{{class.label}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                        @for (stat of statusList; track stat) {
+                        <mat-option [value]="stat.value">{{stat.label}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Mobile Number</mat-label>
+                    <input matInput formControlName="mobile"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>reference</mat-label>
+                    <input matInput formControlName="reference"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="address"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Previous School Name</mat-label>
+                    <input matInput/>
+                </mat-form-field>
+            </div>
+            <div class="student-action">
+                <button mat-flat-button color="primary" (click)="onSubmit()">Create</button>
+                <button mat-button routerLink="/enquiry-list">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

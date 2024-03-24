@@ -1,0 +1,30 @@
+.create-student {
+    border: 1px solid #ffff;
+    margin: 30px 30px;
+    border-radius: 17.5px;
+    background-color: #ffff;
+
+    .header {
+        margin: 10px;
+    }
+
+    .body {
+        display: flex;
+
+        flex-direction: column;
+
+        .student-fields{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0px 30px;
+        }
+
+        .student-action {
+            display: flex;
+            gap: 10px;
+            justify-content: end;
+            padding: 0px 10px 10px;
+        }
+    }
+}

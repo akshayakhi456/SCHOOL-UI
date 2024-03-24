@@ -1,0 +1,221 @@
+<div class="enquiry">
+    <div class="header">
+        <h1>Admission Form</h1>
+    </div>
+    <div class="body">
+        <!-- <form> -->
+        <div class="admission-fields">
+            <div class="details">
+                <form [formGroup]="studentInfoForm">
+                    <fieldset>
+                        <legend>Student Details</legend>
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="firstName" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="lastName" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="dob">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Grade/Class</mat-label>
+                            <mat-select formControlName="className">
+                                @for (class of classList; track class) {
+                                <mat-option [value]="class.value">{{class.label}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Section</mat-label>
+                            <input matInput formControlName="section" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Gender</mat-label>
+                            <mat-select formControlName="gender">
+                                <mat-option value="Male">Male</mat-option>
+                                <mat-option value="Female">Female</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Aadhar Number</mat-label>
+                            <input matInput formControlName="adharNumber" />
+                        </mat-form-field>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Student Photo</legend>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="details">
+                <form [formGroup]="fatherInfoForm">
+                    <fieldset>
+                        <legend>Father Details</legend>
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="firstName" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="lastName" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Occupation</mat-label>
+                            <input matInput formControlName="occupation" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Qualification</mat-label>
+                            <input matInput formControlName="qualification" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Conatct No</mat-label>
+                            <input matInput formControlName="contactNumber" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Aadhar Number</mat-label>
+                            <input matInput formControlName="adharNumber" />
+                        </mat-form-field>
+                    </fieldset>
+                </form>
+
+                <form [formGroup]="motherInfoForm">
+                    <fieldset>
+                        <legend>Mother Details</legend>
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="firstName" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="lastName" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Occupation</mat-label>
+                            <input matInput formControlName="occupation" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Qualification</mat-label>
+                            <input matInput formControlName="qualification" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Conatct No</mat-label>
+                            <input matInput formControlName="contactNumber" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Aadhar Number</mat-label>
+                            <input matInput formControlName="adharNumber" />
+                        </mat-form-field>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="details">
+                <form [formGroup]="AddressInfoForm">
+                    <fieldset>
+                        <legend>Address</legend>
+                        <mat-form-field appearance="outline">
+                            <mat-label>House No</mat-label>
+                            <input matInput formControlName="houseNo" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Street</mat-label>
+                            <input matInput formControlName="streetName" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>City</mat-label>
+                            <input matInput formControlName="city" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>District</mat-label>
+                            <input matInput formControlName="district" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>State</mat-label>
+                            <input matInput formControlName="state" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Country</mat-label>
+                            <input matInput formControlName="country" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Pin Code</mat-label>
+                            <input matInput formControlName="zipCode" />
+                        </mat-form-field>
+                    </fieldset>
+                </form>
+
+                <fieldset>
+                    <legend>Sibiling Details</legend>
+                    <div class="Sibiling-col">
+                        <div>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Sibiling </mat-label>
+                                <input type="text" placeholder="Select Sibiling" aria-label="Select Sibiling" matInput
+                                    [formControl]="sibilingCtrl" [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    @for (option of filteredSibiling | async; track option) {
+                                    <mat-option [value]="option.userName">
+                                        <span>{{option.firstName}} {{option.lastName}}</span> |
+                                        <small>Class: {{option.className}}</small>
+                                    </mat-option>
+                                    }
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <button mat-flat-button color="primary" (click)="addSibiling()">Add</button>
+                        </div>
+                        <div>
+                            <mat-list role="list">
+                                @for (record of selectedStudents; track record) {
+                                <mat-list-item role="listitem">
+                                    <mat-icon matListItemIcon>arrow_right_alt</mat-icon>
+                                    {{record.userName}}
+                                </mat-list-item>
+                                }
+                            </mat-list>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>CheckList</legend>
+                    <button mat-flat-button color="primary" (click)="addcheckList()">Add Certificate Name</button>
+                    <div>
+                        <form [formGroup]="checkListForm">
+                            <div formArrayName="checkList">
+                                @for(check of checkList.controls; track check; let i=$index) {
+                                    <div class="gap-10" [formGroupName]="i">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Certificate Name </mat-label>
+                                            <input matInput type="text" formControlName="certificate">
+                                        </mat-form-field>
+                                        <button mat-flat-button color="warn" (click)="removeCheckList(i)">Remove</button>
+                                    </div>
+                                }
+                                </div>
+                        </form>
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+        <div class="enquiry-action">
+            <button mat-flat-button color="primary" (click)="OnSubmit()">Create</button>
+            <button mat-button routerLink="/student-list">Cancel</button>
+        </div>
+        <!-- </form> -->
+    </div>
+</div>

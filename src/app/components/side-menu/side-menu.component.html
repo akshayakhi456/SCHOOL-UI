@@ -1,42 +1,80 @@
 <mat-toolbar color="primary" class="example-toolbar">
 	<div class="menu-label">
 		<button mat-icon-button (click)="isExpanded = !isExpanded"><mat-icon>menu</mat-icon></button>
-		<h1 class="example-app-name">Nested Menus</h1>
+		<h1 class="example-app-name">ABC SCHOOL</h1>
 	</div>
 	<div>
 		<button mat-button [matMenuTriggerFor]="menu">User</button>
 		<mat-menu #menu="matMenu">
-		<button mat-menu-item (click)="signOut()">Logout</button>
+			<button mat-menu-item (click)="signOut()">Logout</button>
 		</mat-menu>
 	</div>
 </mat-toolbar>
 <mat-sidenav-container class="example-container" autosize>
-	<mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()">
+	<mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" (mouseenter)="mouseenter()"
+		(mouseleave)="mouseleave()">
 		<mat-nav-list>
-			<mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
-                <div class="menu-list">
-                    <mat-icon class="scl-icon" mat-list-icon>home</mat-icon>
-                    <span class="full-width" *ngIf="isExpanded || isShowing">Parent Menu</span>
-                    <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
-                </div>
+			<mat-list-item routerLink="/dashboard" class="parent">
+				<div class="menu-list">
+					<mat-icon class="scl-icon" mat-list-icon>home</mat-icon>
+					<span class="full-width" *ngIf="isExpanded || isShowing">Dashboard</span>
+					<!-- <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}"
+						*ngIf="isExpanded || isShowing">expand_more</mat-icon> -->
+				</div>
 			</mat-list-item>
-			<div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
+			<!-- <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
 				<a mat-list-item>Submenu Item 1</a>
 				<a mat-list-item>Submenu Item 2</a>
 				<mat-list-item (click)="showSubSubMenu = !showSubSubMenu" class="parent">
-                    <div class="menu-list">
-                        <span class="full-width" *ngIf="isExpanded || isShowing">Nested Menu</span>
-                        <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubSubMenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
-                    </div>
+					<div class="menu-list">
+						<span class="full-width" *ngIf="isExpanded || isShowing">Nested Menu</span>
+						<mat-icon class="menu-button" [ngClass]="{'rotated' : showSubSubMenu}"
+							*ngIf="isExpanded || isShowing">expand_more</mat-icon>
+					</div>
 				</mat-list-item>
 				<div class="submenu" [ngClass]="{'expanded' : showSubSubMenu}" *ngIf="isShowing || isExpanded">
 					<mat-list-item>SubSubmenu Item 1</mat-list-item>
 					<mat-list-item>SubSubmenu Item 2</mat-list-item>
 				</div>
-			</div>
+			</div> -->
+
+			<mat-list-item routerLink="/enquiry-list" class="parent">
+				<div class="menu-list">
+					<mat-icon class="scl-icon" mat-list-icon>contact_mail</mat-icon>
+					<span class="full-width" *ngIf="isExpanded || isShowing">Enquiry</span>
+				</div>
+			</mat-list-item>
+			<mat-list-item routerLink="/admission" class="parent">
+				<div class="menu-list">
+					<mat-icon class="scl-icon" mat-list-icon>list_alt</mat-icon>
+					<span class="full-width" *ngIf="isExpanded || isShowing">Admission</span>
+				</div>
+			</mat-list-item>
+			<mat-list-item routerLink="/student-list" class="parent">
+				<div class="menu-list">
+					<mat-icon class="scl-icon" mat-list-icon>badge</mat-icon>
+					<span class="full-width" *ngIf="isExpanded || isShowing">Students</span>
+				</div>
+			</mat-list-item>
+			<mat-list-item routerLink="/student-list" class="parent">
+				<div class="menu-list">
+					<mat-icon class="scl-icon" mat-list-icon>summarize</mat-icon>
+					<span class="full-width" *ngIf="isExpanded || isShowing">Progress Card</span>
+				</div>
+			</mat-list-item>
+			<mat-list-item routerLink="/student-list" class="parent">
+				<div class="menu-list">
+					<mat-icon class="scl-icon" mat-list-icon>workspace_premium</mat-icon>
+					<span class="full-width" *ngIf="isExpanded || isShowing">Certificates</span>
+				</div>
+			</mat-list-item>
+			<mat-list-item routerLink="/school-expenses" class="parent">
+				<div class="menu-list">
+					<mat-icon class="scl-icon" mat-list-icon>paid</mat-icon>
+					<span class="full-width" *ngIf="isExpanded || isShowing">Expenses</span>
+				</div>
+			</mat-list-item>
 		</mat-nav-list>
-    <mat-nav-list>
-</mat-nav-list>
 	</mat-sidenav>
 
 	<div>

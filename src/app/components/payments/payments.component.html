@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Payments - {{stdInfo!.firstName}} {{stdInfo!.lastName}} - AD.No: {{stdInfo!.id}}</h1>
+<mat-dialog-content>
+    <form [formGroup]="paymentForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Fee Name</mat-label>
+            <input matInput formControlName="feeName"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Payment Mode</mat-label>
+            <mat-select formControlName="paymentType">
+                @for (mode of paymentModeList; track mode) {
+                <mat-option [value]="mode">{{mode}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Amount</mat-label>
+            <input matInput formControlName="amount"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Remarks</mat-label>
+            <textarea matInput formControlName="remarks"></textarea>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-flat-button [mat-dialog-close]="true" color="primary" (click)="savePayments()">Payment</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

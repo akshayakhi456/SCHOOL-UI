@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>Payments</h1>
+<mat-dialog-content>
+    <form [formGroup]="expensesForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Miscellanous</mat-label>
+            <mat-select formControlName="miscellanous">
+                @for (mode of miscellanousList; track mode) {
+                <mat-option [value]="mode">{{mode}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Date of Expenses</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="doe">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Amount</mat-label>
+            <input matInput formControlName="amount"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Remarks</mat-label>
+            <textarea matInput formControlName="remarks"></textarea>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-flat-button [mat-dialog-close]="true" color="primary" (click)="saveExpenses()">Save</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

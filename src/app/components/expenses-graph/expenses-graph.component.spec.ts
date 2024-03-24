@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VehicleVacancyComponent } from './vehicle-vacancy.component';
+import { ExpensesGraphComponent } from './expenses-graph.component';
 
-describe('VehicleVacancyComponent', () => {
-  let component: VehicleVacancyComponent;
-  let fixture: ComponentFixture<VehicleVacancyComponent>;
+describe('ExpensesGraphComponent', () => {
+  let component: ExpensesGraphComponent;
+  let fixture: ComponentFixture<ExpensesGraphComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VehicleVacancyComponent]
+      imports: [ExpensesGraphComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(VehicleVacancyComponent);
+    fixture = TestBed.createComponent(ExpensesGraphComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

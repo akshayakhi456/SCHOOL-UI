@@ -1,0 +1,68 @@
+.receipts {
+    border: 1px solid #ffff;
+    margin-left: 50px;
+    margin-top: 50px;
+    border-radius: 17.5px;
+    background-color: #ffff;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px;
+
+        h1 {
+            margin-bottom: auto !important;
+        }
+
+        .header-right-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 250px;
+    }
+}
+
+.receipt-download {
+    text-align: center;
+    border: 4px solid;
+    h1, p {
+        margin-bottom: 0px;
+    }
+}
+
+    .std-info{
+        display: flex;
+        justify-content: space-between; 
+        border-bottom: 1px solid;
+        div h1, div p {
+            margin-bottom: 0px;
+        }
+    }
+
+    .fee-structure{
+        width: 100%;
+        border-collapse: collapse;
+
+        thead, tbody, tfoot {
+            border-bottom: 1px solid;
+        }
+    }
+
+    .signature {
+        display: flex;
+        margin-top: 40px;
+        justify-content: space-between;
+    }
+
+    .no-record{
+        text-align: center;
+        margin-top: 10px;
+    }

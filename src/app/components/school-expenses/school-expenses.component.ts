@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SharedModule } from '../../shared/shared.module';
 import { SaveExpensesComponent } from '../save-expenses/save-expenses.component';
 import { ExpensesService } from '../../shared/services/expenses/expenses.service';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface IExpenses {
   amount: string;
@@ -34,6 +35,8 @@ const ELEMENT_DATA: IExpenses[] = [
   styleUrl: './school-expenses.component.scss'
 })
 export class SchoolExpensesComponent {
+  @ViewChild('paginator') paginator!: MatPaginator | null;
+  pageSizes = [10, 25, 50, 100];
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
@@ -57,6 +60,7 @@ export class SchoolExpensesComponent {
     this.service.get().subscribe({
       next: res => {
         this.dataSource.data = res.result ?? res;
+        this.dataSource.paginator = this.paginator;
       }
     })
   }

@@ -17,14 +17,46 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            padding: 0px 30px;
+            padding: 10px 30px;
         }
 
-        .student-action {
+        .registration-fields{
+            display: flex;
+            flex-direction: column;
+            width: 20%;
+            padding: 10px 30px;
+        }
+
+        .time-of-exam{
+            display: flex;
+            gap: 10px;
+        }
+
+        .student-action, .interaction-actions, .rating-actions {
             display: flex;
             gap: 10px;
             justify-content: end;
             padding: 0px 10px 10px;
         }
+
+        .payment-action {
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 10px 10px;
+        }
+
+        .rating{
+            display: flex;
+            justify-content: center;
+        }
     }
+}
+
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
+
+.cancel-btn{
+    display: flex;
+    justify-content: end;
 }

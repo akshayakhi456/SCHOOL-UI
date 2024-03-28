@@ -1,0 +1,39 @@
+<div>
+    <mat-form-field appearance="outline">
+        <mat-label>Class Name</mat-label>
+        <input matInput [formControl]="className"/>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="addClassList()">Add</button>
+</div>
+
+<form [formGroup]="classSettingsForm">
+    <div formArrayName="classes">
+        @for(class of classes.controls; track class; let i=$index) {
+        <div [formGroupName]="i">
+            <mat-form-field appearance="outline">
+                <mat-label>class Name</mat-label>
+                <input matInput formControlName="className" />
+            </mat-form-field>
+            <button mat-flat-button color="warn"
+                (click)="removeClass(i)">remove</button>
+            <button mat-flat-button color="primary" (click)="addSectionList(i)">Add
+                Section</button>
+                <div formArrayName="sections">
+                @if(sectionList(i).controls) {
+                    @for(section of sectionList(i).controls; track section; let j=$index) {
+                        <div [formGroupName]="j" class="section-field">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Section</mat-label>
+                                <input matInput formControlName="sectionName" />
+                            </mat-form-field>
+                            <button mat-flat-button color="warn"
+                                (click)="removeSectionItem(i,j)">remove</button>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        }
+    </div>
+</form>

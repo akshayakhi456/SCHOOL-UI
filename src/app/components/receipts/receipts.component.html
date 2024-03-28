@@ -56,6 +56,11 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator
+      #paginator
+      [pageSizeOptions]="pageSizes"
+      showFirstLastButtons
+    ></mat-paginator>
     @if(dataSource.data.length == 0){
       <div class="no-record">No Records Found</div>
     }

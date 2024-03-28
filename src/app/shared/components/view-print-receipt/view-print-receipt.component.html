@@ -1,0 +1,144 @@
+  <div class="receipts">
+    <div class="parent-receipt">
+      <div class="receipt-download">
+        <h1>FATIMAH ZAHARA (R.A.) SCHOOL</h1>
+        <p>English Medium School For Girls</p>
+        <p>B/h. Royal Appartment, Junighadi, Vadodara, Gujarat-390006.</p>
+        <p>Phone No.: 0205-2518677</p>
+      </div>
+    
+      <div class="std-info">
+        <div>
+          @if(isSingleReceipt){
+          <p>Receipt No: {{selectedReceipt.invoiceId ? selectedReceipt.invoiceId : selectedReceipt.id}}</p>
+          }
+          <p>Student Name: {{stdInfo.firstName}} {{stdInfo.lastName}}</p>
+          <p>Class: {{stdInfo.className}}  Sec: {{stdInfo.section}}</p>
+        </div>
+        <div>
+          <p>DATE: {{todayDate | date:"d/M/YYYY"}}</p>
+        </div>
+      </div>
+    
+      <table class="fee-structure">
+        <thead>
+          <tr>
+            <th style="text-align: left;">Sr.</th>
+            <th style="text-align: left;">Particulars</th>
+            <th style="text-align: right;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if(!isSingleReceipt){
+            @for(item of originalReceipt; track item; let index = $index){
+              <tr>
+                <td>{{index + 1}}</td>
+                <td>{{item.feeName}}</td>
+                <td style="text-align: right;">{{item.amount}}</td>
+              </tr>
+            }
+          }
+          @else {
+            <tr>
+              <td>1</td>
+              <td>{{selectedReceipt.feeName}}</td>
+              <td style="text-align: right;">{{selectedReceipt.amount}}</td>
+            </tr>
+          }
+        </tbody>
+        @if(false){
+        <tfoot>
+          <tr>
+            <th colspan="1" style="text-align: left;">Payment By:</th>
+            <th colspan="1" style="text-align: right;">Total Amount Rs.</th>
+            <td style="text-align: right;">2440</td>
+          </tr>
+          <tr>
+            <th colspan="2" style="text-align: right;">Fees Paid Amount</th>
+            <td style="text-align: right;">1200</td>
+          </tr>
+          <tr>
+            <th colspan="2" style="text-align: right;">Fees Balance Amount</th>
+            <td style="text-align: right;">7640.00</td>
+          </tr>
+        </tfoot>
+        }
+      </table>
+    
+      <div class="signature">
+        <p style="text-align: right;">Fees/Amount once paid will not be refundable or transferable.</p>
+        <p style="text-align: right;">Sign</p>
+      </div>
+    </div>
+    <div class="office-receipt">
+      <div class="receipt-download">
+        <h1>FATIMAH ZAHARA (R.A.) SCHOOL</h1>
+        <p>English Medium School For Girls</p>
+        <p>B/h. Royal Appartment, Junighadi, Vadodara, Gujarat-390006.</p>
+        <p>Phone No.: 0205-2518677</p>
+      </div>
+    
+      <div class="std-info">
+        <div>
+          @if(isSingleReceipt){
+          <p>Receipt No: {{selectedReceipt.invoiceId ? selectedReceipt.invoiceId : selectedReceipt.id}}</p>
+          }
+          <p>Student Name: {{stdInfo.firstName}} {{stdInfo.lastName}}</p>
+          <p>Class: {{stdInfo.className}}  Sec: {{stdInfo.section}}</p>
+        </div>
+        <div>
+          <p>DATE: {{todayDate | date:"d/M/YYYY"}}</p>
+        </div>
+      </div>
+    
+      <table class="fee-structure">
+        <thead>
+          <tr>
+            <th style="text-align: left;">Sr.</th>
+            <th style="text-align: left;">Particulars</th>
+            <th style="text-align: right;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if(!isSingleReceipt){
+            @for(item of originalReceipt; track item; let index = $index){
+              <tr>
+                <td>{{index + 1}}</td>
+                <td>{{item.feeName}}</td>
+                <td style="text-align: right;">{{item.amount}}</td>
+              </tr>
+            }
+          }
+          @else {
+            <tr>
+              <td>1</td>
+              <td>{{selectedReceipt.feeName}}</td>
+              <td style="text-align: right;">{{selectedReceipt.amount}}</td>
+            </tr>
+          }
+        </tbody>
+        @if(false){
+        <tfoot>
+          <tr>
+            <th colspan="1" style="text-align: left;">Payment By:</th>
+            <th colspan="1" style="text-align: right;">Total Amount Rs.</th>
+            <td style="text-align: right;">2440</td>
+          </tr>
+          <tr>
+            <th colspan="2" style="text-align: right;">Fees Paid Amount</th>
+            <td style="text-align: right;">1200</td>
+          </tr>
+          <tr>
+            <th colspan="2" style="text-align: right;">Fees Balance Amount</th>
+            <td style="text-align: right;">7640.00</td>
+          </tr>
+        </tfoot>
+        }
+      </table>
+    
+      <div class="signature">
+        <p style="text-align: right;">Fees/Amount once paid will not be refundable or transferable.</p>
+        <p style="text-align: right;">Sign</p>
+      </div>
+    </div>
+  </div>

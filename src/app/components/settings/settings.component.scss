@@ -1,0 +1,60 @@
+.school-setting {
+    border: 1px solid #ffff;
+    margin: 30px 30px;
+    border-radius: 17.5px;
+    background-color: #ffff;
+
+    .header {
+        margin: 10px;
+
+        h1 {
+            margin-bottom: auto !important;
+        }
+
+        .header-sub-section {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+
+        .expenses-filters{
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .expenses-table {
+            width: 100%;
+        }
+    }
+}
+
+.panel-body {
+    display: flex;
+    width: 100%;
+    .section-portion {
+        width: 30%;
+        button {
+            margin-bottom: 10px;
+        }
+        .section-field{
+            display: flex;
+            gap: 10px;
+        }
+    }
+    .fee-portion{
+        width: 70%;
+        button {
+            margin-bottom: 10px;
+        }
+        .fee-structure{
+            display: flex;
+            gap: 10px;
+        }
+    }
+}

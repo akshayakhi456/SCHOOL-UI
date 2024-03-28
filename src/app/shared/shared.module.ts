@@ -30,6 +30,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { RouterModule } from '@angular/router';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatStepperModule} from '@angular/material/stepper';
 
 // COMMON IMPORTS ALL IN ONE MODULE
 @NgModule({
@@ -69,6 +70,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatToolbarModule,
     MatButtonToggleModule,
     MatNativeDateModule,
+    MatStepperModule,
     RouterModule
   ],
   exports: [
@@ -102,6 +104,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatButtonToggleModule,
     MatNativeDateModule,
     MatListModule,
+    MatStepperModule,
     RouterModule
   ],
   providers: [],

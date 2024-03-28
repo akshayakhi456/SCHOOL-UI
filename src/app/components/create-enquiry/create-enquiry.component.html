@@ -3,63 +3,276 @@
         <h1>Enquiry Form</h1>
     </div>
     <div class="body">
-        <form [formGroup]="enquiryForm">
-            <div class="student-fields">
-                <mat-form-field appearance="outline">
-                    <mat-label>First Name</mat-label>
-                    <input matInput formControlName="firstName"/>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Last Name</mat-label>
-                    <input matInput formControlName="lastName"/>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Father Name/Mother Name</mat-label>
-                    <input matInput formControlName="guardian"/>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Date of Birth</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="dob">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Class</mat-label>
-                    <mat-select formControlName="className">
-                        @for (class of classList; track class) {
-                        <mat-option [value]="class.value">{{class.label}}</mat-option>
+        <div class="cancel-btn">
+            <button class="" mat-flat-button routerLink="/enquiry-list">Cancel</button>
+        </div>
+        <mat-stepper linear #stepper>
+            <mat-step>
+                <form [formGroup]="enquiryForm">
+                    <ng-template matStepLabel>Basic Info</ng-template>
+                    <div class="student-fields">
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="firstName" />
+                            @if (enquiryFormControls['firstName'].errors &&
+                            enquiryFormControls['firstName'].errors['required'] &&
+                            enquiryFormControls['firstName'].touched) {
+                            <mat-error>First Name is Required.</mat-error>
+                            }
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="lastName" />
+                            @if (enquiryFormControls['lastName'].errors &&
+                            enquiryFormControls['lastName'].errors['required'] &&
+                            enquiryFormControls['lastName'].touched) {
+                            <mat-error>Last Name is Required.</mat-error>
+                            }
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Father Name/Mother Name</mat-label>
+                            <input matInput formControlName="guardian" />
+                            @if (enquiryFormControls['guardian'].errors &&
+                            enquiryFormControls['guardian'].errors['required'] &&
+                            enquiryFormControls['guardian'].touched) {
+                            <mat-error>Guardian is Required.</mat-error>
+                            }
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="dob">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            @if (enquiryFormControls['dob'].errors &&
+                            enquiryFormControls['dob'].errors['required'] &&
+                            enquiryFormControls['dob'].touched) {
+                            <mat-error>Date of Birth is Required.</mat-error>
+                            }
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Class</mat-label>
+                            <mat-select formControlName="className">
+                                @for (class of classList; track class) {
+                                <mat-option [value]="class.value">{{class.label}}</mat-option>
+                                }
+                            </mat-select>
+                            @if (enquiryFormControls['className'].errors &&
+                            enquiryFormControls['className'].errors['required'] &&
+                            enquiryFormControls['className'].touched) {
+                            <mat-error>Class Name is Required.</mat-error>
+                            }
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Status</mat-label>
+                            <mat-select formControlName="status">
+                                @for (stat of statusList; track stat) {
+                                <mat-option [value]="stat.value">{{stat.label}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Mobile Number</mat-label>
+                            <input matInput formControlName="mobile" mask="0000000000" />
+                            @if (enquiryFormControls['mobile'].errors &&
+                            enquiryFormControls['mobile'].errors['required'] &&
+                            enquiryFormControls['mobile'].touched) {
+                            <mat-error>Mobile Number is Required.</mat-error>
+                            }
+                            @else if(enquiryFormControls['mobile'].errors &&
+                            enquiryFormControls['mobile'].errors['maxlength'] &&
+                            enquiryFormControls['mobile'].touched) {
+                            <mat-error>Mobile Number must not be less than 10 digits.</mat-error>
+                            }
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>reference</mat-label>
+                            <input matInput formControlName="reference" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Address</mat-label>
+                            <input matInput formControlName="address" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Previous School Name</mat-label>
+                            <input matInput formControlName="previousSchoolName" />
+                        </mat-form-field>
+                    </div>
+                    <div class="student-action">
+                        <!-- <button mat-flat-button color="primary" (click)="onSubmit()">Create</button> -->
+                        <button mat-button routerLink="/enquiry-list" matStepperPrevious>Cancel</button>
+                        <button mat-flat-button color="primary" (click)="goForward(stepper, 1)">Next</button>
+
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <form [formGroup]="registrationForm">
+                    <ng-template matStepLabel>Pre-admission Examination & Registration</ng-template>
+                    <div class="registration-fields">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Date of Exam</mat-label>
+                            <input matInput [matDatepicker]="doePicker" formControlName="dateOfExam">
+                            <mat-datepicker-toggle matIconSuffix [for]="doePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #doePicker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Mode of Exam</mat-label>
+                            <input matInput readonly value="Offline" />
+                        </mat-form-field>
+                        <div>
+                            <mat-label>Time of Exam</mat-label>
+                        </div>
+                        <div class="time-of-exam">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Hours</mat-label>
+                                <mat-select formControlName="hours">
+                                    @for (hour of hourList; track hour) {
+                                    <mat-option [value]="hour">{{hour}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Minutes</mat-label>
+                                <mat-select formControlName="mins">
+                                    @for (min of minutesList; track min) {
+                                    <mat-option [value]="min">{{min}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <div class="student-action">
+                        <button mat-button matStepperPrevious>Back</button>
+                        @if(id == 0){
+                        <button mat-flat-button color="primary" (click)="onSubmit()">Create</button>
+                        <button mat-button routerLink="/enquiry-list">Cancel</button>
                         }
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Status</mat-label>
-                    <mat-select formControlName="status">
-                        @for (stat of statusList; track stat) {
-                        <mat-option [value]="stat.value">{{stat.label}}</mat-option>
+                        @else if(id > 0){
+                        <button mat-flat-button color="primary" (click)="onSubmit()">Update</button>
+                        <button mat-flat-button matStepperNext>Next</button>
                         }
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Mobile Number</mat-label>
-                    <input matInput formControlName="mobile"/>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>reference</mat-label>
-                    <input matInput formControlName="reference"/>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Address</mat-label>
-                    <input matInput formControlName="address"/>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Previous School Name</mat-label>
-                    <input matInput/>
-                </mat-form-field>
-            </div>
-            <div class="student-action">
-                <button mat-flat-button color="primary" (click)="onSubmit()">Create</button>
-                <button mat-button routerLink="/enquiry-list">Cancel</button>
-            </div>
-        </form>
+                    </div>
+                </form>
+            </mat-step>
+            @if(id > 0){
+            <mat-step>
+                <form [formGroup]="enquiryPaymentForm">
+                    <ng-template matStepLabel>Payments/Receipt</ng-template>
+                    <div class="registration-fields">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Fee Name</mat-label>
+                            <input matInput formControlName="feeName" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Payment Mode</mat-label>
+                            <mat-select formControlName="paymentType">
+                                @for (mode of paymentModeList; track mode) {
+                                <mat-option [value]="mode">{{mode}}</mat-option>
+                                }
+                            </mat-select>
+                            @if (paymentFormControls['paymentType'].errors &&
+                            paymentFormControls['paymentType'].errors['required'] &&
+                            paymentFormControls['paymentType'].touched) {
+                            <mat-error>Payment Mode is Required.</mat-error>
+                            }
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Amount for the Entrance Exam</mat-label>
+                            <input matInput mask="0*" formControlName="amount" />
+                            @if (paymentFormControls['amount'].errors &&
+                            paymentFormControls['amount'].errors['required'] &&
+                            paymentFormControls['amount'].touched) {
+                            <mat-error>Amount is Required.</mat-error>
+                            }
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Payment Status</mat-label>
+                            <mat-select formControlName="paymentStatus">
+                                @for (status of paymentStatusList; track status) {
+                                <mat-option [value]="status">{{status}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    @if (isOpenReceipt){
+                    <div class="download-receipt" #receipt>
+                        <app-view-print-receipt [stdInfo]="enquiryForm.value" [isSingleReceipt]="true"
+                            [selectedReceipt]="enquiryPaymentForm.value"></app-view-print-receipt>
+                    </div>
+                    }
+                    <div class="payment-action">
+                        <div class="download-receipt">
+                            @if (generateReceiptBtn){
+                            @if (!isOpenReceipt){
+                            <button mat-flat-button color="primary" (click)="openReceipt()">Generate Rceipt</button>
+                            }
+                            @else {
+                            <button mat-flat-button color="primary" (click)="downloadReceipt()">Download Rceipt</button>
+                            }
+                            }
+                        </div>
+                        <div class="actions">
+                            <button mat-button matStepperPrevious>Back</button>
+                            @if (!generateReceiptBtn){
+                                <button mat-flat-button color="primary" (click)="savePayments()">Payment</button>
+                            }
+                            <button mat-flat-button matStepperNext>Next</button>
+                        </div>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <form [formGroup]="parentInteractionForm">
+                    <ng-template matStepLabel>Parent(s) Interaction</ng-template>
+                    @for (item of questionList; track item; let i = $index) {
+                        <mat-label><strong>
+                            {{item.question}}
+                        </strong></mat-label>
+                        <div>
+                            @if(item.type == "dropdown") {
+                                <mat-form-field appearance="outline">
+                                    <mat-select [multiple]="item.isMultiple" [formControlName]="item.formControlName">
+                                        @for(opt of item.options; track opt; let j = $index) {
+                                            <mat-option [value]="opt">{{opt}}</mat-option>
+                                        }
+                                    </mat-select>
+                                    @if(parentInteractionControls[item.formControlName].errors &&
+                                    parentInteractionControls[item.formControlName].touched){
+                                        <mat-error>This field is required.</mat-error>
+                                    }
+                                </mat-form-field>
+                            }
+                            @else if(item.type == "text") {
+                                <mat-form-field appearance="outline">
+                                    <input matInput [formControlName]="item.formControlName"/>
+                                    @if(parentInteractionControls[item.formControlName].errors &&
+                                    parentInteractionControls[item.formControlName].touched){
+                                        <mat-error>This field is required.</mat-error>
+                                    }
+                                </mat-form-field>
+                            }
+                        </div>
+                    }
+                    <div class="interaction-actions">
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-flat-button color="primary">Save</button>
+                        <button mat-flat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Rating</ng-template>
+                <div class="rating">
+                    <app-star-rating> </app-star-rating>
+                </div>
+                <div class="rating-actions">
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-flat-button color="primary">Save</button>
+                    <button mat-button routerLink="/enquiry-list">Cancel</button>
+                </div>
+            </mat-step>
+            }
+        </mat-stepper>
     </div>
 </div>

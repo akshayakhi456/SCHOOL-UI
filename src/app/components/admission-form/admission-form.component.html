@@ -12,16 +12,31 @@
                         <mat-form-field appearance="outline">
                             <mat-label>First Name</mat-label>
                             <input matInput formControlName="firstName" />
+                            @if (studentForm['firstName'].errors &&
+                            studentForm['firstName'].errors['required'] &&
+                            studentForm['firstName'].touched) {
+                            <mat-error>First Name is required.</mat-error>
+                            }
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Last Name</mat-label>
                             <input matInput formControlName="lastName" />
+                            @if (studentForm['lastName'].errors &&
+                            studentForm['lastName'].errors['required'] &&
+                            studentForm['lastName'].touched) {
+                            <mat-error>Last Name is required.</mat-error>
+                            }
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Date of Birth</mat-label>
                             <input matInput [matDatepicker]="picker" formControlName="dob">
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
+                            @if (studentForm['dob'].errors &&
+                            studentForm['dob'].errors['required'] &&
+                            studentForm['dob'].touched) {
+                            <mat-error>Date of Birth is required.</mat-error>
+                            }
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Grade/Class</mat-label>
@@ -30,6 +45,11 @@
                                 <mat-option [value]="class.value">{{class.label}}</mat-option>
                                 }
                             </mat-select>
+                            @if (studentForm['className'].errors &&
+                            studentForm['className'].errors['required'] &&
+                            studentForm['className'].touched) {
+                            <mat-error>Class is required.</mat-error>
+                            }
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Section</mat-label>
@@ -41,14 +61,38 @@
                                 <mat-option value="Male">Male</mat-option>
                                 <mat-option value="Female">Female</mat-option>
                             </mat-select>
+                            @if (studentForm['gender'].errors &&
+                            studentForm['gender'].errors['required'] &&
+                            studentForm['gender'].touched) {
+                            <mat-error>Gender is required.</mat-error>
+                            }
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Aadhar Number</mat-label>
-                            <input matInput formControlName="adharNumber" />
+                            <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
+                            @if (studentForm['adharNumber'].errors &&
+                            studentForm['adharNumber'].errors['required'] &&
+                            studentForm['adharNumber'].touched) {
+                            <mat-error>Aadhar Number is required.</mat-error>
+                            }
+                            @if (studentForm['adharNumber'].errors &&
+                            studentForm['adharNumber'].errors['maxlength'] &&
+                            studentForm['adharNumber'].touched) {
+                            <mat-error>Aadhar Number must not greater than 12 characters</mat-error>
+                            }
+                            @if (studentForm['adharNumber'].errors &&
+                            studentForm['adharNumber'].errors['minlength'] &&
+                            studentForm['adharNumber'].touched) {
+                            <mat-error>Aadhar Number must not less than 12 characters</mat-error>
+                            }
                         </mat-form-field>
                     </fieldset>
                     <fieldset>
                         <legend>Student Photo</legend>
+                        <input id="txtFile" (change)="imageUpload($event)" type="file" value="upload File" style="width: 100%;"/>
+                        <div>
+                            <img id="imgviewer" [src]="imgViewer" width="200" height="200" style="width: 100%;"/>
+                        </div>
                     </fieldset>
                 </form>
             </div>
@@ -75,7 +119,7 @@
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Conatct No</mat-label>
-                            <input matInput formControlName="contactNumber" />
+                            <input matInput formControlName="contactNumber" mask="0000000000" />
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Email</mat-label>
@@ -83,7 +127,12 @@
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Aadhar Number</mat-label>
-                            <input matInput formControlName="adharNumber" />
+                            <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
+                            @if (fatherForm['adharNumber'].errors &&
+                            fatherForm['adharNumber'].errors['maxlength'] &&
+                            fatherForm['adharNumber'].touched) {
+                            <mat-error>Aadhar Number must not exceed 12 characters</mat-error>
+                            }
                         </mat-form-field>
                     </fieldset>
                 </form>
@@ -109,7 +158,7 @@
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Conatct No</mat-label>
-                            <input matInput formControlName="contactNumber" />
+                            <input matInput formControlName="contactNumber" mask="0000000000" />
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Email</mat-label>
@@ -117,7 +166,7 @@
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Aadhar Number</mat-label>
-                            <input matInput formControlName="adharNumber" />
+                            <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
                         </mat-form-field>
                     </fieldset>
                 </form>
@@ -178,35 +227,53 @@
                             <button mat-flat-button color="primary" (click)="addSibiling()">Add</button>
                         </div>
                         <div>
-                            <mat-list role="list">
-                                @for (record of selectedStudents; track record) {
-                                <mat-list-item role="listitem">
-                                    <mat-icon matListItemIcon>arrow_right_alt</mat-icon>
-                                    {{record.userName}}
-                                </mat-list-item>
+                            <mat-chip-set aria-label="Dog selection">
+                                @for (record of selectedStudents; track record; let i = $index) {
+                                <mat-chip>
+                                    <div class="sibilings-list">
+                                        <div>                                            
+                                            <span>{{record.userName}}</span> |
+                                            <span>Class: {{record.className}}</span>
+                                        </div>
+                                        <button mat-icon-button (click)="removeSibiling(i)">
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </div>
+                                </mat-chip>
                                 }
-                            </mat-list>
+                            </mat-chip-set>
                         </div>
                     </div>
                 </fieldset>
 
                 <fieldset>
                     <legend>CheckList</legend>
-                    <button mat-flat-button color="primary" (click)="addcheckList()">Add Certificate Name</button>
-                    <div>
-                        <form [formGroup]="checkListForm">
-                            <div formArrayName="checkList">
-                                @for(check of checkList.controls; track check; let i=$index) {
-                                    <div class="gap-10" [formGroupName]="i">
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>Certificate Name </mat-label>
-                                            <input matInput type="text" formControlName="certificate">
-                                        </mat-form-field>
-                                        <button mat-flat-button color="warn" (click)="removeCheckList(i)">Remove</button>
+                    <div class="certificate-list">
+                        <div>
+                            <form>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Certificate Name</mat-label>
+                                    <input matInput type="text" [formControl]="certificate"/>
+                                </mat-form-field>
+                                <button mat-flat-button color="primary" (click)="addcheckList()">Add</button>
+                            </form>
+                        </div>
+                        <div>
+                            <mat-chip-set aria-label="Dog selection">
+                                @for (certificate of certificateList; track certificate; let i = $index) {
+                                <mat-chip>
+                                    <div class="certificate">
+                                        <div>
+                                            {{certificate}}
+                                        </div>
+                                        <button mat-icon-button (click)="removeCertificateList(i)">
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
                                     </div>
+                                </mat-chip>
                                 }
-                                </div>
-                        </form>
+                            </mat-chip-set>    
+                        </div>
                     </div>
                 </fieldset>
             </div>

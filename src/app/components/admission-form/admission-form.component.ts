@@ -1,23 +1,30 @@
 import { Component, inject } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../shared/services/student/student.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, map, startWith } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import {MatChipsModule} from '@angular/material/chips';
 
 @Component({
   selector: 'app-admission-form',
   standalone: true,
-  imports: [SharedModule, CommonModule, AsyncPipe],
+  imports: [SharedModule, CommonModule, AsyncPipe, NgxMaskDirective, NgxMaskPipe, MatChipsModule],
   templateUrl: './admission-form.component.html',
-  styleUrl: './admission-form.component.scss'
+  styleUrl: './admission-form.component.scss',
+  providers: [provideNgxMask()]
 })
 export class AdmissionFormComponent {
+  imgViewer = '';
+  uploadedFile: Blob = new Blob();
   sibilingCtrl = new FormControl();
   filteredSibiling: Observable<any> = new Observable<any>;
   students: any = [];
   selectedStudents: any = [];
+  certificate = new FormControl<string>('');
+  certificateList: Array<string> = [];
   service = inject(StudentService);
   snackbar = inject(MatSnackBar);
   classList = [
@@ -39,7 +46,7 @@ export class AdmissionFormComponent {
     section: new FormControl<string>(''),
     gender: new FormControl<string>('', Validators.required),
     status: new FormControl<boolean>(true),
-    adharNumber: new FormControl<string>('', Validators.required)
+    adharNumber: new FormControl<string>('', [Validators.required,Validators.minLength(12), Validators.maxLength(12)])
   });
 
   fatherInfoForm = new FormGroup({
@@ -50,7 +57,7 @@ export class AdmissionFormComponent {
     qualification: new FormControl<string>(''),
     contactNumber: new FormControl<number | null>(null),
     email: new FormControl<string>(''),
-    adharNumber: new FormControl<string>(''),
+    adharNumber: new FormControl<string>('', Validators.maxLength(12)),
     studentId: new FormControl<string>(''),
     relationship: new FormControl<string>('Father')
   });
@@ -84,6 +91,13 @@ export class AdmissionFormComponent {
     checkList: new FormArray<any>([])
   })
 
+  get studentForm():  { [key: string]: AbstractControl } {
+    return this.studentInfoForm.controls;
+  }
+  get fatherForm():  { [key: string]: AbstractControl } {
+    return this.fatherInfoForm.controls;
+  }
+
   ngOnInit(): void {
     this.getStudentsList();
     this.filteredSibiling = this.sibilingCtrl.valueChanges
@@ -107,31 +121,47 @@ export class AdmissionFormComponent {
 
   addSibiling(): void {
     const obj = this.students.filter((x: {userName: string}) => x.userName === this.sibilingCtrl.value);
-    this.selectedStudents.push(...obj)
+    if (obj && obj.length && !this.selectedStudents.includes(obj[0])){
+      this.selectedStudents.push(...obj)
+    }
     this.sibilingCtrl.setValue('');
   }
 
-  removeSibiling(): void {
-
+  removeSibiling(i: number): void {
+    this.selectedStudents.splice(i,1)
   }
 
   OnSubmit(): void {
     if (this.studentInfoForm.invalid) {
       return;
     }
-    const payload = {
-      students: this.studentInfoForm.value,
-      guardians: [
-        this.fatherInfoForm.value,
-        this.motherInfoForm.value
-      ],
-      address: this.AddressInfoForm.value
+    const self = this;
+    var reader = new FileReader();
+    reader.readAsDataURL(this.uploadedFile); 
+    reader.onloadend = function() {
+      var base64data = reader.result;                
+      console.log(base64data);
+      self.save(base64data);
     }
-    this.service.create(payload).subscribe({
-      next: () => {
-        this.snackbar.open('Created Successfully.', 'Close', {duration: 2000})
+  }
+  
+  save(base64data: any) {
+    const formData = new FormData();
+    formData.append('file', base64data)
+      const payload = {
+        students: this.studentInfoForm.value,
+        guardians: [
+          this.fatherInfoForm.value,
+          this.motherInfoForm.value
+        ],
+        address: this.AddressInfoForm.value
       }
-    })
+      formData.append('studentGuardian', JSON.stringify(payload));
+      this.service.create(formData).subscribe({
+        next: () => {
+          this.snackbar.open('Created Successfully.', 'Close', {duration: 2000})
+        }
+      })
   }
 
   filterSibiling(value: string): Array<any> {
@@ -151,10 +181,21 @@ export class AdmissionFormComponent {
   }
  
   addcheckList() {
-    this.checkList.push(this.newSkill());
+    const val = this.certificate.value;
+    if (val && !this.certificateList.includes(val)) {
+      this.certificateList.push(val);
+    }
+    this.certificate.setValue('');
+  }
+
+  removeCertificateList(i: number) {
+    this.certificateList.splice(i, 1)
+  }
+
+  imageUpload(event: any) {
+    const file = event.target.files;
+    this.uploadedFile = file;
+    this.imgViewer = window.URL.createObjectURL(file[0]);
   }
  
-  removeCheckList(i:number) {
-    this.checkList.removeAt(i);
-  }
 }

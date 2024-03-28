@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PaymentsComponent } from '../payments/payments.component';
 import { StudentService } from '../../shared/services/student/student.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface PeriodicElement {
   sname: string;
@@ -36,6 +37,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrl: './students-list.component.scss'
 })
 export class StudentsListComponent {
+  @ViewChild('paginator') paginator!: MatPaginator | null;
+  pageSizes = [10, 25, 50, 100];
   classList = [
     {value: 1, label: 'I'},
     {value: 2, label: 'II'},
@@ -70,7 +73,8 @@ export class StudentsListComponent {
 
   getStudentList() {
     this.service.get().subscribe((res) => {
-      this.dataSource.data = res
+      this.dataSource.data = res;
+      this.dataSource.paginator = this.paginator;
     })
 
   }

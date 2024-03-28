@@ -14,8 +14,20 @@ export class EnquiryService {
     return this.http.post<boolean>(`${URLs.createEnquiry}`, body);
   }
 
+  update(body: any): Observable<boolean> {
+    return this.http.put<boolean>(`${URLs.updateEnquiry}`, body);
+  }
+
 
   get(): Observable<any> {
     return this.http.get(`${URLs.getEnquiry}`);
+  }
+
+  getById(id: number): Observable<any>{
+    return this.http.get(`${URLs.getEnquiryById}${id}`)
+  }
+
+  createPayment(body: any): Observable<boolean> {
+    return this.http.post<boolean>(`${URLs.createEnquiryPayments}`, body);
   }
 }

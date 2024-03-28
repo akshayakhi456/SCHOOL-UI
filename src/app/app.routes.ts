@@ -8,6 +8,7 @@ import { CreateEnquiryComponent } from './components/create-enquiry/create-enqui
 import { SchoolExpensesComponent } from './components/school-expenses/school-expenses.component';
 import { AdmissionFormComponent } from './components/admission-form/admission-form.component';
 import { EnquiryListComponent } from './components/enquiry-list/enquiry-list.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -17,6 +18,8 @@ export const routes: Routes = [
     {path: 'admission', component: AdmissionFormComponent, canActivate: [AuthGuard]},
     {path: 'student-list', component: StudentsListComponent, canActivate: [AuthGuard]},
     {path: 'create-enquiry', component: CreateEnquiryComponent, canActivate: [AuthGuard]},
+    {path: 'enquiry/:id', component: CreateEnquiryComponent, canActivate: [AuthGuard]},
     {path: 'enquiry-list', component: EnquiryListComponent, canActivate: [AuthGuard]},
     {path: 'school-expenses', component: SchoolExpensesComponent, canActivate: [AuthGuard]},
+    {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
 ];

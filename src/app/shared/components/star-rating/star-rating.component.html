@@ -1,0 +1,12 @@
+@for(ratingId of ratingArr; track ratingId; let i=$index){
+    <button mat-icon-button [color]="rating >= (ratingId+1) ? color : ''" [id]="'star_'+i" (click)="onClick(i+1)" [matTooltip]="ratingId+1" matTooltipPosition="above">
+        @if(rating >= (ratingId+1)) { 
+        <mat-icon>
+            star
+        </mat-icon>
+        }
+        @else {
+            <mat-icon>star_rate</mat-icon>
+        }
+    </button>
+}

@@ -6,6 +6,7 @@ import { PaymentsService } from '../../shared/services/payments/payments.service
 import html2canvas from 'html2canvas';
 import jspdf from 'jspdf';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 export interface IReceiptList {
   amount: string;
   admissionNo: number;
@@ -29,6 +30,8 @@ const ELEMENT_DATA: IReceiptList[] = [
 })
 export class  ReceiptsComponent {
   @ViewChild('receipt') receipt!: ElementRef;
+  @ViewChild('paginator') paginator!: MatPaginator | null;
+  pageSizes = [10, 50, 100];
   receiptRecord = true;
   stdInfo: any;
   selectedReceipt: any;
@@ -51,6 +54,7 @@ export class  ReceiptsComponent {
     this.service.getReceiptById(this.stdInfo.id).subscribe({next: res => {
       this.dataSource.data = res.result ?? res;
       this.originalReceipt = res.result ?? res;
+      this.dataSource.paginator = this.paginator;
     },
     error: () =>{}
   })

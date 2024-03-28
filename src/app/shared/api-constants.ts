@@ -5,7 +5,10 @@ export const URLs = {
     getStudents: `${environment.apiUrl}student`,
 
     createEnquiry: `${environment.apiUrl}enquiry/create`,
+    updateEnquiry: `${environment.apiUrl}enquiry/update`,
     getEnquiry: `${environment.apiUrl}enquiry`,
+    getEnquiryById: `${environment.apiUrl}enquiry/`,
+    createEnquiryPayments: `${environment.apiUrl}enquiry/entranceExamFee`,
 
     createExpenses: `${environment.apiUrl}expenses/create`,
     getExpenses: `${environment.apiUrl}expenses`,

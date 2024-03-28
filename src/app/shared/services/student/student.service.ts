@@ -10,7 +10,7 @@ export class StudentService {
 
   constructor(private http: HttpClient) { }
 
-  create(body: any): Observable<boolean> {
+  create(body: FormData): Observable<boolean> {
     return this.http.post<boolean>(`${URLs.createStudent}`, body);
   }
 

@@ -89,10 +89,16 @@
                     </fieldset>
                     <fieldset>
                         <legend>Student Photo</legend>
-                        <input id="txtFile" (change)="imageUpload($event)" type="file" value="upload File" style="width: 100%;"/>
-                        <div>
-                            <img id="imgviewer" [src]="imgViewer" width="200" height="200" style="width: 100%;"/>
-                        </div>
+                        <button mat-flat-button color="accent" type="button" (click)="imageClickable()">Upload Image</button>
+                        <input id="filepaths" (change)="imageUpload($event)" accept=".jpg, .png, .jpeg" class="visibility-hidden" type="file" value="upload File" style="width: 100%;"/>
+                        @if (imgViewer) {
+                            <div>
+                                <img id="imgviewer" [src]="imgViewer" width="100" height="100" style="width: 100%;"/>
+                            </div>
+                        }
+                        @else {
+                            <div class="empty-imag"></div>
+                        }
                     </fieldset>
                 </form>
             </div>
@@ -280,7 +286,7 @@
 
         </div>
         <div class="enquiry-action">
-            <button mat-flat-button color="primary" (click)="OnSubmit()">Create</button>
+            <button mat-flat-button color="primary" (click)="OnSubmit()">Save</button>
             <button mat-button routerLink="/student-list">Cancel</button>
         </div>
         <!-- </form> -->

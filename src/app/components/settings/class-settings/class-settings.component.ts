@@ -29,6 +29,7 @@ export class ClassSettingsComponent {
       return;
     }
     this.classes.push(new FormGroup({
+      id: new FormControl(0),
       className: new FormControl(this.className.value),
       sections: new FormArray([])
     }));
@@ -55,7 +56,29 @@ export class ClassSettingsComponent {
   addSectionList(index: number) {
     const subItems = (this.classSettingsForm.get('classes') as FormArray).at(index).get('sections') as FormArray;
     subItems.push(new FormGroup({
+      id: new FormControl(0),
       sectionName: new FormControl('')
     }));
+  }
+
+  saveClassSection() {
+    console.log(this.classSettingsForm.value)
+    const classObj = this.classSettingsForm.value.classes;
+    const payloadObj: any = [];
+    if ((classObj as Array<any>).length) {
+      (classObj as Array<any>).forEach(element => {
+        payloadObj.push({
+          classes: {
+            id: element.id,
+            className: element.className
+          },
+          section: {
+            id: element.section.id,
+            section: element.section.sectionName,
+            className: element.section.className
+          }
+        })
+      });
+    }
   }
 }

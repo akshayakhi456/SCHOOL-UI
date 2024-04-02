@@ -28,7 +28,9 @@ export class CreateEnquiryComponent {
   paymentModeList: Array<string> = ['Cash', 'Card', 'Cheque', 'Online'];
   isOpenReceipt = false;
   generateReceiptBtn = false;
-
+  saveParentInteraction = false;
+  rating = new FormControl();
+  review = new FormControl();
   questionList = [
     {
       question: "How well you know hindi?",
@@ -69,7 +71,10 @@ export class CreateEnquiryComponent {
     reference: new FormControl<string>(''),
     address: new FormControl<string>(''),
     status: new FormControl<boolean>(true),
-    previousSchoolName: new FormControl<string>('')
+    previousSchoolName: new FormControl<string>(''),
+    parentInteraction: new FormControl<string>(''),
+    rating: new FormControl<number | null>(null),
+    review: new FormControl<string>('')
   });
 
   registrationForm = new FormGroup({
@@ -123,9 +128,10 @@ export class CreateEnquiryComponent {
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.params['id'] ? 
     this.activatedRoute.snapshot.params['id'] : 0;
-    this.getEnquireFormById();
-
-    this.parentInteractionFormControls()
+    if (this.id) {
+      this.parentInteractionFormControls()
+      this.getEnquireFormById();
+    }    
   }
 
   parentInteractionFormControls() {
@@ -156,6 +162,19 @@ export class CreateEnquiryComponent {
           if(res.result.paymentsEnquiry ?? res.paymentsEnquiry) {
             this.enquiryPaymentForm.patchValue(res.result.paymentsEnquiry ?? res.paymentsEnquiry);
             this.generateReceiptBtn = this.enquiryPaymentForm.value.paymentStatus === 'Completed'
+          }
+          if (res.result.enquiry.parentInteraction ?? res.enquiry.parentInteraction) {
+            this.parentInteractionForm.patchValue({
+              ...JSON.parse(res.result.enquiry.parentInteraction) ?? JSON.parse(res.enquiry.parentInteraction)
+            });
+            this.parentInteractionForm.disable();
+            this.saveParentInteraction = true;
+          }
+          if (res.result.enquiry.rating ?? res.enquiry.rating) {
+            this.rating.setValue(res.result.enquiry.rating ?? res.enquiry.rating)
+          }
+          if (res.result.enquiry.review ?? res.enquiry.review) {
+            this.review.setValue(res.result.enquiry.review ?? res.enquiry.review)
           }
         }
       }
@@ -232,5 +251,34 @@ export class CreateEnquiryComponent {
       pdf.addImage(contentDataURL, "PNG", 10, 10, imgWidth, imgHeight);
       pdf.save(`${this.enquiryForm.value.firstName}_${this.enquiryForm.value.lastName}.pdf`); // Generated PDF
     });
+  }
+
+  saveParentInteractionForm(): void {
+    this.parentInteractionForm.markAllAsTouched();
+    if (this.parentInteractionForm.invalid) {
+      return;
+    }
+    this.enquiryForm.patchValue({
+      parentInteraction: JSON.stringify(this.parentInteractionForm.value)
+    })
+    this.onSubmit();
+  }
+
+  selectedRating(event: number) {
+    this.rating.setValue(event);
+  }
+
+  saveRating(): void {
+    if (this.rating.value) {
+      this.enquiryForm.patchValue({
+        rating: this.rating.value
+      })
+    }
+    if(this.review.value) {
+      this.enquiryForm.patchValue({
+        review: this.review.value
+      })
+    }
+    this.onSubmit();
   }
 }

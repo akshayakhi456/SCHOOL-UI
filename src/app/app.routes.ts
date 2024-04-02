@@ -16,6 +16,7 @@ export const routes: Routes = [
     {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
     {path: 'collection-report', component: TodaysCollectionReportComponent, canActivate: [AuthGuard]},
     {path: 'admission', component: AdmissionFormComponent, canActivate: [AuthGuard]},
+    {path: 'student/:id', component: AdmissionFormComponent, canActivate: [AuthGuard]},
     {path: 'student-list', component: StudentsListComponent, canActivate: [AuthGuard]},
     {path: 'create-enquiry', component: CreateEnquiryComponent, canActivate: [AuthGuard]},
     {path: 'enquiry/:id', component: CreateEnquiryComponent, canActivate: [AuthGuard]},

@@ -1,4 +1,4 @@
-<div>
+<div class="class-fields">
     <mat-form-field appearance="outline">
         <mat-label>Class Name</mat-label>
         <input matInput [formControl]="className"/>
@@ -10,7 +10,7 @@
 <form [formGroup]="classSettingsForm">
     <div formArrayName="classes">
         @for(class of classes.controls; track class; let i=$index) {
-        <div [formGroupName]="i">
+        <div [formGroupName]="i" class="class-fields">
             <mat-form-field appearance="outline">
                 <mat-label>class Name</mat-label>
                 <input matInput formControlName="className" />

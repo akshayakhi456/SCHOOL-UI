@@ -256,19 +256,29 @@
                     }
                     <div class="interaction-actions">
                         <button mat-button matStepperPrevious>Back</button>
-                        <button mat-flat-button color="primary">Save</button>
-                        <button mat-flat-button matStepperNext>Next</button>
+                        @if (saveParentInteraction) {
+                            <button mat-flat-button matStepperNext>Next</button>
+                        }
+                        @else {
+                            <button mat-flat-button color="primary" (click)="saveParentInteractionForm()">Save</button>
+                        }
                     </div>
                 </form>
             </mat-step>
             <mat-step>
                 <ng-template matStepLabel>Rating</ng-template>
                 <div class="rating">
-                    <app-star-rating> </app-star-rating>
+                    <app-star-rating [rating]="rating.value" (ratingUpdated)="selectedRating($event)"></app-star-rating>
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Review</mat-label>
+                            <textarea matInput rows="5" cols="15" [formControl]="review"></textarea>
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div class="rating-actions">
                     <button mat-button matStepperPrevious>Back</button>
-                    <button mat-flat-button color="primary">Save</button>
+                    <button mat-flat-button color="primary" (click)="saveRating()">Save</button>
                     <button mat-button routerLink="/enquiry-list">Cancel</button>
                 </div>
             </mat-step>

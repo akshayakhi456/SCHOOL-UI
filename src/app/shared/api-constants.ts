@@ -2,7 +2,9 @@ import { environment } from "../../environments/environment.development";
 
 export const URLs = {
     createStudent : `${environment.apiUrl}student/create`,
+    updateStudent : `${environment.apiUrl}student/update`,
     getStudents: `${environment.apiUrl}student`,
+    getStudentById: `${environment.apiUrl}student/`,
 
     createEnquiry: `${environment.apiUrl}enquiry/create`,
     updateEnquiry: `${environment.apiUrl}enquiry/update`,

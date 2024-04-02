@@ -79,8 +79,9 @@
                             Action
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            <mat-icon (click)="openPaymentDialog(element)">payments</mat-icon> &nbsp;&nbsp; 
-                            <mat-icon (click)="openReceiptDialog(element)">receipts</mat-icon>
+                            <mat-icon routerLink="/student/{{element.id}}">edit</mat-icon>
+                            <!-- <mat-icon (click)="openPaymentDialog(element)">payments</mat-icon> &nbsp;&nbsp; 
+                            <mat-icon (click)="openReceiptDialog(element)">receipts</mat-icon> -->
                         </td>
                     </ng-container>
     

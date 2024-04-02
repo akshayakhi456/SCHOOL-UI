@@ -7,6 +7,8 @@ import { Observable, map, startWith } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import {MatChipsModule} from '@angular/material/chips';
+import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-admission-form',
@@ -27,6 +29,8 @@ export class AdmissionFormComponent {
   certificateList: Array<string> = [];
   service = inject(StudentService);
   snackbar = inject(MatSnackBar);
+  activatedRoute = inject(ActivatedRoute);
+  sanitizer = inject(DomSanitizer);
   classList = [
     {value: '1', label: 'I'},
     {value: '2', label: 'II'},
@@ -46,7 +50,9 @@ export class AdmissionFormComponent {
     section: new FormControl<string>(''),
     gender: new FormControl<string>('', Validators.required),
     status: new FormControl<boolean>(true),
-    adharNumber: new FormControl<string>('', [Validators.required,Validators.minLength(12), Validators.maxLength(12)])
+    adharNumber: new FormControl<string>('', [Validators.required,Validators.minLength(12), Validators.maxLength(12)]),
+    sibilings: new FormControl<string>(''),
+    certificateNames: new FormControl<string>('')
   });
 
   fatherInfoForm = new FormGroup({
@@ -105,6 +111,43 @@ export class AdmissionFormComponent {
         startWith(''),
         map(sibiling => sibiling ? this.filterSibiling(sibiling) : this.students.slice())
       );
+    const id = this.activatedRoute.snapshot.params['id'];
+    if (id) {
+      this.getStudentById(Number(id));
+    }
+  }
+
+  getStudentById(id: number) {
+    this.service.getById(id).subscribe({next: res => {
+      const result = res.result ?? res;
+      const studentPhoto = result.students.photo;
+      const studentBase64Photo = 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(studentPhoto) as any).changingThisBreaksApplicationSecurity;
+      const studentForm = result.students;
+      this.imgViewer = studentBase64Photo;
+      if (result.students.sibilings) {
+        this.selectedStudents = JSON.parse(result.students.sibilings)
+      }
+      if (result.students.certificateNames) {
+        this.certificateList = JSON.parse(result.students.certificateNames);
+      }
+      this.studentInfoForm.patchValue({
+        ...studentForm,
+        photo: ''
+      });
+      const fatherInfo = result.guardians.find((f: any) => f.relationship === 'Father');
+      const motherInfo = result.guardians.find((f: any) => f.relationship === 'Mother');
+      this.fatherInfoForm.patchValue({
+        ...fatherInfo
+      });
+      this.motherInfoForm.patchValue({
+        ...motherInfo
+      });
+      this.AddressInfoForm.patchValue({
+        ...result.address
+      });
+    },
+    error: () => {}
+  })
   }
 
   getStudentsList(): void {
@@ -135,18 +178,47 @@ export class AdmissionFormComponent {
     if (this.studentInfoForm.invalid) {
       return;
     }
-    const self = this;
-    var reader = new FileReader();
-    reader.readAsDataURL(this.uploadedFile); 
-    reader.onloadend = function() {
-      var base64data = reader.result;                
-      console.log(base64data);
-      self.save(base64data);
+    let fileSelected: any;
+    fileSelected = document.getElementById('filepaths');
+    fileSelected = fileSelected.files;
+    const id = this.activatedRoute.snapshot.params['id'];
+    if (fileSelected.length > 0) {
+      const fileToLoad = fileSelected[0];
+      let fileReader = new FileReader();
+      fileReader.onload = function (fileLoadedEventTrigger) {
+        let textAreaFileContents: any;
+        textAreaFileContents = document.getElementById('filepaths');
+        textAreaFileContents.innerHTML = fileLoadedEventTrigger.target?.result;
+      }
+      fileReader.readAsDataURL(fileToLoad);
+      setTimeout(() =>{
+        let fileTosaveName: any;
+        fileTosaveName = (fileReader.result as string).split(',')[1];
+        this.save(fileTosaveName);
+      }, 5000)
+    }
+    else {
+      let fileTosaveName: any;
+      if (this.imgViewer) {
+        fileTosaveName = (this.imgViewer as string).split(',')[1]
+      }
+      this.save(fileTosaveName);
     }
   }
   
   save(base64data: any) {
     const formData = new FormData();
+    if (this.selectedStudents.length) {
+      const sibilings = JSON.stringify(this.selectedStudents); //.filter((x: any) => x.id).toString();
+      this.studentInfoForm.patchValue({
+        sibilings
+      });
+    }
+    if (this.certificateList.length) {
+      this.studentInfoForm.patchValue({
+        certificateNames: JSON.stringify(this.certificateList)
+      })
+    }
     formData.append('file', base64data)
       const payload = {
         students: this.studentInfoForm.value,
@@ -157,11 +229,21 @@ export class AdmissionFormComponent {
         address: this.AddressInfoForm.value
       }
       formData.append('studentGuardian', JSON.stringify(payload));
-      this.service.create(formData).subscribe({
-        next: () => {
-          this.snackbar.open('Created Successfully.', 'Close', {duration: 2000})
-        }
-      })
+      const id = this.activatedRoute.snapshot.params['id'];
+      if (!id) {
+        this.service.create(formData).subscribe({
+          next: () => {
+            this.snackbar.open('Created Successfully.', 'Close', {duration: 2000})
+          }
+        })
+      }
+      else {
+        this.service.update(formData).subscribe({
+          next: () => {
+            this.snackbar.open('Updated Successfully.', 'Close', {duration: 2000})
+          }
+        })
+      }
   }
 
   filterSibiling(value: string): Array<any> {
@@ -196,6 +278,10 @@ export class AdmissionFormComponent {
     const file = event.target.files;
     this.uploadedFile = file;
     this.imgViewer = window.URL.createObjectURL(file[0]);
+  }
+
+  imageClickable() {
+    document.getElementById('filepaths')?.click();
   }
  
 }

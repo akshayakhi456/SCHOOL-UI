@@ -14,8 +14,15 @@ export class StudentService {
     return this.http.post<boolean>(`${URLs.createStudent}`, body);
   }
 
+  update(body: FormData): Observable<boolean> {
+    return this.http.put<boolean>(`${URLs.updateStudent}`, body);
+  }
 
   get(): Observable<any> {
     return this.http.get(`${URLs.getStudents}`);
+  }
+
+  getById(id: number): Observable<any> {
+    return this.http.get(`${URLs.getStudentById}${id}`);
   }
 }

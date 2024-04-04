@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SettingsService } from '../../shared/services/settings/settings.service';
+import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 
 @Component({
   selector: 'app-enquiry-list',
@@ -44,6 +45,7 @@ export class EnquiryListComponent {
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: EnquiryService,
+    private spinnerService: SpinnerService,
     private router: Router,
     private settingService: SettingsService,
     public dialog: MatDialog) {}
@@ -57,22 +59,30 @@ export class EnquiryListComponent {
   }
 
   getClassList() {
+    this.spinnerService.show();
     this.settingService.getClasses().subscribe(res => {
+      this.spinnerService.dispose();
       this.classList = res.map((r: any) => {
         return {
           label: r.className,
           value: r.className
         }
       })
+    },()=>{
+      this.spinnerService.dispose();
     })
   }
 
   getEnquiryList() {
-    this.service.get().subscribe((res) => {
+    this.spinnerService.show();
+    this.service.get().subscribe({next:(res) => {
+      this.spinnerService.dispose();
       this.dataSource.data = res.result;
       this.enquiryList = res.result;
       this.dataSource.paginator = this.paginator;
-    })
+    },error:()=>{
+      this.spinnerService.dispose();
+    }})
 
   }
 

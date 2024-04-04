@@ -9,6 +9,8 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import {MatChipsModule} from '@angular/material/chips';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SpinnerService } from '../../shared/services/spinner/spinner.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-admission-form',
@@ -31,6 +33,7 @@ export class AdmissionFormComponent {
   snackbar = inject(MatSnackBar);
   activatedRoute = inject(ActivatedRoute);
   sanitizer = inject(DomSanitizer);
+  spinner = inject(SpinnerService);
   classList = [
     {value: '1', label: 'I'},
     {value: '2', label: 'II'},
@@ -118,7 +121,9 @@ export class AdmissionFormComponent {
   }
 
   getStudentById(id: number) {
+    this.spinner.show();
     this.service.getById(id).subscribe({next: res => {
+      this.spinner.dispose();
       const result = res.result ?? res;
       const studentPhoto = result.students.photo;
       const studentBase64Photo = 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(studentPhoto) as any).changingThisBreaksApplicationSecurity;
@@ -146,12 +151,16 @@ export class AdmissionFormComponent {
         ...result.address
       });
     },
-    error: () => {}
+    error: () => {
+      this.spinner.dispose();
+    }
   })
   }
 
   getStudentsList(): void {
+    this.spinner.show();
     this.service.get().subscribe({next: res => {
+      this.spinner.dispose();
       this.students = res.map((x: any) => {
         return {
           ...x,
@@ -159,7 +168,7 @@ export class AdmissionFormComponent {
         }
       });
       this.sibilingCtrl.updateValueAndValidity({emitEvent: true});
-    }})
+    },error: ()=>{ this.spinner.dispose();}})
   }
 
   addSibiling(): void {
@@ -231,17 +240,23 @@ export class AdmissionFormComponent {
       formData.append('studentGuardian', JSON.stringify(payload));
       const id = this.activatedRoute.snapshot.params['id'];
       if (!id) {
+        this.spinner.show();
         this.service.create(formData).subscribe({
           next: () => {
+            this.spinner.dispose();
             this.snackbar.open('Created Successfully.', 'Close', {duration: 2000})
-          }
+          },
+          error: ()=>{ this.spinner.dispose();}
         })
       }
       else {
+        this.spinner.show();
         this.service.update(formData).subscribe({
           next: () => {
+            this.spinner.dispose();
             this.snackbar.open('Updated Successfully.', 'Close', {duration: 2000})
-          }
+          },
+          error: ()=>{ this.spinner.dispose();}
         })
       }
   }

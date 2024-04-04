@@ -11,6 +11,7 @@ import html2canvas from 'html2canvas';
 import jspdf from 'jspdf';
 import { StarRatingComponent } from '../../shared/components/star-rating/star-rating.component';
 import { SettingsService } from '../../shared/services/settings/settings.service';
+import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 
 @Component({
   selector: 'app-create-enquiry',
@@ -125,6 +126,7 @@ export class CreateEnquiryComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private settingService: SettingsService,
+    private spinnerService: SpinnerService,
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
@@ -137,7 +139,9 @@ export class CreateEnquiryComponent {
   }
 
   getEnquiryQuestionList() {
+    this.spinnerService.show();
     this.settingService.getEnquiryQuestionsSettings().subscribe((res) => {
+      this.spinnerService.dispose();
       this.questionList = res.result.map((x: any) => {
         if(x.type == 'dropdown' && x.isMultiple) {
           return {...x, options: JSON.parse(x.options).map((opt: any) => opt.option)}
@@ -146,18 +150,24 @@ export class CreateEnquiryComponent {
       });
       this.parentInteractionFormControls();
       this.getEnquireFormById();
+    },()=>{
+      this.spinnerService.dispose();
     })
 
   }
 
   getClassList() {
+    this.spinnerService.show();
     this.settingService.getClasses().subscribe(res => {
+      this.spinnerService.dispose();
       this.classList = res.map((r: any) => {
         return {
           label: r.className,
           value: r.className
         }
       })
+    },()=>{
+      this.spinnerService.dispose();
     })
   }
 
@@ -177,8 +187,10 @@ export class CreateEnquiryComponent {
 
   getEnquireFormById(): void {
     this.enquiryPaymentForm.patchValue({studentEnquireId: this.id});
+    this.spinnerService.show();
     this.service.getById(this.id).subscribe({
       next: res => {
+      this.spinnerService.dispose();
         if(res){
           this.enquiryForm.patchValue(res.result.enquiry ?? res.enquiry);
           this.registrationForm.patchValue({
@@ -204,6 +216,9 @@ export class CreateEnquiryComponent {
             this.review.setValue(res.result.enquiry.review ?? res.enquiry.review)
           }
         }
+      },
+      error: ()=>{
+      this.spinnerService.dispose();
       }
     })
   }
@@ -221,20 +236,28 @@ export class CreateEnquiryComponent {
       }
     }
     if (this.id == 0) {
+      this.spinnerService.show();
       this.service.create(payload).subscribe((res: any) => {
+      this.spinnerService.dispose();
         if (res && res.result && res.result.id) {
           this.id = res.result.id;
           this.router.navigate(['enquiry', this.id])
           this.snackbar.open("Created Successfully", "Close", { duration: 2000 })
           this.saveParentInteraction = true;
         }
+      },()=>{
+      this.spinnerService.dispose();
       })
     }
     else {
+      this.spinnerService.show();
       this.service.update(payload).subscribe((res) => {
+      this.spinnerService.dispose();
         if (res) {
           this.snackbar.open("Updated Successfully", "Close", { duration: 2000 })
         }
+      },()=>{
+      this.spinnerService.dispose();
       })
     }
   }
@@ -244,12 +267,16 @@ export class CreateEnquiryComponent {
     if (this.enquiryPaymentForm.invalid){
       return;
     }
+    this.spinnerService.show();
     this.service.createPayment(this.enquiryPaymentForm.value).subscribe({
       next: res => {
+      this.spinnerService.dispose();
         this.generateReceiptBtn = this.enquiryPaymentForm.value.paymentStatus === 'Completed';
         this.snackbar.open("Saved Successfully.", "Close", { duration: 2000 })
       },
-      error: () => { }
+      error: () => { 
+      this.spinnerService.dispose();
+      }
     })
   }
 

@@ -64,9 +64,14 @@
 </ng-template>
 
 <ng-template #openSectionPopup>
+    @if (openedClass && openedClass['className']) {
+        <h1 mat-dialog-title>Section - Class: {{openedClass['className']}}</h1>
+    }
+    @else {
         <h1 mat-dialog-title>Section</h1>
+    }
         <mat-dialog-content>
-            <div>
+            <div class="section-form">
                 <mat-form-field appearance="outline">
                     <mat-label>section Name</mat-label>
                     <input matInput [formControl]="sectionName"/>

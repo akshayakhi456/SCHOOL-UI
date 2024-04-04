@@ -61,4 +61,16 @@ export class SettingsService {
   getEnquiryQuestionsSettings(): Observable<any> {
     return this.http.get(`${URLs.getEnquiryQuestionsSettings}`);
   }
+
+  createPaymentAllotment(payload: any):Observable<any> {
+    return this.http.post(`${URLs.paymentAllotmentsSettings}`, payload);
+  }
+
+  updatePaymentAllotment(payload: any):Observable<any> {
+    return this.http.put(`${URLs.paymentAllotmentsSettings}`, payload);
+  }
+
+  getPaymentAllotment(className: string): Observable<any> {
+    return this.http.get(`${URLs.paymentAllotmentsSettings}/${className}`);
+  }
 }

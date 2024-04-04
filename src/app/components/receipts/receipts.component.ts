@@ -36,7 +36,7 @@ export class  ReceiptsComponent {
   stdInfo: any;
   selectedReceipt: any;
   todayDate = new Date();
-  displayedColumns: string[] = ['invoiceId', 'feeName', 'dateOfPayment', 'amount', 'paymentType', 'remarks', 'action'];
+  displayedColumns: string[] = ['invoiceId', 'paymentName', 'dateOfPayment', 'amount', 'paymentType', 'remarks', 'action'];
   dataSource = new MatTableDataSource();
   originalReceipt: any;
   isSingleReceipt = false;

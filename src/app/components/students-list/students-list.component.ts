@@ -11,6 +11,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
 import { SettingsService } from '../../shared/services/settings/settings.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 
 export interface PeriodicElement {
   sname: string;
@@ -49,6 +50,7 @@ export class StudentsListComponent {
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: StudentService,
+    private spinnerService: SpinnerService,
     private settingService: SettingsService,
     public dialog: MatDialog) {}
 
@@ -66,18 +68,24 @@ export class StudentsListComponent {
   }
 
   getClassList() {
+    this.spinnerService.show();
     this.settingService.getClasses().subscribe(res => {
+      this.spinnerService.dispose();
       this.classList = res.map((r: any) => {
         return {
           label: r.className,
           value: r.className
         }
       })
+    },()=>{
+      this.spinnerService.dispose();
     })
   }
 
   getSectionList() {
-    this.settingService.getSections().subscribe(res => {
+    this.spinnerService.show();
+    this.settingService.getSections().subscribe({next: res => {
+      this.spinnerService.dispose();
       this.orgSectionList = res.res.map((x: any) => {
         return {
           ...x,
@@ -85,14 +93,20 @@ export class StudentsListComponent {
           value: x.section
         }
       })
-    })
+    },error:() =>{
+      this.spinnerService.dispose();
+    }})
   }
 
   getStudentList() {
+    this.spinnerService.show();
     this.service.get().subscribe((res) => {
+      this.spinnerService.dispose();
       this.dataSource.data = res;
       this.students = res;
       this.dataSource.paginator = this.paginator;
+    },()=>{
+      this.spinnerService.dispose();
     })
 
   }

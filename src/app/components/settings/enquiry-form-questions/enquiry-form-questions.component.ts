@@ -10,6 +10,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '
 import { Router } from '@angular/router';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
 
 @Component({
   selector: 'app-enquiry-form-questions',
@@ -37,6 +38,7 @@ export class EnquiryFormQuestionsComponent {
   })
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: SettingsService,
+    private spinnerService: SpinnerService,
     private router: Router,
     private snackbar: MatSnackBar,
     public dialog: MatDialog) { }
@@ -53,9 +55,13 @@ export class EnquiryFormQuestionsComponent {
   }
 
   getEnquiryQuestionList() {
+    this.spinnerService.show();
     this.service.getEnquiryQuestionsSettings().subscribe((res) => {
+      this.spinnerService.dispose();
       this.dataSource.data = res.result;
       this.dataSource.paginator = this.paginator;
+    },()=>{
+      this.spinnerService.dispose();
     })
 
   }
@@ -112,17 +118,25 @@ export class EnquiryFormQuestionsComponent {
       options: JSON.stringify(form.options)
     }
     if (this.questionForm.value.id) {
-      this.service.updateQuestion(payload).subscribe(res => {
+      this.spinnerService.show();
+      this.service.updateQuestion(payload).subscribe({next:res => {
+      this.spinnerService.dispose();
         const result = res.message;
         this.snackbar.open(result, 'Close',{duration: 2000});
         this.getEnquiryQuestionList();
-      })
+      },error:()=>{
+      this.spinnerService.dispose();
+      }})
     }
     else {
+      this.spinnerService.show();
       this.service.createQuestion(payload).subscribe(res => {
+        this.spinnerService.dispose();
         const result = res.message;
         this.snackbar.open(result, 'Close',{duration: 2000});
         this.getEnquiryQuestionList();
+      },() =>{
+        this.spinnerService.dispose();
       })
     }
   }

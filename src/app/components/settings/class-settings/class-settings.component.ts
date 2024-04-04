@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
 
 @Component({
   selector: 'app-class-settings',
@@ -36,6 +37,7 @@ export class ClassSettingsComponent {
     private service: SettingsService,
     private router: Router,
     private snackbar:MatSnackBar,
+    private spinnerService: SpinnerService,
     public dialog: MatDialog) {}
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
@@ -48,13 +50,17 @@ export class ClassSettingsComponent {
   }
 
   getClassList() {
+    this.spinnerService.show();
     this.service.getClasses().subscribe((res) => {
+      this.spinnerService.dispose();
       this.classDataSource.data = (res.result ?? res).map((x: any) => {
         return {
           ...x,
           isEditMode: false
         }
       });
+    },()=>{
+      this.spinnerService.dispose();
     })
 
   }
@@ -82,7 +88,9 @@ export class ClassSettingsComponent {
   }
 
   getSectionList() {
+    this.spinnerService.show();
     this.service.getSectionByClassName(this.openedClass!['className']).subscribe((res) => {
+      this.spinnerService.dispose();
       this.sectionDataSource.data = (res.res ?? res).map((x: any) => {
         return {
           ...x,
@@ -90,6 +98,8 @@ export class ClassSettingsComponent {
         }
       });
       // this.sectionDataSource.paginator = this.paginator;
+    },()=>{
+      this.spinnerService.dispose();
     })
   }
 
@@ -109,19 +119,27 @@ export class ClassSettingsComponent {
 
   updateClass(element: any) {
     if (element.className) {
+      this.spinnerService.show();
       this.service.updateClass({id: element.id, className: element.className}).subscribe(res=>{
-        this.snackbar.open('Updated Successfully');
+        this.spinnerService.dispose();
+        this.snackbar.open('Updated Successfully', 'Close', {duration: 2000});
         this.getClassList();
+      },()=>{
+        this.spinnerService.dispose();
       })
     }
   }
 
   updateSection(element: any) {
     if (element.section) {
+      this.spinnerService.show();
       this.service.updateSection({id: element.id, section: element.section, className: element.className}).subscribe(res=>{
-        this.snackbar.open('Updated Successfully');
+        this.spinnerService.dispose();
+        this.snackbar.open('Updated Successfully', 'Close', {duration: 2000});
         element.isEditSectionMode = !element.isEditSectionMode;
         this.getSectionList();
+      },()=>{
+        this.spinnerService.dispose();
       })
     }
   }
@@ -131,11 +149,15 @@ export class ClassSettingsComponent {
     if (this.sectionName.invalid) {
       return
     }
-    this.service.createSection({id: 0, section: this.sectionName.value, className: this.openedClass!['id']}).subscribe(res=>{
+    this.spinnerService.show();
+    this.service.createSection({id: 0, section: this.sectionName.value, className: this.openedClass!['className']}).subscribe({next: res=>{
+      this.spinnerService.dispose();
       this.sectionName.setValue('');
-      this.snackbar.open('Created Successfully');
+      this.snackbar.open('Created Successfully', 'Close', {duration: 2000});
       this.getSectionList();
-    })
+    },error: ()=>{
+      this.spinnerService.dispose();
+    }})
   }
 
   saveClass() {
@@ -143,9 +165,13 @@ export class ClassSettingsComponent {
     if (this.className.invalid) {
       return
     }
+    this.spinnerService.show();
     this.service.createClass({id: 0, className: this.className.value}).subscribe(res=>{
-      this.snackbar.open(res.message);
+      this.spinnerService.dispose();
+      this.snackbar.open(res.message, 'Close', {duration: 2000});
       this.getClassList();
+    },()=>{
+      this.spinnerService.dispose();
     })
   }
 }

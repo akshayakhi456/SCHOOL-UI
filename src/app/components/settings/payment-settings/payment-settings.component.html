@@ -1,0 +1,112 @@
+<div>
+    <table mat-table [dataSource]="classDataSource" matSort (matSortChange)="announceSortChange($event)">
+
+        <ng-container matColumnDef="className">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                Class
+            </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.className}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>
+                Action
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-flat-button color="primary" (click)="allotment(element)">Payment Allotment</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
+
+<ng-template #openPaymentAllotment>
+    @if (selectedClass) {
+        <h1 mat-dialog-title>Payment Allotment- Class:{{selectedClass}}</h1>
+    }
+    @else {
+        <h1 mat-dialog-title>Payment Allotment</h1>
+    }
+    <mat-dialog-content>
+        <div class="Payment-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Payment Name</mat-label>
+                <input matInput [formControl]="paymentName"/>
+                @if (paymentName.invalid && paymentName.touched) {
+                    <mat-error>Payment Name is Required.</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Amount</mat-label>
+                <input matInput [formControl]="amount"/>
+                @if (amount.invalid && amount.touched) {
+                    <mat-error>Amount is Required.</mat-error>
+                }
+            </mat-form-field>
+            <button mat-flat-button color="primary" (click)="savePaymentAlloted()">Save</button>
+        </div>
+        <div>
+            <table mat-table [dataSource]="paymentDataSource" matSort #feeNameSort (matSortChange)="announceSortChange($event)">
+        
+                <!-- Class Column -->
+                <ng-container matColumnDef="paymentName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                        Payment Name
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        @if (!element.isEditPaymentNameMode) {
+                            {{element.paymentName}}
+                        }
+                        @else {
+                            <mat-form-field appearance="outline">
+                                <input matInput [value]="element.paymentName" [(ngModel)]="element.paymentName"/>
+                            </mat-form-field>
+                        }
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                        Amount
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        @if (!element.isEditPaymentNameMode) {
+                            {{element.amount}}
+                        }
+                        @else {
+                            <mat-form-field appearance="outline">
+                                <input matInput [value]="element.amount" [(ngModel)]="element.amount"/>
+                            </mat-form-field>
+                        }
+                    </td>
+                </ng-container>
+        
+                <!-- Action Column -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Action
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        @if (element.isEditPaymentNameMode) {
+                            <button mat-flat-button color="primary" (click)="updatePaymentAlloted(element)">Save</button>
+                            <button mat-flat-button (click)="element.isEditPaymentNameMode = !element.isEditPaymentNameMode">Cancel</button>
+                        }
+                        @else {
+                            <button mat-flat-button color="primary" (click)="element.isEditPaymentNameMode = !element.isEditPaymentNameMode">Edit Payment</button>
+                        }
+                    </td>
+                </ng-container>
+        
+                <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns;"></tr>
+            </table>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</ng-template>

@@ -237,7 +237,7 @@
                                             <mat-option [value]="opt">{{opt}}</mat-option>
                                         }
                                     </mat-select>
-                                    @if(parentInteractionControls[item.formControlName].errors &&
+                                    @if(parentInteractionControls && parentInteractionControls[item.formControlName].errors &&
                                     parentInteractionControls[item.formControlName].touched){
                                         <mat-error>This field is required.</mat-error>
                                     }
@@ -246,7 +246,7 @@
                             @else if(item.type == "text") {
                                 <mat-form-field appearance="outline">
                                     <input matInput [formControlName]="item.formControlName"/>
-                                    @if(parentInteractionControls[item.formControlName].errors &&
+                                    @if(parentInteractionControls && parentInteractionControls[item.formControlName].errors &&
                                     parentInteractionControls[item.formControlName].touched){
                                         <mat-error>This field is required.</mat-error>
                                     }

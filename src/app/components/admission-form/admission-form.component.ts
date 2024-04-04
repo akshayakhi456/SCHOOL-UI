@@ -209,7 +209,7 @@ export class AdmissionFormComponent {
   save(base64data: any) {
     const formData = new FormData();
     if (this.selectedStudents.length) {
-      const sibilings = JSON.stringify(this.selectedStudents); //.filter((x: any) => x.id).toString();
+      const sibilings = JSON.stringify(this.selectedStudents);
       this.studentInfoForm.patchValue({
         sibilings
       });

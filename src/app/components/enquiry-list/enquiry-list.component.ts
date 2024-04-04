@@ -8,6 +8,7 @@ import { EnquiryService } from '../../shared/services/enquiry/enquiry.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SettingsService } from '../../shared/services/settings/settings.service';
 
 @Component({
   selector: 'app-enquiry-list',
@@ -19,6 +20,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class EnquiryListComponent {
   @ViewChild('paginator') paginator!: MatPaginator | null;
   pageSizes = [10, 25, 50, 100];
+  enquiryList: any;
   classList = [
     {value: 1, label: 'I'},
     {value: 2, label: 'II'},
@@ -28,11 +30,6 @@ export class EnquiryListComponent {
     {value: 6, label: 'VI'},
     {value: 7, label: 'VII'},
   ];
-  sectionList = [
-    {value: 'a', label: 'A'},
-    {value: 'b', label: 'B'},
-    {value: 'c', label: 'C'},
-  ];
   statusList = [
     {value: true, label: 'Active'},
     {value: false, label: 'Inactive'},
@@ -40,7 +37,7 @@ export class EnquiryListComponent {
   searchForm = new FormGroup({
     name: new FormControl<string>(''),
     className: new FormControl<string>(''),
-    status: new FormControl<boolean>(false)
+    status: new FormControl<boolean | null>(null)
   })
   displayedColumns: string[] = ['firstName', 'className', 'guardian', 'action'];
   dataSource = new MatTableDataSource();
@@ -48,6 +45,7 @@ export class EnquiryListComponent {
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: EnquiryService,
     private router: Router,
+    private settingService: SettingsService,
     public dialog: MatDialog) {}
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
@@ -55,11 +53,24 @@ export class EnquiryListComponent {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.getEnquiryList();
+    this.getClassList();
+  }
+
+  getClassList() {
+    this.settingService.getClasses().subscribe(res => {
+      this.classList = res.map((r: any) => {
+        return {
+          label: r.className,
+          value: r.className
+        }
+      })
+    })
   }
 
   getEnquiryList() {
     this.service.get().subscribe((res) => {
       this.dataSource.data = res.result;
+      this.enquiryList = res.result;
       this.dataSource.paginator = this.paginator;
     })
 
@@ -80,5 +91,17 @@ export class EnquiryListComponent {
 
   editEnquiryForm(data: any): void {
     this.router.navigate(['enquiry', data.id])
+  }
+
+  filterChanges() {
+    const form = this.searchForm.value;
+
+    this.dataSource.data = this.enquiryList.filter((x: any) => 
+      (form.name == '' || x.firstName.toLowerCase().includes(form.name?.toLowerCase()) ||
+      x.lastName.toLowerCase().includes(form.name?.toLowerCase()) ||
+      x.id == form.name) &&
+      ((form.className?.toString() == '' || x.className.toString() == form.className)) &&
+      ((form.status == null || x.status == form.status))
+    )
   }
 }

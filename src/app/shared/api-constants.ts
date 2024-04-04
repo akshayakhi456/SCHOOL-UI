@@ -17,4 +17,17 @@ export const URLs = {
 
     createPayments: `${environment.apiUrl}payments/create`,
     getPaymentsById: `${environment.apiUrl}payments/`,
+
+    createClassSettings: `${environment.apiUrl}settings/classes`,
+    updateClassSettings: `${environment.apiUrl}settings/classes`,
+    getClassesSettings: `${environment.apiUrl}settings/classes`,
+    getClassSettingsById: `${environment.apiUrl}settings/classes/`,
+    deleteClassesSettings: `${environment.apiUrl}settings/classes/`,
+    createSectionSettings: `${environment.apiUrl}settings/section`,
+    updateSectionSettings: `${environment.apiUrl}settings/section`,
+    getSectionSettings: `${environment.apiUrl}settings/sections`,
+    getSectionSettingsById: `${environment.apiUrl}settings/classes/`,
+    deleteSectionSettings: `${environment.apiUrl}settings/section/`,
+    enquiryQuestionsSettings: `${environment.apiUrl}settings/enquiryQuestion`,
+    getEnquiryQuestionsSettings: `${environment.apiUrl}settings/enquiryQuestions`,
 }

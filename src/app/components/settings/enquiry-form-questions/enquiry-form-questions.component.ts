@@ -3,12 +3,13 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { EnquiryService } from '../../../shared/services/enquiry/enquiry.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { SharedModule } from '../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SettingsService } from '../../../shared/services/settings/settings.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-enquiry-form-questions',
@@ -22,23 +23,37 @@ export class EnquiryFormQuestionsComponent {
   @ViewChild('paginator') paginator!: MatPaginator | null;
   dataTypeList = ['text', 'dropdown'];
   pageSizes = [10, 25, 50, 100];
-  displayedColumns: string[] = ['firstName', 'className', 'guardian', 'action'];
+  displayedColumns: string[] = ['formControlName', 'question', 'status', 'action'];
   dataSource = new MatTableDataSource();
-  questionForm = new FormGroup({})
+  questionForm = new FormGroup({
+    id: new FormControl<number | null>(0),
+    question: new FormControl<string>('', Validators.required),
+    formControlName: new FormControl<string>('', Validators.required),
+    type: new FormControl<string>('', Validators.required),
+    options: new FormArray([]),
+    isRequired: new FormControl<boolean>(false),
+    isMultiple: new FormControl<boolean>(false),
+    status: new FormControl<boolean>(false),
+  })
   constructor(private _liveAnnouncer: LiveAnnouncer,
-    private service: EnquiryService,
+    private service: SettingsService,
     private router: Router,
-    public dialog: MatDialog) {}
+    private snackbar: MatSnackBar,
+    public dialog: MatDialog) { }
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.getEnquiryList();
+  get f(): { [key: string]: AbstractControl } {
+    return this.questionForm.controls;
   }
 
-  getEnquiryList() {
-    this.service.get().subscribe((res) => {
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.getEnquiryQuestionList();
+  }
+
+  getEnquiryQuestionList() {
+    this.service.getEnquiryQuestionsSettings().subscribe((res) => {
       this.dataSource.data = res.result;
       this.dataSource.paginator = this.paginator;
     })
@@ -59,6 +74,77 @@ export class EnquiryFormQuestionsComponent {
   }
 
   addQuestion() {
+    this.questionForm.reset();
+    this.questionForm.patchValue({
+      id: 0,
+      isRequired: false,
+      isMultiple: false,
+      status: false
+    });
     this.dialog.open(this.callAPIDialog);
+  }
+
+  get options(): FormArray {
+    return this.questionForm.get("options") as FormArray
+  }
+
+  newOption(value: string): FormGroup {
+    return new FormGroup({
+      option: new FormControl(value, Validators.required),
+    })
+  }
+
+  addOption(value = '') {
+    this.options.push(this.newOption(value));
+  }
+
+  removeOption(i: number) {
+    this.options.removeAt(i);
+  }
+
+  SaveQuestion() {
+    const form = this.questionForm.getRawValue();
+    if (this.questionForm.invalid) {
+      return;
+    }
+    const payload = {
+      ...form,
+      options: JSON.stringify(form.options)
+    }
+    if (this.questionForm.value.id) {
+      this.service.updateQuestion(payload).subscribe(res => {
+        const result = res.message;
+        this.snackbar.open(result, 'Close',{duration: 2000});
+        this.getEnquiryQuestionList();
+      })
+    }
+    else {
+      this.service.createQuestion(payload).subscribe(res => {
+        const result = res.message;
+        this.snackbar.open(result, 'Close',{duration: 2000});
+        this.getEnquiryQuestionList();
+      })
+    }
+  }
+
+  editQuestion(element: any) {
+    const filterResult: any = this.dataSource.data.find(e => e == element);
+    const result = filterResult;
+    result.options = typeof (filterResult as any).options == 'string' ? JSON.parse((filterResult as any).options) : filterResult['options'];
+    if (result.options && result.options.length) { 
+      result.options.forEach((element: any) => {        
+        this.addOption(element.option);
+      });
+    }
+    const obj = Object.fromEntries(Object.entries(result).filter(f => f[0] != 'options'))
+    this.questionForm.patchValue({
+      ...obj
+    })
+    const opt = this.dialog.open(this.callAPIDialog);
+    opt.afterClosed().subscribe(o => {
+      while(this.options.length) {
+        this.options.removeAt(0)
+      }
+    })
   }
 }

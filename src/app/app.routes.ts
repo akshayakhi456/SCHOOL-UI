@@ -9,6 +9,8 @@ import { SchoolExpensesComponent } from './components/school-expenses/school-exp
 import { AdmissionFormComponent } from './components/admission-form/admission-form.component';
 import { EnquiryListComponent } from './components/enquiry-list/enquiry-list.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { CertificatesComponent } from './components/certificates/certificates.component';
+import { ProgressCardComponent } from './components/progress-card/progress-card.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -22,5 +24,7 @@ export const routes: Routes = [
     {path: 'enquiry/:id', component: CreateEnquiryComponent, canActivate: [AuthGuard]},
     {path: 'enquiry-list', component: EnquiryListComponent, canActivate: [AuthGuard]},
     {path: 'school-expenses', component: SchoolExpensesComponent, canActivate: [AuthGuard]},
+    {path: 'certificates', component: CertificatesComponent, canActivate: [AuthGuard]},
+    {path: 'progressCard', component: ProgressCardComponent, canActivate: [AuthGuard]},
     {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
 ];

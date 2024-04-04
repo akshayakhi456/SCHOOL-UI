@@ -9,6 +9,8 @@ import { PaymentsComponent } from '../payments/payments.component';
 import { StudentService } from '../../shared/services/student/student.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
+import { SettingsService } from '../../shared/services/settings/settings.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 export interface PeriodicElement {
   sname: string;
@@ -16,18 +18,6 @@ export interface PeriodicElement {
   gender: string;
   section: string;
 }
-const ELEMENT_DATA: PeriodicElement[] = [
-  {class: 1, sname: 'Anusha', gender: 'Male', section: 'A'},
-  {class: 2, sname: 'Sneha', gender: 'Female', section: 'B'},
-  {class: 3, sname: 'Ram', gender: 'Male', section: 'C'},
-  {class: 4, sname: 'Balu', gender: 'Female', section: 'A'},
-  {class: 5, sname: 'Raghav', gender: 'Female', section: 'B'},
-  {class: 6, sname: 'Saurav', gender: 'Male', section: 'C'},
-  {class: 7, sname: 'Jaswanth', gender: 'Male', section: 'A'},
-  {class: 8, sname: 'Dinesh', gender: 'Male', section: 'B'},
-  {class: 9, sname: 'Gambir', gender: 'Male', section: 'C'},
-  {class: 10, sname: 'Rahul', gender: 'Male', section: 'D'},
-];
 
 @Component({
   selector: 'app-students-list',
@@ -39,41 +29,69 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class StudentsListComponent {
   @ViewChild('paginator') paginator!: MatPaginator | null;
   pageSizes = [10, 25, 50, 100];
-  classList = [
-    {value: 1, label: 'I'},
-    {value: 2, label: 'II'},
-    {value: 3, label: 'III'},
-    {value: 4, label: 'IV'},
-    {value: 5, label: 'V'},
-    {value: 6, label: 'VI'},
-    {value: 7, label: 'VII'},
-  ];
-  sectionList = [
-    {value: 'a', label: 'A'},
-    {value: 'b', label: 'B'},
-    {value: 'c', label: 'C'},
-  ];
+  classList: any;
+  sectionList: any;
+  students: any;
   statusList = [
     {value: true, label: 'Active'},
     {value: false, label: 'Inactive'},
   ];
+  studentForm = new FormGroup({
+    class: new FormControl<string>(''),
+    section: new FormControl<string>(''),
+    status: new FormControl<string>(''),
+    name: new FormControl<string>('')
+  })
+  globalFilter = '';
+  orgSectionList = [];
   displayedColumns: string[] = ['firstName', 'class', 'section', 'gender', 'action'];
   dataSource = new MatTableDataSource();
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: StudentService,
+    private settingService: SettingsService,
     public dialog: MatDialog) {}
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+    this.getClassList();
+    this.getSectionList();
     this.getStudentList();
+
+    this.studentForm.controls.class.valueChanges.subscribe(res => {
+      this.sectionList = this.orgSectionList.filter(x => x['className'] == res)
+    })
+  }
+
+  getClassList() {
+    this.settingService.getClasses().subscribe(res => {
+      this.classList = res.map((r: any) => {
+        return {
+          label: r.className,
+          value: r.className
+        }
+      })
+    })
+  }
+
+  getSectionList() {
+    this.settingService.getSections().subscribe(res => {
+      this.orgSectionList = res.res.map((x: any) => {
+        return {
+          ...x,
+          label: x.section,
+          value: x.section
+        }
+      })
+    })
   }
 
   getStudentList() {
     this.service.get().subscribe((res) => {
       this.dataSource.data = res;
+      this.students = res;
       this.dataSource.paginator = this.paginator;
     })
 
@@ -107,5 +125,28 @@ export class StudentsListComponent {
         sudentInfo
       }
     });
+  }
+
+  filterChanges() {
+    const form = this.studentForm.value;
+
+    this.dataSource.data = this.students.filter((x: any) => 
+      (form.name == '' || x.firstName.toLowerCase().includes(form.name?.toLowerCase()) ||
+      x.lastName.toLowerCase().includes(form.name?.toLowerCase()) ||
+      x.id == form.name) &&
+      ((form.class?.toString() == '' || x.className.toString() == form.class)) &&
+      ((form.section == '' || x.section == form.section)) &&
+      ((form.status == '' || x.status == form.status))
+    )
+  }
+
+  resetForm() {
+    this.studentForm.patchValue({
+      name: '',
+      status: '',
+      class: '',
+      section: ''
+    });
+    this.dataSource.data = this.students;
   }
 }

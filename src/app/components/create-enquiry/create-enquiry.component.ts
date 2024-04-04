@@ -10,6 +10,7 @@ import { ViewPrintReceiptComponent } from '../../shared/components/view-print-re
 import html2canvas from 'html2canvas';
 import jspdf from 'jspdf';
 import { StarRatingComponent } from '../../shared/components/star-rating/star-rating.component';
+import { SettingsService } from '../../shared/services/settings/settings.service';
 
 @Component({
   selector: 'app-create-enquiry',
@@ -31,8 +32,8 @@ export class CreateEnquiryComponent {
   saveParentInteraction = false;
   rating = new FormControl();
   review = new FormControl();
-  questionList = [
-    {
+  questionList: Array<any> = [];
+  abc = [{
       question: "How well you know hindi?",
       type: "dropdown",
       isRequired: true,
@@ -123,15 +124,41 @@ export class CreateEnquiryComponent {
   constructor(private service: EnquiryService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private settingService: SettingsService,
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.params['id'] ? 
     this.activatedRoute.snapshot.params['id'] : 0;
     if (this.id) {
-      this.parentInteractionFormControls()
-      this.getEnquireFormById();
+      this.getEnquiryQuestionList();
     }    
+    this.getClassList();
+  }
+
+  getEnquiryQuestionList() {
+    this.settingService.getEnquiryQuestionsSettings().subscribe((res) => {
+      this.questionList = res.result.map((x: any) => {
+        if(x.type == 'dropdown' && x.isMultiple) {
+          return {...x, options: JSON.parse(x.options).map((opt: any) => opt.option)}
+        }
+        return x
+      });
+      this.parentInteractionFormControls();
+      this.getEnquireFormById();
+    })
+
+  }
+
+  getClassList() {
+    this.settingService.getClasses().subscribe(res => {
+      this.classList = res.map((r: any) => {
+        return {
+          label: r.className,
+          value: r.className
+        }
+      })
+    })
   }
 
   parentInteractionFormControls() {
@@ -199,6 +226,7 @@ export class CreateEnquiryComponent {
           this.id = res.result.id;
           this.router.navigate(['enquiry', this.id])
           this.snackbar.open("Created Successfully", "Close", { duration: 2000 })
+          this.saveParentInteraction = true;
         }
       })
     }
@@ -218,7 +246,7 @@ export class CreateEnquiryComponent {
     }
     this.service.createPayment(this.enquiryPaymentForm.value).subscribe({
       next: res => {
-        this.generateReceiptBtn = true;
+        this.generateReceiptBtn = this.enquiryPaymentForm.value.paymentStatus === 'Completed';
         this.snackbar.open("Saved Successfully.", "Close", { duration: 2000 })
       },
       error: () => { }

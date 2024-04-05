@@ -53,7 +53,16 @@
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Section</mat-label>
-                            <input matInput formControlName="section" />
+                            <mat-select formControlName="section">
+                                @for (section of sectionList; track section) {
+                                <mat-option [value]="section.value">{{section.label}}</mat-option>
+                                }
+                            </mat-select>
+                            @if (studentForm['section'].errors &&
+                            studentForm['section'].errors['required'] &&
+                            studentForm['section'].touched) {
+                            <mat-error>section is required.</mat-error>
+                            }
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Gender</mat-label>

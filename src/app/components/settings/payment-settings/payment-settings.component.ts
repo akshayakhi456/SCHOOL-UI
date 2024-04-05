@@ -32,7 +32,7 @@ export class PaymentSettingsComponent {
     private snackbar:MatSnackBar,
     public dialog: MatDialog) {}
 
-  @ViewChild(MatSort) sort: MatSort = new MatSort();
+  @ViewChild('feeNameSort') sort: MatSort = new MatSort();
 
   ngOnInit() {
     this.getClassList();
@@ -40,12 +40,12 @@ export class PaymentSettingsComponent {
 
   getClassList() {
     this.spinnerService.show();
-    this.service.getClasses().subscribe((res) => {
+    this.service.getClasses().subscribe({next: (res) => {
       this.spinnerService.dispose();
       this.classDataSource.data = res.result ?? res;
-    },()=>{
+    },error: ()=>{
       this.spinnerService.dispose();
-    });
+    }});
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -76,7 +76,7 @@ export class PaymentSettingsComponent {
 
   getPaymentAllotment(){
     this.spinnerService.show();
-    this.service.getPaymentAllotment(this.selectedClass).subscribe(res => {
+    this.service.getPaymentAllotment(this.selectedClass).subscribe({next: res => {
       this.spinnerService.dispose();
       this.paymentDataSource.data = res.result.map((x: any) => {
         return {
@@ -84,9 +84,9 @@ export class PaymentSettingsComponent {
           isEditPaymentNameMode: false
         }
       });
-    },()=>{
+    },error: ()=>{
       this.spinnerService.dispose();
-    })
+    }})
   }
 
   savePaymentAlloted(){

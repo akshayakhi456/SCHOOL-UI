@@ -50,11 +50,11 @@
             <button mat-flat-button color="primary" (click)="savePaymentAlloted()">Save</button>
         </div>
         <div>
-            <table mat-table [dataSource]="paymentDataSource" matSort #feeNameSort (matSortChange)="announceSortChange($event)">
+            <table mat-table [dataSource]="paymentDataSource">
         
                 <!-- Class Column -->
                 <ng-container matColumnDef="paymentName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                    <th mat-header-cell *matHeaderCellDef>
                         Payment Name
                     </th>
                     <td mat-cell *matCellDef="let element">
@@ -70,7 +70,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="amount">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                    <th mat-header-cell *matHeaderCellDef>
                         Amount
                     </th>
                     <td mat-cell *matCellDef="let element">

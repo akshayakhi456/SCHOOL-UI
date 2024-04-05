@@ -10,7 +10,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
-import { error } from 'console';
+import { SettingsService } from '../../shared/services/settings/settings.service';
 
 @Component({
   selector: 'app-admission-form',
@@ -30,19 +30,16 @@ export class AdmissionFormComponent {
   certificate = new FormControl<string>('');
   certificateList: Array<string> = [];
   service = inject(StudentService);
+  settingService = inject(SettingsService);
+  spinnerService = inject(SpinnerService);
   snackbar = inject(MatSnackBar);
   activatedRoute = inject(ActivatedRoute);
   sanitizer = inject(DomSanitizer);
   spinner = inject(SpinnerService);
-  classList = [
-    {value: '1', label: 'I'},
-    {value: '2', label: 'II'},
-    {value: '3', label: 'III'},
-    {value: '4', label: 'IV'},
-    {value: '5', label: 'V'},
-    {value: '6', label: 'VI'},
-    {value: '7', label: 'VII'},
-  ];
+  orgSectionList = [];
+  sectionList: any;
+  classList: any;
+
 
   studentInfoForm = new FormGroup({
     id: new FormControl<number>(0),
@@ -109,6 +106,8 @@ export class AdmissionFormComponent {
 
   ngOnInit(): void {
     this.getStudentsList();
+    this.getClassList();
+    this.getSectionList();
     this.filteredSibiling = this.sibilingCtrl.valueChanges
       .pipe(
         startWith(''),
@@ -118,6 +117,9 @@ export class AdmissionFormComponent {
     if (id) {
       this.getStudentById(Number(id));
     }
+    this.studentInfoForm.controls.className.valueChanges.subscribe(res => {
+      this.sectionList = this.orgSectionList.filter(x => x['className'] == res)
+    })
   }
 
   getStudentById(id: number) {
@@ -155,6 +157,37 @@ export class AdmissionFormComponent {
       this.spinner.dispose();
     }
   })
+  }
+
+  getClassList() {
+    this.spinnerService.show();
+    this.settingService.getClasses().subscribe({next: res => {
+      this.spinnerService.dispose();
+      this.classList = res.map((r: any) => {
+        return {
+          label: r.className,
+          value: r.className
+        }
+      })
+    },error:()=>{
+      this.spinnerService.dispose();
+    }})
+  }
+
+  getSectionList() {
+    this.spinnerService.show();
+    this.settingService.getSections().subscribe({next: res => {
+      this.spinnerService.dispose();
+      this.orgSectionList = res.res.map((x: any) => {
+        return {
+          ...x,
+          label: x.section,
+          value: x.section
+        }
+      })
+    },error:() =>{
+      this.spinnerService.dispose();
+    }})
   }
 
   getStudentsList(): void {

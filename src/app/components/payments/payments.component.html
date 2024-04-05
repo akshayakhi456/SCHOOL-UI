@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <form [formGroup]="paymentForm">
         <mat-form-field appearance="outline">
-            <mat-label>Fee Name</mat-label>
+            <mat-label>Payment Name</mat-label>
             <mat-select formControlName="paymentName">
                 @for (name of PaymentsFeeList; track name) {
                 <mat-option [value]="name.paymentName">{{name.paymentName}}</mat-option>

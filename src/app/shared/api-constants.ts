@@ -17,6 +17,8 @@ export const URLs = {
 
     createPayments: `${environment.apiUrl}payments/create`,
     getPaymentsById: `${environment.apiUrl}payments/`,
+    getclassWiseReport: `${environment.apiUrl}payments/classWiseReport`,
+    getyearWiseReport: `${environment.apiUrl}payments/yearWiseReport`,
 
     createClassSettings: `${environment.apiUrl}settings/classes`,
     updateClassSettings: `${environment.apiUrl}settings/classes`,

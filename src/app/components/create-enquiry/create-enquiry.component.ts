@@ -255,6 +255,7 @@ export class CreateEnquiryComponent {
       this.spinnerService.dispose();
         if (res) {
           this.snackbar.open("Updated Successfully", "Close", { duration: 2000 })
+          // this.saveParentInteraction = true;
         }
       },()=>{
       this.spinnerService.dispose();

@@ -1,0 +1,19 @@
+.account-setting {
+    border: 1px solid #ffff;
+    margin: 30px 30px;
+    border-radius: 17.5px;
+    background-color: #ffff;
+
+    .header {
+        margin: 10px;
+
+        h1 {
+            margin-bottom: auto !important;
+        }
+
+        .header-sub-section {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

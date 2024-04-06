@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { PaymentsService } from '../../shared/services/payments/payments.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -48,7 +48,16 @@ export class PaymentsComponent {
     this.paymentForm.controls.paymentName.valueChanges.subscribe(res => {
       const row = this.PaymentsFeeList.find((x: any)=>x.paymentName == res);
       this.actualFeeAmount = row.amount;
+      this.paymentForm.controls.amount.addValidators(this.customValidatorFn);
+      this.paymentForm.controls.amount.updateValueAndValidity();
     })
+  }
+
+  customValidatorFn(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const valid: boolean = this.actualFeeAmount! <= control.value;
+      return valid ? null : {amountMinError: true};
+    };
   }
 
   savePayments(): void {

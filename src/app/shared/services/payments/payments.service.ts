@@ -18,4 +18,12 @@ export class PaymentsService {
   getReceiptById(id: number): Observable<any> {
     return this.http.get(`${URLs.getPaymentsById}${id}`);
   }
+
+  getclassWiseReport(): Observable<any> {
+    return this.http.get(`${URLs.getclassWiseReport}`);
+  }
+
+  getyearWiseReport(): Observable<any> {
+    return this.http.get(`${URLs.getyearWiseReport}`);
+  }
 }

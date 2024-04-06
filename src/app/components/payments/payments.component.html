@@ -30,10 +30,14 @@
         <mat-form-field appearance="outline">
             <mat-label>Amount</mat-label>
             <input matInput formControlName="amount"/>
-            @if (f['amount'].invalid && f['amount'].touched){
+            @if (f['amount'].errors && f['amount'].errors['required'] && f['amount'].touched){
                 <mat-error>Amount is required</mat-error>
             }
+            <!-- @else if (f['amount'].error.amountMinError && f['amount'].touched){
+                <mat-error>Amount must not be greater than {{actualFeeAmount}}</mat-error>
+            } -->
         </mat-form-field>
+        <span>{{f['amount'].errors && f['amount'].errors['amountMinError'] }}</span>
         <mat-form-field appearance="outline">
             <mat-label>Remarks</mat-label>
             <textarea matInput formControlName="remarks"></textarea>

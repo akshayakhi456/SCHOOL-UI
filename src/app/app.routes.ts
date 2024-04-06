@@ -11,6 +11,7 @@ import { EnquiryListComponent } from './components/enquiry-list/enquiry-list.com
 import { SettingsComponent } from './components/settings/settings.component';
 import { CertificatesComponent } from './components/certificates/certificates.component';
 import { ProgressCardComponent } from './components/progress-card/progress-card.component';
+import { AccountsComponent } from './components/accounts/accounts.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -27,4 +28,5 @@ export const routes: Routes = [
     {path: 'certificates', component: CertificatesComponent, canActivate: [AuthGuard]},
     {path: 'progressCard', component: ProgressCardComponent, canActivate: [AuthGuard]},
     {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
+    {path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard]},
 ];

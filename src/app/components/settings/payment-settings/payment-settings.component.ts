@@ -96,7 +96,8 @@ export class PaymentSettingsComponent {
       const payload = {
         paymentName: this.paymentName.value,
         amount: this.amount.value,
-        className: this.selectedClass
+        className: this.selectedClass,
+        acedamicYearId: 1
       }
       this.service.createPaymentAllotment(payload).subscribe(res => {
         this.snackbar.open(res.message, 'Close', {duration:2000});

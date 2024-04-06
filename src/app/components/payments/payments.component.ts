@@ -26,7 +26,8 @@ export class PaymentsComponent {
     amount: new FormControl<number | null>(null, Validators.required),
     remarks: new FormControl<string>('',Validators.required),
     dateOfPayment: new FormControl<Date>(new Date()),
-    studentId: new FormControl<number>(0)
+    studentId: new FormControl<number>(0),
+    acedamicYearId: new FormControl<number>(1)
   })
 
   constructor(private service: PaymentsService,

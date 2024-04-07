@@ -18,4 +18,8 @@ export class ExpensesService {
   get(): Observable<any> {
     return this.http.get(`${URLs.getExpenses}`);
   }
+
+  getExpensesGraph(): Observable<any> {
+    return this.http.get(`${URLs.getExpensesGraph}`);
+  }
 }

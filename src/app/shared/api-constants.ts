@@ -14,6 +14,7 @@ export const URLs = {
 
     createExpenses: `${environment.apiUrl}expenses/create`,
     getExpenses: `${environment.apiUrl}expenses`,
+    getExpensesGraph: `${environment.apiUrl}expenses/graph`,
 
     createPayments: `${environment.apiUrl}payments/create`,
     getPaymentsById: `${environment.apiUrl}payments/`,

@@ -87,14 +87,29 @@
                         <mat-form-field appearance="outline">
                             <mat-label>reference</mat-label>
                             <input matInput formControlName="reference" />
+                            @if (enquiryFormControls['reference'].errors &&
+                            enquiryFormControls['reference'].errors['required'] &&
+                            enquiryFormControls['reference'].touched) {
+                            <mat-error>Reference is Required.</mat-error>
+                            }
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Address</mat-label>
                             <input matInput formControlName="address" />
+                            @if (enquiryFormControls['address'].errors &&
+                            enquiryFormControls['address'].errors['required'] &&
+                            enquiryFormControls['address'].touched) {
+                            <mat-error>Address is Required.</mat-error>
+                            }
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Previous School Name</mat-label>
                             <input matInput formControlName="previousSchoolName" />
+                            @if (enquiryFormControls['previousSchoolName'].errors &&
+                            enquiryFormControls['previousSchoolName'].errors['required'] &&
+                            enquiryFormControls['previousSchoolName'].touched) {
+                            <mat-error>Previous School Name is Required.</mat-error>
+                            }
                         </mat-form-field>
                     </div>
                     <div class="student-action">

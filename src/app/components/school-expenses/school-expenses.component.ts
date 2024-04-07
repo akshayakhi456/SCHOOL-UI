@@ -1,7 +1,7 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
@@ -38,12 +38,13 @@ export class SchoolExpensesComponent {
   @ViewChild('paginator') paginator!: MatPaginator | null;
   pageSizes = [10, 25, 50, 100];
   range = new FormGroup({
-    start: new FormControl<Date | null>(null),
-    end: new FormControl<Date | null>(null),
+    start: new FormControl<Date | null>(null, Validators.required),
+    end: new FormControl<Date | null>(null, Validators.required),
   });
 
   displayedColumns: string[] = ['miscellanous', 'doe', 'amount', 'remarks'];
   dataSource = new MatTableDataSource();
+  orgDataSource: any;
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: ExpensesService,
@@ -60,6 +61,7 @@ export class SchoolExpensesComponent {
     this.service.get().subscribe({
       next: res => {
         this.dataSource.data = res.result ?? res;
+        this.orgDataSource = res.result ?? res;
         this.dataSource.paginator = this.paginator;
       }
     })
@@ -79,6 +81,26 @@ export class SchoolExpensesComponent {
   }
 
   openExpenses() {
-    this.dialog.open(SaveExpensesComponent);
+    const dialog = this.dialog.open(SaveExpensesComponent);
+    dialog.afterClosed().subscribe(() => {
+      this.getExpenses();
+    })
+  }
+
+  filterByDate() {
+    this.range.markAllAsTouched();
+    if (this.range.invalid) {
+      return;
+    }
+    const startDate = this.range.value.start;
+    const endDate = this.range.value.end;
+
+    const filteredData = this.orgDataSource.filter( (d: any) => new Date(d['doe']) >=  startDate! && new Date(d['doe']) <= endDate! )
+    this.dataSource.data = filteredData;
+  }
+
+  reset() {
+    this.range.reset();
+    this.dataSource.data =this.orgDataSource;
   }
 }

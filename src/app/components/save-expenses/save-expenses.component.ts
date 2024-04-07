@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ExpensesService } from '../../shared/services/expenses/expenses.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-save-expenses',
@@ -27,6 +28,8 @@ export class SaveExpensesComponent {
   }
 
   constructor(private service: ExpensesService,
+    public dialogRef: MatDialogRef<SaveExpensesComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private snackbar: MatSnackBar) {}
 
   saveExpenses(): void {
@@ -38,6 +41,7 @@ export class SaveExpensesComponent {
       next: res => {
         // if (res) {
           this.snackbar.open("Created Successfully.", "Close", {duration: 2000});
+          this.data.Close();
         // }
       }
     })

@@ -70,10 +70,10 @@ export class CreateEnquiryComponent {
     mobile: new FormControl<string>('', [Validators.required, Validators.minLength(10)]),
     guardian: new FormControl<string>('', Validators.required),
     className: new FormControl<string>('', Validators.required),
-    reference: new FormControl<string>(''),
-    address: new FormControl<string>(''),
+    reference: new FormControl<string>('', Validators.required),
+    address: new FormControl<string>('', Validators.required),
     status: new FormControl<boolean>(true),
-    previousSchoolName: new FormControl<string>(''),
+    previousSchoolName: new FormControl<string>('', Validators.required),
     parentInteraction: new FormControl<string>(''),
     rating: new FormControl<number | null>(null),
     review: new FormControl<string>('')

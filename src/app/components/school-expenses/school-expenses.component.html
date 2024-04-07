@@ -13,16 +13,19 @@
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
               
-                @if (range.controls.start.hasError('matStartDateInvalid')) {
-                  <mat-error>Invalid start date</mat-error>
+                @if (range.controls.start.hasError('required')) {
+                  <mat-error>start date is required</mat-error>
                 }
-                @if (range.controls.end.hasError('matEndDateInvalid')) {
-                  <mat-error>Invalid end date</mat-error>
+                @if (range.controls.end.hasError('required')) {
+                  <mat-error>end date is required</mat-error>
                 }
               </mat-form-field>
               
-            <button mat-mini-fab color="primary">
+            <button mat-mini-fab color="primary" (click)="filterByDate()">
                 <mat-icon>search</mat-icon>
+            </button>
+            <button mat-flat-button color="primary" (click)="reset()">
+                Reset
             </button>
             <button mat-flat-button color="primary" (click)="openExpenses()">ADD Expenses</button>
         </div>

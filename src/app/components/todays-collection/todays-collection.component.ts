@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { Router } from '@angular/router';
 import Chart from 'chart.js/auto'
+import { PaymentsService } from '../../shared/services/payments/payments.service';
+import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 
 @Component({
   selector: 'app-todays-collection',
@@ -13,37 +15,51 @@ import Chart from 'chart.js/auto'
 })
 export class TodaysCollectionComponent {
   chart: any;
-  data = [
-    { class: 'Class I', count: 10000 },
-    { class: 'Class II', count: 12000 },
-    { class: 'Class III', count: 15000 },
-    { class: 'Class IV', count: 25000 },
-    { class: 'Class V', count: 22000 },
-    { class: 'Class VI', count: 30000 },
-    { class: 'Class VII', count: 28000 },
-  ];
+  data = [];
   timeList = [
     {value: 'Today', viewValue: 'Today'},
     {value: 'Yesterday', viewValue: 'Yesterday'},
   ];
 
-  constructor(private router: Router) {
+  constructor(private paymentService: PaymentsService,
+    private spinnerService: SpinnerService) {
   }
 
   ngOnInit() {
-    setTimeout(() => {this.initialize()});
+    this.getReceiptList();
   }
+
+  getReceiptList(): void{
+    this.spinnerService.show();
+    this.paymentService.getclassWiseReport().subscribe({next: res => {
+      this.spinnerService.dispose();
+      this.data = res.result ?? res;
+      this.initialize();
+    },
+    error: () =>{
+      this.spinnerService.dispose();
+    }
+  })
+}
 
   initialize(): void {
     this.chart = new Chart('canvas',
     {
       type: 'bar',
       data: {
-        labels: this.data.map(row => row.class),
+        labels:  this.data.map((row: any) => 'Class ' + row.className),
         datasets: [
           {
-            label: 'Rupees',
-            data: this.data.map(row => row.count)
+            label: 'Total Amount',
+            data: this.data.map((row: any) => row.actualAmount)
+          },
+          {
+            label: 'Received Amount',
+            data: this.data.map((row: any) => row.receivedAmount)
+          },
+          {
+            label: 'Pending Amount',
+            data: this.data.map((row: any) => row.pendingAmount)
           }
         ]
       }
@@ -51,7 +67,4 @@ export class TodaysCollectionComponent {
   );
   }
 
-  redirectToReport(): void {
-    this.router.navigate(['/collection-report']);
-  }
 }

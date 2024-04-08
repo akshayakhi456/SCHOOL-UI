@@ -41,8 +41,6 @@ export class LoginFormComponent implements OnInit{
     this.authService.loginUser(this.loginForm.value).subscribe({
       next: res => {
         this.spinnerService.dispose();
-        localStorage.setItem('token', JSON.stringify(res.message))
-        // this.authService.setAccessToken(res.message);
         this.router.navigate(['/dashboard']);
       },
       error: () => {

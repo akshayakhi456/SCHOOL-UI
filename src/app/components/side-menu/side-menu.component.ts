@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router, RouterOutlet } from '@angular/router';
+import { TokenService } from '../../shared/services/token/token.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -18,7 +19,7 @@ export class SideMenuComponent {
   isShowing = false;
   showSubSubMenu: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private tokenService: TokenService) {}
 
   mouseenter() {
     if (!this.isExpanded) {
@@ -33,6 +34,7 @@ export class SideMenuComponent {
   }
 
   signOut(): void {
+    this.tokenService.removeToken();
     this.router.navigate(['/login']);
   }
 }

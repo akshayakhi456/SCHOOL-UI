@@ -33,5 +33,8 @@ export const URLs = {
     deleteSectionSettings: `${environment.apiUrl}settings/section/`,
     enquiryQuestionsSettings: `${environment.apiUrl}settings/enquiryQuestion`,
     getEnquiryQuestionsSettings: `${environment.apiUrl}settings/enquiryQuestions`,
-    paymentAllotmentsSettings: `${environment.apiUrl}settings/paymentAllotment`
+    paymentAllotmentsSettings: `${environment.apiUrl}settings/paymentAllotment`,
+    
+    registerUser: `${environment.apiUrl}Auth/register`,
+    loginUser: `${environment.apiUrl}Auth/login`
 }

@@ -6,22 +6,27 @@
         </mat-card-title>
         <mat-card-content class="auth-card-body">
             <div id="sign-in-form">
-                <form>
+                <form [formGroup]="loginForm">
                     <div class="form-input">
                         <mat-form-field appearance="outline" class="mfg-sign-in">
-                            <mat-label>Email</mat-label>
-                            <input matInput name="user-name" id="sign-in-user-name" autocomplete="username">
-                            <!-- <mat-error *ngIf="emailControl.hasError('emptyValue')" id="email-required-error">Email is
-                    required.</mat-error>
-                <mat-error *ngIf="emailControl.hasError('invalidEmail')" id="email-invalid-error">Please enter a valid
-                    email address.</mat-error> -->
+                            <mat-label>UserName</mat-label>
+                            <input matInput formControlName="userName" name="user-name" id="sign-in-user-name"
+                                autocomplete="username">
+                            @if (f['userName'].invalid && f['userName'].touched){
+                                <mat-error id="email-required-error">User Name is
+                                    required.</mat-error>
+                            }
                         </mat-form-field>
                     </div>
                     <div class="form-input">
                         <mat-form-field appearance="outline" id="password-form-field" class="mfg-sign-in">
                             <mat-label>Password</mat-label>
-                            <input type="password" matInput name="password" id="sign-in-password"
-                                autocomplete="current-password">
+                            <input type="password" formControlName="password" matInput name="password"
+                                id="sign-in-password" autocomplete="current-password">
+                            @if (f['password'].invalid && f['password'].touched){
+                                <mat-error id="email-required-error">Password is
+                                    required.</mat-error>
+                            }
                         </mat-form-field>
                     </div>
                     <div class="sign-in-form-reset-password">

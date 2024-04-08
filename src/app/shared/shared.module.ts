@@ -71,7 +71,7 @@ import {MatStepperModule} from '@angular/material/stepper';
     MatButtonToggleModule,
     MatNativeDateModule,
     MatStepperModule,
-    RouterModule
+    RouterModule,
   ],
   exports: [
     ReactiveFormsModule,

@@ -23,21 +23,36 @@
                 <mat-error>Payment Mode is required</mat-error>
             }
         </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Actual Amount</mat-label>
-            <input matInput readonly [value]="actualFeeAmount"/>
-        </mat-form-field>
+        <div class="grid-row">
+            <mat-form-field appearance="outline">
+                <mat-label>Actual Amount</mat-label>
+                <input matInput readonly [value]="actualFeeAmount"/>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Paid Amount</mat-label>
+                <input matInput readonly [value]="paidFeeAmount"/>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Balance Amount</mat-label>
+                <input matInput readonly [value]="balanceFeeAmount"/>
+            </mat-form-field>
+        </div>
         <mat-form-field appearance="outline">
             <mat-label>Amount</mat-label>
-            <input matInput formControlName="amount"/>
+            <input matInput formControlName="amount" type="number"/>
             @if (f['amount'].errors && f['amount'].errors['required'] && f['amount'].touched){
                 <mat-error>Amount is required</mat-error>
             }
-            <!-- @else if (f['amount'].error.amountMinError && f['amount'].touched){
-                <mat-error>Amount must not be greater than {{actualFeeAmount}}</mat-error>
-            } -->
+            @else if (f['amount'].errors && f['amount'].errors['amountMinError'] && f['amount'].touched){
+                <mat-error>Amount must not be greater than {{balanceFeeAmount}}</mat-error>
+            }
         </mat-form-field>
-        <span>{{f['amount'].errors && f['amount'].errors['amountMinError'] }}</span>
+        <mat-form-field appearance="outline">
+            <mat-label>Due Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dueDateOfPayment">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Remarks</mat-label>
             <textarea matInput formControlName="remarks"></textarea>

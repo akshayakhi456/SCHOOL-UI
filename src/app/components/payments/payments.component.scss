@@ -5,3 +5,9 @@ mat-form-field {
 form:first-child {
     padding-top: 10px;
 }
+
+.grid-row {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+}

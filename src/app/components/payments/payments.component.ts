@@ -19,15 +19,18 @@ export class PaymentsComponent {
   paymentModeList: Array<string> = ['Cash','Card','Cheque','Online'];
   stdInfo;
   PaymentsFeeList: any = [];
-  actualFeeAmount = null;
+  actualFeeAmount = 0;
+  paidAmountList: any;
+  paidFeeAmount = 0;
   paymentForm = new FormGroup({
     paymentName: new FormControl<string>('',Validators.required),
     paymentType: new FormControl<string>('',Validators.required),
-    amount: new FormControl<number | null>(null, Validators.required),
+    amount: new FormControl<number | null>(null, [Validators.required, this.customValidatorFn()]),
     remarks: new FormControl<string>('',Validators.required),
     dateOfPayment: new FormControl<Date>(new Date()),
     studentId: new FormControl<number>(0),
-    acedamicYearId: new FormControl<number>(1)
+    acedamicYearId: new FormControl<number>(1),
+    dueDateOfPayment: new FormControl<Date | null>(null)
   })
 
   constructor(private service: PaymentsService,
@@ -43,22 +46,43 @@ export class PaymentsComponent {
     return this.paymentForm.controls;
   }
 
+  get balanceFeeAmount(): number {
+    return Number(this.actualFeeAmount) - Number(this.paidFeeAmount)
+  }
+
   ngOnInit() {
     this.paymentForm.patchValue({studentId: this.stdInfo.id});
     this.getPaymentAllotment();
+    this.getReceiptList();
     this.paymentForm.controls.paymentName.valueChanges.subscribe(res => {
       const row = this.PaymentsFeeList.find((x: any)=>x.paymentName == res);
-      this.actualFeeAmount = row.amount;
-      this.paymentForm.controls.amount.addValidators(this.customValidatorFn);
-      this.paymentForm.controls.amount.updateValueAndValidity();
+      if (this.paidAmountList) {
+        const paidList = this.paidAmountList.filter((x: any) => x.paymentName == res);
+        if (paidList) {
+          this.paidFeeAmount = paidList.map((item: any) => item.amount).reduce((p: number, c: number) => p + c)
+        }
+      }
+      this.actualFeeAmount = Number(row.amount);
     })
   }
 
   customValidatorFn(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const valid: boolean = this.actualFeeAmount! <= control.value;
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const valid: boolean = Number(this.balanceFeeAmount!) >= control.value;
       return valid ? null : {amountMinError: true};
     };
+  }
+
+  getReceiptList(): void{
+    this.spinnerService.show();
+    this.service.getReceiptById(this.stdInfo.id).subscribe({next: res => {
+    this.spinnerService.dispose();
+      this.paidAmountList = res;
+    },
+    error: () =>{
+    this.spinnerService.dispose();
+    }
+  })
   }
 
   savePayments(): void {

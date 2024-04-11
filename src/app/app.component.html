@@ -1,9 +1,28 @@
-@if (!isLogin()) {
-  <app-side-menu>
+<!-- @if (!isLogin()) { -->
+  <!-- <app-side-menu>
   <router-outlet></router-outlet>
-  </app-side-menu>
-  }
-  @else {
-      <router-outlet></router-outlet>
-  }
+  </app-side-menu> -->
+  <!-- } -->
+  <!-- @else { -->
+    <div class="light-skin sidebar-mini theme-primary fixed" style="height: auto; min-height: 100%;">
+      <div class="wrapper" style="height: auto; min-height: 100%;">
+        <section class="main-header" [ngClass]="{'main-header-change': isOpen}">
+          <app-header-component></app-header-component>
+        </section>
+        <section  class="main-sidebar" [ngClass]="{'main-sidebar-change': isOpen}">
+          <app-side-menu class="sidebar position-relative">
+          </app-side-menu>
+        </section>
+        <div class="content-wrapper" [ngClass]="{'content-change': isOpen}" style="min-height: 578px;">
+          <div class="container-full">
+            <section class="content">
+              <app-breadcrumb></app-breadcrumb>
+              <router-outlet></router-outlet>
+            </section>
+        </div>
+      </div>    
+      </div>
+    </div>
+    <app-right-side-nav></app-right-side-nav>
+  <!-- } -->
   

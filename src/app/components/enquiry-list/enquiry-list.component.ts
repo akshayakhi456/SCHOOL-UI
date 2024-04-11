@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SettingsService } from '../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
+import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
+import { IBreadcrumb } from '../../shared/interfaces/global.model';
 
 @Component({
   selector: 'app-enquiry-list',
@@ -42,13 +44,24 @@ export class EnquiryListComponent {
   })
   displayedColumns: string[] = ['firstName', 'className', 'guardian', 'action'];
   dataSource = new MatTableDataSource();
+  breadcrumbData: IBreadcrumb = {
+    title: 'Enquiry',
+    list: [{
+      routerLink: '/enquiry-list',
+      subTitle: 'Enquiry-List',
+      isRoute: true
+  }]
+  }
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: EnquiryService,
     private spinnerService: SpinnerService,
+    private breadcrumbService: BreadCrumbService,
     private router: Router,
     private settingService: SettingsService,
-    public dialog: MatDialog) {}
+    public dialog: MatDialog) {
+      this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData)
+    }
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 

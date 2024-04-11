@@ -1,96 +1,90 @@
-<mat-toolbar color="primary" class="example-toolbar">
-	<div class="menu-label">
-		<button mat-icon-button (click)="isExpanded = !isExpanded"><mat-icon>menu</mat-icon></button>
-		<h1 class="example-app-name">ABC SCHOOL</h1>
+<!-- sidebar-->
+@if (!openMenu){
+	<div class="user-profile my-15 px-20 py-10 b-1 rounded10 mx-15">
+		<div class="d-flex align-items-center justify-content-between">
+			<div class="image d-flex align-items-center">
+				<img src="../../../assets/avatar-13.png" class="rounded-0 me-10" alt="User Image">
+				<div>
+					<h4 class="mb-0 fw-600">Nil Yeager</h4>
+					<p class="mb-0">Super Admin</p>
+				</div>
+			</div>
+			<div class="info">
+				<div class="dropdown">
+					<a class="dropdown-toggle" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false"></a>
+					<ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenu2">
+						<li><a class="dropdown-item" href="extra_profile.html"><i class="ti-user"></i> Profile</a></li>
+						<a class="dropdown-item" href="mailbox.html"><i class="ti-email"></i> Change Password</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="auth_login.html"><i class="ti-lock"></i> Logout</a>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div>
-		<button mat-button [matMenuTriggerFor]="menu">User</button>
-		<mat-menu #menu="matMenu">
-			<button mat-menu-item (click)="signOut()">Logout</button>
-		</mat-menu>
+}
+<div class="multinav">
+	<div class="multinav-scroll ps ps--active-y" style="height: 97%;">
+		<!-- sidebar menu-->
+		<ul class="sidebar-menu tree" [ngClass]="{'sidebar-scroll': !openMenu}" data-widget="tree">
+			@if (!openMenu){
+			<li class="header">Main Menu</li>
+			}
+			<!-- <li class="active">
+				<a>
+					<i class="bi bi-grid"></i>
+					@if (!openMenu){
+						<span>Dashboard</span>
+					}
+				</a>
+			</li>
+			<li class="menu-item" [ngClass]="{'d-flex': openMenu}">
+				<a class="sidebar-menu-dropdown">
+					<i class="bi bi-file-person-fill"></i>
+					@if (!openMenu){
+						<span>Students</span>
+					}
+					@if (!openMenu){
+						<i class="bi bi-caret-down fs-16 float-end"></i>
+					}
+				</a>
+				<ul [ngClass]="!openMenu ? 'sub-sidebar-menu' : 'sidebar-submenu'">
+                    <li><a class="link">Enquiry Form</a></li>
+                    <li><a class="link">Admission</a></li>
+                    <li><a class="link">Student List</a></li>
+                </ul>
+			</li> -->
+
+			@for (item of menuList; track item; let i=$index) {
+				@if (!item.isSubMenu){
+				<li [ngClass]="{'active': item.isActive}">
+					<a  [routerLink]="item.routerLink">
+						<i [class]="item.icon"></i>
+						@if (!openMenu){
+							<span>{{item.title}}</span>
+						}
+					</a>
+				</li>
+				}
+				@else {
+					<li class="menu-item" [ngClass]="{'d-flex': openMenu, 'active': item.isActive}">
+						<a class="sidebar-menu-dropdown">
+							<i [class]="item.icon"></i>
+							@if (!openMenu){
+								<span>{{item.title}}</span>
+							}
+							@if (!openMenu){
+								<i class="bi bi-caret-down fs-16 float-end"></i>
+							}
+						</a>
+						<ul [ngClass]="!openMenu ? 'sub-sidebar-menu' : 'sidebar-submenu'">
+							@for (subItem of item.subList; track subItem; let i=$index) {
+								<li><a class="link" [routerLink]="subItem.routerLink">{{subItem.title}}</a></li>
+							}
+						</ul>
+					</li> 
+				}
+			}			
+		</ul>
 	</div>
-</mat-toolbar>
-<mat-sidenav-container class="example-container" autosize>
-	<mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" (mouseenter)="mouseenter()"
-		(mouseleave)="mouseleave()">
-		<mat-nav-list>
-			<mat-list-item routerLink="/dashboard" class="parent">
-				<div class="menu-list">
-					<mat-icon class="scl-icon" mat-list-icon>home</mat-icon>
-					<span class="full-width" *ngIf="isExpanded || isShowing">Dashboard</span>
-					<!-- <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}"
-						*ngIf="isExpanded || isShowing">expand_more</mat-icon> -->
-				</div>
-			</mat-list-item>
-			<!-- <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
-				<a mat-list-item>Submenu Item 1</a>
-				<a mat-list-item>Submenu Item 2</a>
-				<mat-list-item (click)="showSubSubMenu = !showSubSubMenu" class="parent">
-					<div class="menu-list">
-						<span class="full-width" *ngIf="isExpanded || isShowing">Nested Menu</span>
-						<mat-icon class="menu-button" [ngClass]="{'rotated' : showSubSubMenu}"
-							*ngIf="isExpanded || isShowing">expand_more</mat-icon>
-					</div>
-				</mat-list-item>
-				<div class="submenu" [ngClass]="{'expanded' : showSubSubMenu}" *ngIf="isShowing || isExpanded">
-					<mat-list-item>SubSubmenu Item 1</mat-list-item>
-					<mat-list-item>SubSubmenu Item 2</mat-list-item>
-				</div>
-			</div> -->
-
-			<mat-list-item routerLink="/enquiry-list" class="parent">
-				<div class="menu-list">
-					<mat-icon class="scl-icon" mat-list-icon>contact_mail</mat-icon>
-					<span class="full-width" *ngIf="isExpanded || isShowing">Enquiry</span>
-				</div>
-			</mat-list-item>
-			<mat-list-item routerLink="/admission" class="parent">
-				<div class="menu-list">
-					<mat-icon class="scl-icon" mat-list-icon>list_alt</mat-icon>
-					<span class="full-width" *ngIf="isExpanded || isShowing">Admission</span>
-				</div>
-			</mat-list-item>
-			<mat-list-item routerLink="/student-list" class="parent">
-				<div class="menu-list">
-					<mat-icon class="scl-icon" mat-list-icon>badge</mat-icon>
-					<span class="full-width" *ngIf="isExpanded || isShowing">Students</span>
-				</div>
-			</mat-list-item>
-			<mat-list-item routerLink="/progressCard" class="parent">
-				<div class="menu-list">
-					<mat-icon class="scl-icon" mat-list-icon>summarize</mat-icon>
-					<span class="full-width" *ngIf="isExpanded || isShowing">Progress Card</span>
-				</div>
-			</mat-list-item>
-			<mat-list-item routerLink="/certificates" class="parent">
-				<div class="menu-list">
-					<mat-icon class="scl-icon" mat-list-icon>workspace_premium</mat-icon>
-					<span class="full-width" *ngIf="isExpanded || isShowing">Certificates</span>
-				</div>
-			</mat-list-item>
-			<mat-list-item routerLink="/school-expenses" class="parent">
-				<div class="menu-list">
-					<mat-icon class="scl-icon" mat-list-icon>paid</mat-icon>
-					<span class="full-width" *ngIf="isExpanded || isShowing">Expenses</span>
-				</div>
-			</mat-list-item>
-			<mat-list-item routerLink="/accounts" class="parent">
-				<div class="menu-list">
-					<mat-icon class="scl-icon" mat-list-icon>paid</mat-icon>
-					<span class="full-width" *ngIf="isExpanded || isShowing">Accounts</span>
-				</div>
-			</mat-list-item>
-			<mat-list-item routerLink="/settings" class="parent">
-				<div class="menu-list">
-					<mat-icon class="scl-icon" mat-list-icon>settings</mat-icon>
-					<span class="full-width" *ngIf="isExpanded || isShowing">Settings</span>
-				</div>
-			</mat-list-item>
-		</mat-nav-list>
-	</mat-sidenav>
-
-	<div>
-		<ng-content></ng-content>
-	</div>
-
-</mat-sidenav-container>
+</div>

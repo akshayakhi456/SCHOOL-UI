@@ -11,6 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { SettingsService } from '../../shared/services/settings/settings.service';
+import { IBreadcrumb } from '../../shared/interfaces/global.model';
+import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 
 @Component({
   selector: 'app-admission-form',
@@ -36,10 +38,18 @@ export class AdmissionFormComponent {
   activatedRoute = inject(ActivatedRoute);
   sanitizer = inject(DomSanitizer);
   spinner = inject(SpinnerService);
+  breadcrumbService = inject(BreadCrumbService);
   orgSectionList = [];
   sectionList: any;
   classList: any;
-
+  breadcrumbData: IBreadcrumb = {
+    title: 'Admission',
+    list: [{
+      routerLink: '/admission',
+      subTitle: 'Admission Form',
+      isRoute: true
+  }]
+  }
 
   studentInfoForm = new FormGroup({
     id: new FormControl<number>(0),
@@ -113,6 +123,7 @@ export class AdmissionFormComponent {
         startWith(''),
         map(sibiling => sibiling ? this.filterSibiling(sibiling) : this.students.slice())
       );
+    this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
       this.getStudentById(Number(id));

@@ -7,11 +7,12 @@ import { ReceiptsComponent } from '../receipts/receipts.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PaymentsComponent } from '../payments/payments.component';
 import { StudentService } from '../../shared/services/student/student.service';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
 import { SettingsService } from '../../shared/services/settings/settings.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
+import { IBreadcrumb } from '../../shared/interfaces/global.model';
+import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 
 export interface PeriodicElement {
   sname: string;
@@ -47,16 +48,26 @@ export class StudentsListComponent {
   orgSectionList = [];
   displayedColumns: string[] = ['firstName', 'class', 'section', 'gender', 'action'];
   dataSource = new MatTableDataSource();
+  breadcrumbData: IBreadcrumb = {
+    title: 'Students',
+    list: [{
+      routerLink: '/student-list',
+      subTitle: 'Student-List',
+      isRoute: true
+  }]
+  }
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: StudentService,
     private spinnerService: SpinnerService,
     private settingService: SettingsService,
+    private breadcrumbService: BreadCrumbService,
     public dialog: MatDialog) {}
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
   ngAfterViewInit() {
+    this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
     this.dataSource.sort = this.sort;
     this.getClassList();
     this.getSectionList();

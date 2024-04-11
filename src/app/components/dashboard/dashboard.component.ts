@@ -6,6 +6,8 @@ import { TodaysCollectionComponent } from '../todays-collection/todays-collectio
 import { FeeSummaryComponent } from '../fee-summary/fee-summary.component';
 import {  } from '../receipts/receipts.component';
 import { ExpensesGraphComponent } from '../expenses-graph/expenses-graph.component';
+import { Chart } from 'chart.js';
+import { app } from '../../shared/global-constant.constants';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,5 +23,36 @@ import { ExpensesGraphComponent } from '../expenses-graph/expenses-graph.compone
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+
+  constructor() {
+
+  }
+
+  ngAfterViewInit() {
+    var ctx2 = document.getElementById('barChart') as | string
+    | CanvasRenderingContext2D
+    | HTMLCanvasElement
+    | { canvas: HTMLCanvasElement }
+    | ArrayLike<CanvasRenderingContext2D | HTMLCanvasElement>;
+  var barChart = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+      datasets: [{
+        label: 'Total Visitors',
+        data: [37,31,36,34,43,31],
+        backgroundColor: 'rgba('+ app.color.themeRgb +', .25)',
+        borderColor: app.color.theme,
+        borderWidth: 1.5
+      },{
+        label: 'New Visitors',
+        data: [12,16,20,14,23,21],
+        backgroundColor: 'rgba('+ app.color.secondaryRgb +', .25)',
+        borderColor: app.color.secondary,
+        borderWidth: 1.5
+      }]
+    }
+  });
+  }
 
 }

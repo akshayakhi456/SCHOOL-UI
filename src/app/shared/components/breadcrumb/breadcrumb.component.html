@@ -1,0 +1,19 @@
+@if (isShowBreadcrumb) {
+    <div class="content-header">
+        <div class="d-flex align-items-center">
+            <div class="me-auto">
+                <h4 class="page-title">{{breadcrumbData!.title}}</h4>
+                <div class="d-inline-block align-items-center">
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><i class="bi bi-house"></i></a></li>
+                            @for (item of breadcrumbData!.list; track item) {
+                                <li class="breadcrumb-item active" aria-current="page">{{item.subTitle}}</li>
+                            }
+                        </ol>
+                    </nav>
+                </div>
+            </div>				
+        </div>
+    </div>
+}

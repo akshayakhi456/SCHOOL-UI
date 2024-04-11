@@ -1,35 +1,39 @@
-<div class="students-list">
-    <div class="header">
-        <h1>Enquiry List</h1>
-    </div>
+<div class="enquiry-list">
     <div class="body">
         <form [formGroup]="searchForm" (submit)="filterChanges()">
-            <div class="student-filters">
-                <mat-form-field appearance="outline">
-                    <mat-label>Search by Name</mat-label>
-                    <input type="text" matInput formControlName="name">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Class</mat-label>
-                    <mat-select formControlName="className">
-                        <mat-option [value]="''">[Any]</mat-option>
-                        @for (class of classList; track class) {
-                        <mat-option [value]="class.value">{{class.label}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Status</mat-label>
-                    <mat-select  formControlName="status">
-                        <mat-option [value]="null">[Any]</mat-option>
-                        @for (stat of statusList; track stat) {
-                        <mat-option [value]="stat.value">{{stat.label}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-    
-                <button mat-flat-button color="primary">Search</button>
-                <button mat-flat-button color="primary" routerLink="/create-enquiry">Add Enquiry</button>
+            <div class="row mt-4 ms-4">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Search by Name</mat-label>
+                        <input type="text" matInput formControlName="name">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                       <mat-label>Class</mat-label>
+                       <mat-select formControlName="className">
+                           <mat-option [value]="''">[Any]</mat-option>
+                           @for (class of classList; track class) {
+                           <mat-option [value]="class.value">{{class.label}}</mat-option>
+                           }
+                       </mat-select>
+                   </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Status</mat-label>
+                        <mat-select  formControlName="status">
+                            <mat-option [value]="null">[Any]</mat-option>
+                            @for (stat of statusList; track stat) {
+                            <mat-option [value]="stat.value">{{stat.label}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <button type="button" class="btn btn-primary">Search</button>
+                    <button type="button" class="btn btn-primary ms-1" routerLink="/create-enquiry">Add Enquiry</button>
+                </div>
             </div>
         </form>
         @if(true) {

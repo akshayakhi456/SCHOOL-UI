@@ -1,22 +1,28 @@
 <div class="students-list">
-    <div class="header">
-        <h1>Students List</h1>
-    </div>
     <div class="body">
         <form [formGroup]="studentForm" (submit)="filterChanges()">
-            <div class="student-filters">
-                <!-- @if (classList.length) { -->
-                <mat-form-field appearance="outline">
-                    <mat-label>Class</mat-label>
-                    <mat-select formControlName="class">
-                        <mat-option [value]="''">[Any]</mat-option>
-                        @for (class of classList; track class) {
-                        <mat-option [value]="class.value">{{class.label}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-                <!-- }
-                @if (sectionList.length) { -->
+            <div class="row mt-3 mx-3">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Search by Name/Admission No</mat-label>
+                        <input type="text" matInput formControlName="name">
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                    <!-- @if (classList.length) { -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Class</mat-label>
+                        <mat-select formControlName="class">
+                            <mat-option [value]="''">[Any]</mat-option>
+                            @for (class of classList; track class) {
+                            <mat-option [value]="class.value">{{class.label}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                     <!-- } -->
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                <!-- @if (sectionList.length) { -->
                 <mat-form-field appearance="outline">
                     <mat-label>Section</mat-label>
                     <mat-select formControlName="section">
@@ -27,6 +33,8 @@
                         </mat-select>
                     </mat-form-field>
                 <!-- } -->
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
                 <mat-form-field appearance="outline">
                     <mat-label>Status</mat-label>
                     <mat-select formControlName="status">
@@ -36,12 +44,11 @@
                         }
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Search by Name/Admission No</mat-label>
-                    <input type="text" matInput formControlName="name">
-                </mat-form-field>
-                <button mat-flat-button color="primary">Search</button>
-                <button mat-flat-button color="primary" type="button" (click)="resetForm()">Reset</button>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                <button type="button" class="btn btn-primary">Search</button>
+                <button type="button" class="btn btn-primary ms-1" type="button" (click)="resetForm()">Reset</button>
+                </div>
             </div>
         </form>
         @if(true) {

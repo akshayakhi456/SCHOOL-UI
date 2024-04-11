@@ -1,62 +1,69 @@
 .enquiry {
     border: 1px solid #ffff;
-    margin: 30px 30px;
     border-radius: 17.5px;
     background-color: #ffff;
 
-    .header {
-        margin: 10px;
-    }
 
     .body {
         display: flex;
         flex-direction: column;
 
-        .details {
-            // display: flex;
-        }
+        // .details {
+        //     // display: flex;
+        // }
 
         .visibility-hidden{
             visibility: hidden;
         }
 
-        fieldSet, form {
-            display: flex;
-            border-radius: 5px;
-            gap: 10px;
-            flex-wrap: wrap;
-            // width: 50%;
-        }
+        // fieldSet, form {
+        //     display: flex;
+        //     border-radius: 5px;
+        //     gap: 10px;
+        //     flex-wrap: wrap;
+        //     // width: 50%;
+        // }
 
-        .Sibiling-col{
-            display: flex;
-            flex-direction: column;
-            div {
-                display: flex;
-                gap: 10px;
-            }
+        // .Sibiling-col{
+        //     display: flex;
+        //     flex-direction: column;
+        //     div {
+        //         display: flex;
+        //         gap: 10px;
+        //     }
 
-            .sibilings-list {
-                display: flex;
-                align-items: center;
-                padding-left: 20px;
-            }
-        }
+        //     .sibilings-list {
+        //         display: flex;
+        //         align-items: center;
+        //         padding-left: 20px;
+        //     }
+        // }
 
-        .gap-10 {
-            display: flex;
-            gap: 10px;
-        }
+        // .gap-10 {
+        //     display: flex;
+        //     gap: 10px;
+        // }
 
-        .certificate-list {
-            display: flex;
-            flex-direction: column;
-        }
+        // .certificate-list {
+        //     display: flex;
+        //     flex-direction: column;
+        // }
 
-        .certificate{
-            display: flex;
-            align-items: center;
-            padding-left: 20px;
-        }
+        // .certificate{
+        //     display: flex;
+        //     align-items: center;
+        //     padding-left: 20px;
+        // }
     }
+}
+
+mat-form-field{
+    width: 100%;
+}
+
+.img-viewer, .empty-img{
+    border: 1px solid;
+    height: 100px;
+    width: 100px;
+    margin: 9px;
 }

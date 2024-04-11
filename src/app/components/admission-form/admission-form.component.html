@@ -1,303 +1,365 @@
 <div class="enquiry">
-    <div class="header">
-        <h1>Admission Form</h1>
-    </div>
     <div class="body">
         <!-- <form> -->
-        <div class="admission-fields">
-            <div class="details">
-                <form [formGroup]="studentInfoForm">
-                    <fieldset>
-                        <legend>Student Details</legend>
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput formControlName="firstName" />
-                            @if (studentForm['firstName'].errors &&
-                            studentForm['firstName'].errors['required'] &&
-                            studentForm['firstName'].touched) {
-                            <mat-error>First Name is required.</mat-error>
-                            }
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput formControlName="lastName" />
-                            @if (studentForm['lastName'].errors &&
-                            studentForm['lastName'].errors['required'] &&
-                            studentForm['lastName'].touched) {
-                            <mat-error>Last Name is required.</mat-error>
-                            }
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Date of Birth</mat-label>
-                            <input matInput [matDatepicker]="picker" formControlName="dob">
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                            @if (studentForm['dob'].errors &&
-                            studentForm['dob'].errors['required'] &&
-                            studentForm['dob'].touched) {
-                            <mat-error>Date of Birth is required.</mat-error>
-                            }
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Grade/Class</mat-label>
-                            <mat-select formControlName="className">
-                                @for (class of classList; track class) {
-                                <mat-option [value]="class.value">{{class.label}}</mat-option>
-                                }
-                            </mat-select>
-                            @if (studentForm['className'].errors &&
-                            studentForm['className'].errors['required'] &&
-                            studentForm['className'].touched) {
-                            <mat-error>Class is required.</mat-error>
-                            }
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Section</mat-label>
-                            <mat-select formControlName="section">
-                                @for (section of sectionList; track section) {
-                                <mat-option [value]="section.value">{{section.label}}</mat-option>
-                                }
-                            </mat-select>
-                            @if (studentForm['section'].errors &&
-                            studentForm['section'].errors['required'] &&
-                            studentForm['section'].touched) {
-                            <mat-error>section is required.</mat-error>
-                            }
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Gender</mat-label>
-                            <mat-select formControlName="gender">
-                                <mat-option value="Male">Male</mat-option>
-                                <mat-option value="Female">Female</mat-option>
-                            </mat-select>
-                            @if (studentForm['gender'].errors &&
-                            studentForm['gender'].errors['required'] &&
-                            studentForm['gender'].touched) {
-                            <mat-error>Gender is required.</mat-error>
-                            }
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Aadhar Number</mat-label>
-                            <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
-                            @if (studentForm['adharNumber'].errors &&
-                            studentForm['adharNumber'].errors['required'] &&
-                            studentForm['adharNumber'].touched) {
-                            <mat-error>Aadhar Number is required.</mat-error>
-                            }
-                            @if (studentForm['adharNumber'].errors &&
-                            studentForm['adharNumber'].errors['maxlength'] &&
-                            studentForm['adharNumber'].touched) {
-                            <mat-error>Aadhar Number must not greater than 12 characters</mat-error>
-                            }
-                            @if (studentForm['adharNumber'].errors &&
-                            studentForm['adharNumber'].errors['minlength'] &&
-                            studentForm['adharNumber'].touched) {
-                            <mat-error>Aadhar Number must not less than 12 characters</mat-error>
-                            }
-                        </mat-form-field>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Student Photo</legend>
-                        <button mat-flat-button color="accent" type="button" (click)="imageClickable()">Upload Image</button>
-                        <input id="filepaths" (change)="imageUpload($event)" accept=".jpg, .png, .jpeg" class="visibility-hidden" type="file" value="upload File" style="width: 100%;"/>
-                        @if (imgViewer) {
-                            <div>
-                                <img id="imgviewer" [src]="imgViewer" width="100" height="100" style="width: 100%;"/>
-                            </div>
-                        }
-                        @else {
-                            <div class="empty-imag"></div>
-                        }
-                    </fieldset>
-                </form>
+        <!-- <div class="admission-fields"> -->
+        <div class="box">
+            <div class="box-header with-border">
+                <h4 class="box-title mb-0">Student Details</h4>
             </div>
-
-            <div class="details">
-                <form [formGroup]="fatherInfoForm">
-                    <fieldset>
-                        <legend>Father Details</legend>
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput formControlName="firstName" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput formControlName="lastName" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Occupation</mat-label>
-                            <input matInput formControlName="occupation" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Qualification</mat-label>
-                            <input matInput formControlName="qualification" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Conatct No</mat-label>
-                            <input matInput formControlName="contactNumber" mask="0000000000" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Email</mat-label>
-                            <input matInput formControlName="email" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Aadhar Number</mat-label>
-                            <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
-                            @if (fatherForm['adharNumber'].errors &&
-                            fatherForm['adharNumber'].errors['maxlength'] &&
-                            fatherForm['adharNumber'].touched) {
-                            <mat-error>Aadhar Number must not exceed 12 characters</mat-error>
-                            }
-                        </mat-form-field>
-                    </fieldset>
-                </form>
-
-                <form [formGroup]="motherInfoForm">
-                    <fieldset>
-                        <legend>Mother Details</legend>
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput formControlName="firstName" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput formControlName="lastName" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Occupation</mat-label>
-                            <input matInput formControlName="occupation" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Qualification</mat-label>
-                            <input matInput formControlName="qualification" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Conatct No</mat-label>
-                            <input matInput formControlName="contactNumber" mask="0000000000" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Email</mat-label>
-                            <input matInput formControlName="email" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Aadhar Number</mat-label>
-                            <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
-                        </mat-form-field>
-                    </fieldset>
-                </form>
-            </div>
-
-            <div class="details">
-                <form [formGroup]="AddressInfoForm">
-                    <fieldset>
-                        <legend>Address</legend>
-                        <mat-form-field appearance="outline">
-                            <mat-label>House No</mat-label>
-                            <input matInput formControlName="houseNo" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Street</mat-label>
-                            <input matInput formControlName="streetName" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>City</mat-label>
-                            <input matInput formControlName="city" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>District</mat-label>
-                            <input matInput formControlName="district" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>State</mat-label>
-                            <input matInput formControlName="state" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Country</mat-label>
-                            <input matInput formControlName="country" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Pin Code</mat-label>
-                            <input matInput formControlName="zipCode" />
-                        </mat-form-field>
-                    </fieldset>
-                </form>
-
-                <fieldset>
-                    <legend>Sibiling Details</legend>
-                    <div class="Sibiling-col">
-                        <div>
+            <form [formGroup]="studentInfoForm" class="box-body wizard-content mt-3 row px-3">
+                <div class="col-sm-12 col-md-9 col-lg-10">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-3">
                             <mat-form-field appearance="outline">
-                                <mat-label>Sibiling </mat-label>
-                                <input type="text" placeholder="Select Sibiling" aria-label="Select Sibiling" matInput
-                                    [formControl]="sibilingCtrl" [matAutocomplete]="auto">
-                                <mat-autocomplete #auto="matAutocomplete">
-                                    @for (option of filteredSibiling | async; track option) {
-                                    <mat-option [value]="option.userName">
-                                        <span>{{option.firstName}} {{option.lastName}}</span> |
-                                        <small>Class: {{option.className}}</small>
-                                    </mat-option>
-                                    }
-                                </mat-autocomplete>
+                                <mat-label>First Name</mat-label>
+                                <input matInput formControlName="firstName" />
+                                @if (studentForm['firstName'].errors &&
+                                studentForm['firstName'].errors['required'] &&
+                                studentForm['firstName'].touched) {
+                                <mat-error>First Name is required.</mat-error>
+                                }
                             </mat-form-field>
-                            <button mat-flat-button color="primary" (click)="addSibiling()">Add</button>
                         </div>
-                        <div>
-                            <mat-chip-set aria-label="Dog selection">
-                                @for (record of selectedStudents; track record; let i = $index) {
-                                <mat-chip>
-                                    <div class="sibilings-list">
-                                        <div>                                            
-                                            <span>{{record.userName}}</span> |
-                                            <span>Class: {{record.className}}</span>
-                                        </div>
-                                        <button mat-icon-button (click)="removeSibiling(i)">
-                                            <mat-icon>cancel</mat-icon>
-                                        </button>
-                                    </div>
-                                </mat-chip>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Last Name</mat-label>
+                                <input matInput formControlName="lastName" />
+                                @if (studentForm['lastName'].errors &&
+                                studentForm['lastName'].errors['required'] &&
+                                studentForm['lastName'].touched) {
+                                <mat-error>Last Name is required.</mat-error>
                                 }
-                            </mat-chip-set>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Date of Birth</mat-label>
+                                <input matInput [matDatepicker]="picker" formControlName="dob">
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                @if (studentForm['dob'].errors &&
+                                studentForm['dob'].errors['required'] &&
+                                studentForm['dob'].touched) {
+                                <mat-error>Date of Birth is required.</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Grade/Class</mat-label>
+                                <mat-select formControlName="className">
+                                    @for (class of classList; track class) {
+                                    <mat-option [value]="class.value">{{class.label}}</mat-option>
+                                    }
+                                </mat-select>
+                                @if (studentForm['className'].errors &&
+                                studentForm['className'].errors['required'] &&
+                                studentForm['className'].touched) {
+                                <mat-error>Class is required.</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Section</mat-label>
+                                <mat-select formControlName="section">
+                                    @for (section of sectionList; track section) {
+                                    <mat-option [value]="section.value">{{section.label}}</mat-option>
+                                    }
+                                </mat-select>
+                                @if (studentForm['section'].errors &&
+                                studentForm['section'].errors['required'] &&
+                                studentForm['section'].touched) {
+                                <mat-error>section is required.</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Gender</mat-label>
+                                <mat-select formControlName="gender">
+                                    <mat-option value="Male">Male</mat-option>
+                                    <mat-option value="Female">Female</mat-option>
+                                </mat-select>
+                                @if (studentForm['gender'].errors &&
+                                studentForm['gender'].errors['required'] &&
+                                studentForm['gender'].touched) {
+                                <mat-error>Gender is required.</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Aadhar Number</mat-label>
+                                <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
+                                @if (studentForm['adharNumber'].errors &&
+                                studentForm['adharNumber'].errors['required'] &&
+                                studentForm['adharNumber'].touched) {
+                                <mat-error>Aadhar Number is required.</mat-error>
+                                }
+                                @if (studentForm['adharNumber'].errors &&
+                                studentForm['adharNumber'].errors['maxlength'] &&
+                                studentForm['adharNumber'].touched) {
+                                <mat-error>Aadhar Number must not greater than 12 characters</mat-error>
+                                }
+                                @if (studentForm['adharNumber'].errors &&
+                                studentForm['adharNumber'].errors['minlength'] &&
+                                studentForm['adharNumber'].touched) {
+                                <mat-error>Aadhar Number must not less than 12 characters</mat-error>
+                                }
+                            </mat-form-field>
                         </div>
                     </div>
-                </fieldset>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-2">
+                    @if (imgViewer) {
+                    <div class="img-viewer">
+                        <img id="imgviewer" [src]="imgViewer" width="100" height="100" style="width: 100%;" />
+                    </div>
+                    }
+                    @else {
+                    <div class="empty-img"></div>
+                    }
+                    <button mat-flat-button color="accent" type="button" (click)="imageClickable()">Upload
+                        Image</button>
+                    <input id="filepaths" (change)="imageUpload($event)" accept=".jpg, .png, .jpeg"
+                        class="visibility-hidden" type="file" value="upload File" style="width: 100%;" />
 
-                <fieldset>
-                    <legend>CheckList</legend>
-                    <div class="certificate-list">
-                        <div>
-                            <form>
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Certificate Name</mat-label>
-                                    <input matInput type="text" [formControl]="certificate"/>
-                                </mat-form-field>
-                                <button mat-flat-button color="primary" (click)="addcheckList()">Add</button>
-                            </form>
-                        </div>
-                        <div>
-                            <mat-chip-set aria-label="Dog selection">
-                                @for (certificate of certificateList; track certificate; let i = $index) {
-                                <mat-chip>
-                                    <div class="certificate">
-                                        <div>
-                                            {{certificate}}
-                                        </div>
-                                        <button mat-icon-button (click)="removeCertificateList(i)">
-                                            <mat-icon>cancel</mat-icon>
-                                        </button>
-                                    </div>
-                                </mat-chip>
-                                }
-                            </mat-chip-set>    
-                        </div>
-                    </div>
-                </fieldset>
+                </div>
+            </form>
+
+            <div class="box-header with-border">
+                <h4 class="box-title mb-0">Father Details</h4>
+            </div>
+            <form [formGroup]="fatherInfoForm" class="box-body wizard-content mt-3 row px-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput formControlName="firstName" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput formControlName="lastName" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Occupation</mat-label>
+                        <input matInput formControlName="occupation" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Qualification</mat-label>
+                        <input matInput formControlName="qualification" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Conatct No</mat-label>
+                        <input matInput formControlName="contactNumber" mask="0000000000" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Aadhar Number</mat-label>
+                        <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
+                        @if (fatherForm['adharNumber'].errors &&
+                        fatherForm['adharNumber'].errors['maxlength'] &&
+                        fatherForm['adharNumber'].touched) {
+                        <mat-error>Aadhar Number must not exceed 12 characters</mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+            </form>
+
+            <div class="box-header with-border">
+                <h4 class="box-title mb-0">Mother Details</h4>
             </div>
 
+            <form [formGroup]="motherInfoForm" class="box-body wizard-content mt-3 row px-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput formControlName="firstName" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput formControlName="lastName" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Occupation</mat-label>
+                        <input matInput formControlName="occupation" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Qualification</mat-label>
+                        <input matInput formControlName="qualification" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Conatct No</mat-label>
+                        <input matInput formControlName="contactNumber" mask="0000000000" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Aadhar Number</mat-label>
+                        <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
+                    </mat-form-field>
+                </div>
+            </form>
+
+            <div class="box-header with-border">
+                <h4 class="box-title mb-0">Address</h4>
+            </div>
+            <form [formGroup]="AddressInfoForm" class="box-body wizard-content mt-3 row px-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>House No</mat-label>
+                        <input matInput formControlName="houseNo" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Street</mat-label>
+                        <input matInput formControlName="streetName" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>City</mat-label>
+                        <input matInput formControlName="city" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>District</mat-label>
+                        <input matInput formControlName="district" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>State</mat-label>
+                        <input matInput formControlName="state" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Country</mat-label>
+                        <input matInput formControlName="country" />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Pin Code</mat-label>
+                        <input matInput formControlName="zipCode" />
+                    </mat-form-field>
+                </div>
+            </form>
+
+            <div class="box-header with-border">
+                <h4 class="box-title mb-0">Sibiling Details</h4>
+            </div>
+            <div class="row mt-3 mx-3">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Sibiling </mat-label>
+                        <input type="text" placeholder="Select Sibiling" aria-label="Select Sibiling" matInput
+                            [formControl]="sibilingCtrl" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            @for (option of filteredSibiling | async; track option) {
+                            <mat-option [value]="option.userName">
+                                <span>{{option.firstName}} {{option.lastName}}</span> |
+                                <small>Class: {{option.className}}</small>
+                            </mat-option>
+                            }
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-1 col-md-2 col-sm-3">
+                    <button type="button" class="btn btn-primary" (click)="addSibiling()">Add</button>
+                </div>
+            </div>
+            <div class="row mt-3 ms-3">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <mat-chip-set aria-label="Dog selection">
+                        @for (record of selectedStudents; track record; let i = $index) {
+                        <mat-chip>
+                            <div class="sibilings-list">
+                                <div>
+                                    <span>{{record.userName}}</span> |
+                                    <span>Class: {{record.className}}</span>
+                                </div>
+                                <button mat-icon-button (click)="removeSibiling(i)">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </div>
+                        </mat-chip>
+                        }
+                    </mat-chip-set>
+                </div>
+            </div>
+
+            <div class="box-header with-border">
+                <h4 class="box-title mb-0">CheckList</h4>
+            </div>
+            <div class="row mt-3 mx-3">
+                <form class="col-lg-3 col-md-6 col-sm-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Certificate Name</mat-label>
+                        <input matInput type="text" [formControl]="certificate" />
+                    </mat-form-field>
+                </form>
+                <div class="col-lg-1 col-md-2 col-sm-3">
+                    <button  type="button" class="btn btn-primary" (click)="addcheckList()">Add</button>
+                </div>
+            </div>
+            <div class="row mt-3 ms-3">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <mat-chip-set aria-label="Dog selection">
+                        @for (certificate of certificateList; track certificate; let i = $index) {
+                        <mat-chip>
+                            <div class="certificate">
+                                <div>
+                                    {{certificate}}
+                                </div>
+                                <button mat-icon-button (click)="removeCertificateList(i)">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </div>
+                        </mat-chip>
+                        }
+                    </mat-chip-set>
+                </div>
+            </div>
+
+            <div class="float-end me-3 mb-3">
+                <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>
+                <button type="button" class="btn" routerLink="/student-list">Cancel</button>
+            </div>
         </div>
-        <div class="enquiry-action">
-            <button mat-flat-button color="primary" (click)="OnSubmit()">Save</button>
-            <button mat-button routerLink="/student-list">Cancel</button>
-        </div>
+
         <!-- </form> -->
     </div>
 </div>

@@ -1,12 +1,102 @@
 /* You can add global styles to this file, and also import other style files */
 @import './theme.scss';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    color: #172b4c;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    font-family: "Poppins", sans-serif;
+    line-height: 1.5;
+    background-color: #f6f6f6;
+}
+
 
 mat-form-field {
     margin-bottom: 10px;
+}
+
+.theme-primary .btn-flat.btn-primary-light {
+    color: #7047ee;
+    background-color: #f3f6f9;
+    border-color: transparent;
+}
+
+.position-relative {
+    position: relative !important;
+}
+
+
+.my-15 {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+
+.mx-15 {
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+}
+
+.py-10 {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+.px-20 {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.b-1 {
+    border: 1px solid #f3f6f9 !important;
+}
+
+.rounded10 {
+    border-radius: 10px;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.mb-0 {
+    margin-bottom: 0px !important;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.fs-16 {
+    font-size: 16px !important;
+}
+
+.box-header.with-border {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.box-header {
+    color: #172b4c;
+    display: block;
+    padding: 1.5rem;
+    position: relative;
+    border-bottom: 1px solid #EFEFFD;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }

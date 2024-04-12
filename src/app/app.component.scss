@@ -135,3 +135,16 @@
 .content-change{
     margin-left: 4.5rem;
 }
+
+@media (max-width:430px) {
+    .main-header {
+        margin-left: 1.5rem !important;
+    }
+    .content-wrapper{
+        margin-left: 1.5rem;
+    }
+    .main-sidebar{
+        top: 6rem;
+        margin: 0px;
+    }
+}

@@ -1,12 +1,27 @@
 import { Component } from '@angular/core';
+import { SharedModule } from '../../shared/shared.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-right-side-nav',
   standalone: true,
-  imports: [],
+  imports: [SharedModule, CommonModule],
   templateUrl: './right-side-nav.component.html',
   styleUrl: './right-side-nav.component.scss'
 })
 export class RightSideNavComponent {
+
+  menuList = [
+    {
+      routerLink: 'accounts',
+      iconClass: 'bi bi-currency-rupee fs-36',
+      title: 'Accounting'
+    },
+    {
+      routerLink: 'settings',
+      iconClass: 'bi bi-gear fs-36',
+      title: 'Settings'
+    },
+  ]
 
 }

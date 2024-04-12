@@ -5,17 +5,19 @@
     </mat-form-field>
     <button mat-flat-button color="primary" type="button" (click)="getStdInfo()">Search</button>
 </div>
-<div class="student-info">
-    <div>
-        <span>Name:</span> <span>{{stdInfo?.students.firstName}} {{stdInfo?.students.lastName}}</span>
+@if (stdInfo?.students) {
+    <div class="student-info">
+        <div>
+            <span>Name:</span> <span>{{stdInfo?.students.firstName}} {{stdInfo?.students.lastName}}</span>
+        </div>
+        <div>
+            <span>Class:</span> <span>{{stdInfo?.students.className}}</span>
+        </div>
+        <div>
+            <span>Section:</span> <span>{{stdInfo?.students.section}}</span>
+        </div>
     </div>
-    <div>
-        <span>Class:</span> <span>{{stdInfo?.students.className}}</span>
-    </div>
-    <div>
-        <span>Section:</span> <span>{{stdInfo?.students.section}}</span>
-    </div>
-</div>
+}
 @if (dataSource.data.length != 0) {
 <table mat-table [dataSource]="dataSource">
 
@@ -77,6 +79,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 }
-@if(dataSource.data.length == 0){
+@if(dataSource.data.length == 0 && stdInfo?.students){
 <div class="no-record">No Records Found</div>
+}
+@if (!stdInfo?.students) {
+    <div class="no-record">Use Search option to show details</div>
 }

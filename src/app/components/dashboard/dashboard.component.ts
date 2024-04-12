@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SideMenuComponent } from '../side-menu/side-menu.component';
 import { SharedModule } from '../../shared/shared.module';
@@ -8,6 +8,7 @@ import {  } from '../receipts/receipts.component';
 import { ExpensesGraphComponent } from '../expenses-graph/expenses-graph.component';
 import { Chart } from 'chart.js';
 import { app } from '../../shared/global-constant.constants';
+import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,9 +24,9 @@ import { app } from '../../shared/global-constant.constants';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-
+  breadcrumbService = inject(BreadCrumbService);
   constructor() {
-
+    this.breadcrumbService.setBreadcrumb(false, null);
   }
 
   ngAfterViewInit() {

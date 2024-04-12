@@ -1,0 +1,233 @@
+<div class="row">
+    <div class="col-lg-4 col-xlg-3 col-md-5">
+        <div class="box student-detail">
+            <div class="user-bg"> 
+                @if (imgViewer) {
+                    <img id="imgviewer" [src]="imgViewer" width="100%" />
+                }
+                @else {
+                    <img width="100%" alt="user" src="../../../assets/avatar-13.png">
+                }
+             </div>
+            <div class="box-body">
+                <div class="row text-center mt-10">
+                    <div class="col-md-6 border-end">
+                        <strong>Student Name</strong>
+                        <p>{{studentForm!.firstName ? studentForm!.firstName : ''}} {{studentForm!.lastName ? studentForm!.lastName : 'N/A'}}</p>
+                    </div>
+                    <div class="col-md-6"><strong>Father Name</strong>
+                        <p>{{fatherInfo!.firstName ? fatherInfo!.firstName : ''}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-center mt-10">
+                    <div class="col-md-6 border-end"><strong>Grade/Class</strong>
+                        <p>{{studentForm!.className ? studentForm!.className : ''}}</p>
+                    </div>
+                    <div class="col-md-6"><strong>Phone</strong>
+                        <p>{{fatherInfo!.contactNumber ? fatherInfo!.contactNumber : ''}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-center mt-10">
+                    <div class="col-md-12"><strong>Address</strong>
+                        <p>{{address!.houseNo ? address!.houseNo : '-'}}, {{address!.streetName ? address!.streetName : '-'}}, {{address!.city ? address!.city : '-'}},
+                        <br> {{address!.district ? address!.district : ''}}, {{address!.state ? address!.state : ''}},
+                        <br> {{address!.country ? address!.country : ''}}, {{address!.zipCode ? address!.zipCode : ''}}.</p>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8 col-xlg-9 col-md-7">
+        <div class="box student-detail">
+            <div class="box-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Personal Info</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Other Information</button>
+                      </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                        <div class="row mx-2">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    First Name: 
+                                </strong>
+                                <p> {{studentForm!.firstName ? studentForm!.firstName : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Last Name: 
+                                </strong>
+                                <p> {{studentForm!.lastName ? studentForm!.lastName : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    DOB: 
+                                </strong>
+                                <p> {{studentForm!.dob ? (studentForm!.dob | date: 'mediumDate') : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Grade: 
+                                </strong>
+                                <p> {{studentForm!.className ? studentForm!.className : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Section: 
+                                </strong>
+                                <p> {{studentForm!.section ? studentForm!.section : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Gender: 
+                                </strong>
+                                <p> {{studentForm!.gender ? studentForm!.gender : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Adhar Number: 
+                                </strong>
+                                <p> {{studentForm!.adharNumber ? studentForm!.adharNumber : 'N/A'}}</p>
+                            </div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h4 class="box-title mb-0"><strong>Father Details</strong></h4>
+                        </div>
+                        <div class="row mx-2">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    First Name: 
+                                </strong>
+                                <p> {{fatherInfo!.firstName ? fatherInfo!.firstName : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Last Name: 
+                                </strong>
+                                <p> {{fatherInfo!.lastName ? fatherInfo!.lastName : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Occupation: 
+                                </strong>
+                                <p> {{fatherInfo!.occupation ? fatherInfo!.occupation : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Qualification: 
+                                </strong>
+                                <p> {{fatherInfo!.qualification ? fatherInfo!.qualification : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Contact Number: 
+                                </strong>
+                                <p> {{fatherInfo!.contactNumber ? fatherInfo!.contactNumber : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Email: 
+                                </strong>
+                                <p> {{fatherInfo!.email ? fatherInfo!.email : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Adhar Number: 
+                                </strong>
+                                <p> {{fatherInfo!.adharNumber ? fatherInfo!.adharNumber : 'N/A'}}</p>
+                            </div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h4 class="box-title mb-0"><strong>Mother Details</strong></h4>
+                        </div>
+                        <div class="row mx-2">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    First Name: 
+                                </strong>
+                                <p> {{motherInfo!.firstName ? motherInfo!.firstName : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Last Name: 
+                                </strong>
+                                <p> {{motherInfo!.lastName ? motherInfo!.lastName : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Occupation: 
+                                </strong>
+                                <p> {{motherInfo!.occupation ? motherInfo!.occupation : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Qualification: 
+                                </strong>
+                                <p> {{motherInfo!.qualification ? motherInfo!.qualification : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Contact Number: 
+                                </strong>
+                                <p> {{motherInfo!.contactNumber ? motherInfo!.contactNumber : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Email: 
+                                </strong>
+                                <p> {{motherInfo!.email ? motherInfo!.email : 'N/A'}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <strong>
+                                    Adhar Number: 
+                                </strong>
+                                <p> {{motherInfo!.adharNumber ? motherInfo!.adharNumber : 'N/A'}}</p>
+                            </div>
+                        </div>
+
+                        <div class="box-header with-border">
+                            <h4 class="box-title mb-0"><strong>Sibilings Details</strong></h4>
+                        </div>
+                        <mat-chip-set aria-label="Dog selection" class="mx-3">
+                            @for (record of selectedStudents; track record; let i = $index) {
+                            <mat-chip class="py-4 chip">
+                                <div class="d-flex align-items-center chip-text">
+                                    <div class="ps-2">
+                                        <span>{{record!.userName ? record!.userName : ''}}</span> |
+                                        <span>Class: {{record!.className ? record!.className : ''}}</span>
+                                    </div>
+                                </div>
+                            </mat-chip>
+                            }
+                        </mat-chip-set>
+
+                        <div class="box-header with-border">
+                            <h4 class="box-title mb-0"><strong>Certificates Details</strong></h4>
+                        </div>
+
+                        <mat-chip-set aria-label="Dog selection" class="mx-3">
+                            @for (certificate of certificateList; track certificate; let i = $index) {
+                            <mat-chip  class="py-4 chip">
+                                <div class="d-flex align-items-center chip-text">
+                                    <div class="ps-2">
+                                        {{certificate}}
+                                    </div>                                   
+                                </div>
+                            </mat-chip>
+                            }
+                        </mat-chip-set>
+                    </div>
+                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                        Hello
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>

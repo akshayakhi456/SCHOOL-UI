@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, effect } from '@angular/core';
+import { Component, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { MatSidenav } from '@angular/material/sidenav';

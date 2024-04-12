@@ -1,5 +1,5 @@
 <div>
-    <button mat-flat-button (click)="classModal()">Add Class</button>
+    <button type="button" class="btn btn-primary mt-1 float-end" (click)="classModal()">Add Class</button>
 </div>
 
 <div>
@@ -29,12 +29,12 @@
             </th>
             <td mat-cell *matCellDef="let element">
                 @if (element.isEditMode) {
-                    <button mat-flat-button color="primary" (click)="updateClass(element)">Save</button>
-                    <button mat-flat-button (click)="element.isEditMode = !element.isEditMode">Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)="updateClass(element)">Save</button>
+                    <button type="button" class="btn btn-light ms-1" (click)="element.isEditMode = !element.isEditMode">Cancel</button>
                 }
                 @else {
-                    <button mat-flat-button color="primary" (click)="element.isEditMode = !element.isEditMode">Edit Class</button>
-                    <button mat-flat-button color="primary" (click)="openSectionModal(element)">Section</button>
+                    <button type="button" class="btn btn-primary" (click)="element.isEditMode = !element.isEditMode">Edit Class</button>
+                    <button type="button" class="btn btn-primary ms-1" (click)="openSectionModal(element)">Section</button>
                 }
             </td>
         </ng-container>
@@ -57,8 +57,8 @@
             </mat-form-field>
         </mat-dialog-content>
         <mat-dialog-actions align="end">
-            <button mat-flat-button [mat-dialog-close]="true" (click)="saveClass()" color="primary">Save</button>
-            <button mat-button mat-dialog-close>Cancel</button>
+            <button type="button" class="btn btn-primary" [mat-dialog-close]="true" (click)="saveClass()">Save</button>
+            <button type="button" class="btn btn-light" mat-dialog-close>Cancel</button>
         </mat-dialog-actions>
     </div>
 </ng-template>

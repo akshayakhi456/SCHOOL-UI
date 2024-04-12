@@ -15,7 +15,7 @@
                 Action
             </th>
             <td mat-cell *matCellDef="let element">
-                <button mat-flat-button color="primary" (click)="allotment(element)">Payment Allotment</button>
+                <button type="button" class="btn btn-primary" (click)="allotment(element)">Payment Allotment</button>
             </td>
         </ng-container>
 
@@ -32,14 +32,17 @@
         <h1 mat-dialog-title>Payment Allotment</h1>
     }
     <mat-dialog-content>
-        <div class="Payment-form">
-            <mat-form-field appearance="outline">
-                <mat-label>Payment Name</mat-label>
-                <input matInput [formControl]="paymentName"/>
-                @if (paymentName.invalid && paymentName.touched) {
-                    <mat-error>Payment Name is Required.</mat-error>
-                }
-            </mat-form-field>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Payment Name</mat-label>
+                    <input matInput [formControl]="paymentName"/>
+                    @if (paymentName.invalid && paymentName.touched) {
+                        <mat-error>Payment Name is Required.</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12">
             <mat-form-field appearance="outline">
                 <mat-label>Amount</mat-label>
                 <input matInput [formControl]="amount"/>
@@ -47,7 +50,10 @@
                     <mat-error>Amount is Required.</mat-error>
                 }
             </mat-form-field>
-            <button mat-flat-button color="primary" (click)="savePaymentAlloted()">Save</button>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12">
+            <button type="button" class="btn btn-primary" (click)="savePaymentAlloted()">Save</button>
+            </div>
         </div>
         <div>
             <table mat-table [dataSource]="paymentDataSource">
@@ -92,11 +98,11 @@
                     </th>
                     <td mat-cell *matCellDef="let element">
                         @if (element.isEditPaymentNameMode) {
-                            <button mat-flat-button color="primary" (click)="updatePaymentAlloted(element)">Save</button>
-                            <button mat-flat-button (click)="element.isEditPaymentNameMode = !element.isEditPaymentNameMode">Cancel</button>
+                            <button type="button" class="btn btn-primary" (click)="updatePaymentAlloted(element)">Save</button>
+                            <button type="button" class="btn btn-light" (click)="element.isEditPaymentNameMode = !element.isEditPaymentNameMode">Cancel</button>
                         }
                         @else {
-                            <button mat-flat-button color="primary" (click)="element.isEditPaymentNameMode = !element.isEditPaymentNameMode">Edit Payment</button>
+                            <button type="button" class="btn btn-primary" (click)="element.isEditPaymentNameMode = !element.isEditPaymentNameMode">Edit Payment</button>
                         }
                     </td>
                 </ng-container>

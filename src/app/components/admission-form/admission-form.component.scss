@@ -16,44 +16,13 @@
             visibility: hidden;
         }
 
-        // fieldSet, form {
-        //     display: flex;
-        //     border-radius: 5px;
-        //     gap: 10px;
-        //     flex-wrap: wrap;
-        //     // width: 50%;
-        // }
+        .chip {
+            background-color: #172b4c;
 
-        // .Sibiling-col{
-        //     display: flex;
-        //     flex-direction: column;
-        //     div {
-        //         display: flex;
-        //         gap: 10px;
-        //     }
-
-        //     .sibilings-list {
-        //         display: flex;
-        //         align-items: center;
-        //         padding-left: 20px;
-        //     }
-        // }
-
-        // .gap-10 {
-        //     display: flex;
-        //     gap: 10px;
-        // }
-
-        // .certificate-list {
-        //     display: flex;
-        //     flex-direction: column;
-        // }
-
-        // .certificate{
-        //     display: flex;
-        //     align-items: center;
-        //     padding-left: 20px;
-        // }
+            .chip-text {
+                color: #fff;
+            }
+        }
     }
 }
 
@@ -66,4 +35,9 @@ mat-form-field{
     height: 100px;
     width: 100px;
     margin: 9px;
+}
+
+.box-header {
+    color: #fff;
+    background-color: #3596f7 !important;
 }

@@ -301,25 +301,22 @@
                     <button type="button" class="btn btn-primary" (click)="addSibiling()">Add</button>
                 </div>
             </div>
-            <div class="row mt-3 ms-3">
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <mat-chip-set aria-label="Dog selection">
-                        @for (record of selectedStudents; track record; let i = $index) {
-                        <mat-chip>
-                            <div class="sibilings-list">
-                                <div>
-                                    <span>{{record.userName}}</span> |
-                                    <span>Class: {{record.className}}</span>
-                                </div>
-                                <button mat-icon-button (click)="removeSibiling(i)">
-                                    <mat-icon>cancel</mat-icon>
-                                </button>
-                            </div>
-                        </mat-chip>
-                        }
-                    </mat-chip-set>
-                </div>
-            </div>
+
+            <mat-chip-set aria-label="Dog selection" class="mx-3">
+                @for (record of selectedStudents; track record; let i = $index) {
+                <mat-chip class="py-4 chip">
+                    <div class="d-flex align-items-center chip-text">
+                        <div class="ps-2">
+                            <span>{{record.userName}}</span> |
+                            <span>Class: {{record.className}}</span>
+                        </div>
+                        <button mat-icon-button class="mb-1 pe-0" (click)="removeSibiling(i)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </div>
+                </mat-chip>
+                }
+            </mat-chip-set>
 
             <div class="box-header with-border">
                 <h4 class="box-title mb-0">CheckList</h4>
@@ -332,27 +329,24 @@
                     </mat-form-field>
                 </form>
                 <div class="col-lg-1 col-md-2 col-sm-3">
-                    <button  type="button" class="btn btn-primary" (click)="addcheckList()">Add</button>
+                    <button type="button" class="btn btn-primary" (click)="addcheckList()">Add</button>
                 </div>
             </div>
-            <div class="row mt-3 ms-3">
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <mat-chip-set aria-label="Dog selection">
-                        @for (certificate of certificateList; track certificate; let i = $index) {
-                        <mat-chip>
-                            <div class="certificate">
-                                <div>
-                                    {{certificate}}
-                                </div>
-                                <button mat-icon-button (click)="removeCertificateList(i)">
-                                    <mat-icon>cancel</mat-icon>
-                                </button>
-                            </div>
-                        </mat-chip>
-                        }
-                    </mat-chip-set>
-                </div>
-            </div>
+
+            <mat-chip-set aria-label="Dog selection" class="mx-3">
+                @for (certificate of certificateList; track certificate; let i = $index) {
+                <mat-chip  class="py-4 chip">
+                    <div class="d-flex align-items-center chip-text">
+                        <div class="ps-2">
+                            {{certificate}}
+                        </div>
+                        <button mat-icon-button class="mb-1 pe-0" (click)="removeCertificateList(i)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </div>
+                </mat-chip>
+                }
+            </mat-chip-set>
 
             <div class="float-end me-3 mb-3">
                 <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>

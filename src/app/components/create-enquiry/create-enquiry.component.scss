@@ -1,6 +1,6 @@
 .create-student {
     border: 1px solid #ffff;
-    margin: 30px 30px;
+    // margin: 30px 30px;
     border-radius: 17.5px;
     background-color: #ffff;
 
@@ -60,4 +60,8 @@
 .cancel-btn{
     display: flex;
     justify-content: end;
+}
+
+mat-form-field {
+    width: 100%;
 }

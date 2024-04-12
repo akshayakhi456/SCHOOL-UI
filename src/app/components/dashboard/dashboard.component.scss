@@ -85,3 +85,9 @@ p {
     margin: 0;
     font-weight: 400;
 }
+
+@media (max-width: 440px) {
+    .chart-report {
+        min-height: 353px;
+    }
+}

@@ -223,13 +223,13 @@ export class CreateEnquiryComponent {
     })
   }
 
-  onSubmit() {
+  onSubmit(ParentSave = false) {
     const entranceExam = this.registrationForm.value;
     let payload = {
       enquiry: this.enquiryForm.value,
       enquiryEntranceExam: {
         id: entranceExam.id,
-        dateOfExam: entranceExam.dateOfExam,
+        dateOfExam: new Date(entranceExam.dateOfExam || '').toISOString(),
         modeOfExam: entranceExam.modeOfExam,
         scheduleTimeForExam: `${entranceExam.hours}:${entranceExam.mins}`,
         enquiryStudentId: `${entranceExam.enquiryStudentId}`
@@ -255,7 +255,9 @@ export class CreateEnquiryComponent {
       this.spinnerService.dispose();
         if (res) {
           this.snackbar.open("Updated Successfully", "Close", { duration: 2000 })
-          // this.saveParentInteraction = true;
+          if (ParentSave){
+            this.saveParentInteraction = true;
+          }
         }
       },()=>{
       this.spinnerService.dispose();
@@ -317,7 +319,7 @@ export class CreateEnquiryComponent {
     this.enquiryForm.patchValue({
       parentInteraction: JSON.stringify(this.parentInteractionForm.value)
     })
-    this.onSubmit();
+    this.onSubmit(true);
   }
 
   selectedRating(event: number) {

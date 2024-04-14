@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import Chart from 'chart.js/auto'
 import { ExpensesService } from '../../shared/services/expenses/expenses.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
+import { app } from '../../shared/global-constant.constants';
 
 @Component({
   selector: 'app-expenses-graph',
@@ -56,13 +57,38 @@ export class ExpensesGraphComponent {
     this.expensesService.getExpensesGraph().subscribe({next: res => {
       this.spinnerService.dispose();
       this.data = res.result ?? res;
-      this.initialize();
+      this.expensesGraph();
     },
     error: () =>{
       this.spinnerService.dispose();
     }
   })
 }
+
+  expensesGraph() {
+    var ctx2 = document.getElementById('lineChart') as | string
+    | CanvasRenderingContext2D
+    | HTMLCanvasElement
+    | { canvas: HTMLCanvasElement }
+    | ArrayLike<CanvasRenderingContext2D | HTMLCanvasElement>;
+    var lineChart = new Chart(ctx2, {
+      type: 'line',
+      data: {
+        labels: this.data.map((row:any) => (this.monthList as any)[row.month]),
+        datasets: [{
+         label: 'Rupees',
+         data: this.data.map((row: any) => row.count),
+         borderColor: app.color.theme,
+         borderWidth: 1.5,
+         pointBackgroundColor: app.color.theme,
+         pointBorderWidth: 1.5,
+         pointRadius: 4,
+         pointHoverBackgroundColor:app.color.theme,
+         pointHoverBorderColor: app.color.theme, 
+      }]
+    }
+    });
+  }
   
   initialize() {
   this.chart = new Chart('expenses-graph-canvas',

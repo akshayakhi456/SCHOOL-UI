@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -13,6 +13,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 export interface PeriodicElement {
   sname: string;
@@ -24,12 +26,13 @@ export interface PeriodicElement {
 @Component({
   selector: 'app-students-list',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, CommonModule],
   templateUrl: './students-list.component.html',
   styleUrl: './students-list.component.scss'
 })
 export class StudentsListComponent {
   @ViewChild('paginator') paginator!: MatPaginator | null;
+  sanitizer = inject(DomSanitizer);
   pageSizes = [10, 25, 50, 100];
   classList: any;
   sectionList: any;
@@ -46,7 +49,7 @@ export class StudentsListComponent {
   })
   globalFilter = '';
   orgSectionList = [];
-  displayedColumns: string[] = ['firstName', 'class', 'section', 'gender', 'action'];
+  displayedColumns: string[] = ['photo', 'firstName', 'class', 'section', 'gender', 'status', 'action'];
   dataSource = new MatTableDataSource();
   breadcrumbData: IBreadcrumb = {
     title: 'Students',
@@ -113,8 +116,14 @@ export class StudentsListComponent {
     this.spinnerService.show();
     this.service.get().subscribe((res) => {
       this.spinnerService.dispose();
-      this.dataSource.data = res;
-      this.students = res;
+      this.students = res.map((x: any)=>{
+        return {
+          ...x,
+          photoExist : x.photo ? true : false,
+          photo: 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(x.photo) as any).changingThisBreaksApplicationSecurity
+        }
+      });
+      this.dataSource.data = this.students;
       this.dataSource.paginator = this.paginator;
     },()=>{
       this.spinnerService.dispose();

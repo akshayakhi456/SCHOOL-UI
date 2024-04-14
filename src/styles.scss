@@ -86,6 +86,62 @@ mat-form-field {
     font-size: 16px !important;
 }
 
+.box {
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 0px;
+    -webkit-transition: .5s;
+    transition: .5s;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #EFEFFD;
+}
+
+.box-body{
+    padding: 1.5rem;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    border-radius: 10px;
+}
+
+.w-100{
+   width: 100px !important
+}
+
+.box-header {
+    color: #172b4c;
+    display: block;
+    padding: 1.5rem;
+    position: relative;
+    border-bottom: 1px solid #EFEFFD;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.box-footer {
+    border-top: 1px solid #EFEFFD;
+    padding: 1.5rem;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.box-body ul li {
+    line-height: 24px;
+}
+
+.box-header .box-title {
+    display: inline-block;
+    margin: 0;
+    font-weight: 400;
+}
+
 .box-header.with-border {
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -99,4 +155,66 @@ mat-form-field {
     border-bottom: 1px solid #EFEFFD;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+}
+
+.theme-primary .badge-warning-light {
+    background-color: #fff8ea;
+    color: #ffa800;
+}
+
+.theme-primary .badge-info-light {
+    background-color: #cce5ff;
+    color: #3596f7;
+}
+
+.theme-primary .badge-success-light {
+    background-color: #ebf9f5;
+    color: #05825f;
+}
+
+.theme-primary .badge-danger-light {
+    background-color: #ffd6de;
+    color: #ee3158;
+}
+
+.theme-primary .badge-primary-light {
+    background-color: #e8e1ff;
+    color: #7047ee;
+}
+
+.success-snackbar div{
+    background-color: #ebf9f5 !important;
+    border-radius: 5px;
+    color: #05825f;
+    .mat-icon, button {
+        color: #05825f;
+    }
+}
+
+.warning-snackbar div{
+    background-color: #ffa800 !important;
+    border-radius: 5px;
+    color: #ffa800;
+    .mat-icon, button{
+        color: #ffa800;
+    }
+}
+
+.danger-snackbar div{
+    background-color: #ffd6de !important;
+    border-radius: 5px;
+    color: #ee3158;
+    .mat-icon, button{
+        color: #ee3158;
+    }
+}
+
+.info-snackbar div{
+    background-color: #3596f7 !important;
+    border-radius: 5px;
+    color: #3596f7;
+    .mat-icon {
+        color: #3596f7
+        ;
+    }
 }

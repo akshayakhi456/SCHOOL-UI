@@ -3,10 +3,12 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, throwError } from 'rxjs';
 import { TokenService } from '../services/token/token.service';
+import { SnackbarService } from '../signal-service/snackbar.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService = inject(TokenService);
   const router = inject(Router);
+  const snackbarService = inject(SnackbarService);
 
   tokenService.isAuthentication.subscribe({
     next: (value) => {
@@ -26,7 +28,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         tokenService.removeToken();
         router.navigate(['/login']);
       }
-      const error = e.error?.error?.message || e.statusText;
+      const error = e.error.message || e.error?.error?.message || 'Something went wrong';
+      snackbarService.openDangerSnackbar(error)
       return throwError(() => error);
     })
   );

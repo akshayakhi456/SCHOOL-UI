@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaymentsService } from '../../../shared/services/payments/payments.service';
@@ -7,6 +7,7 @@ import { SpinnerService } from '../../../shared/services/spinner/spinner.service
 import { FormControl } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-studentwise-accounts',
@@ -26,6 +27,7 @@ export class StudentwiseAccountsComponent {
   dataSource = new MatTableDataSource();
   originalReceipt: any;
   isSingleReceipt = false;
+  router = inject(Router);
 
   constructor(private paymentService: PaymentsService,
     private studentService: StudentService,
@@ -67,6 +69,10 @@ export class StudentwiseAccountsComponent {
       this.spinnerService.dispose();
     }
   })
+  }
+
+  redirectToPayment(): void {
+    this.router.navigate(['payment',this.stdInfo?.students.id])
   }
 
 }

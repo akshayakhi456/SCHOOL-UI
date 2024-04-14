@@ -7,7 +7,15 @@
     justify-content: center;
     background-size: cover;
 }
-
+.bg-white {
+    background-color: #fff;
+}
+.display-img {
+    background: #fff;
+    height: 100vh !important;
+    display: flex;
+    align-items: center
+}
 .auth-card {
     border-radius: 12px;
     padding: 16px;
@@ -15,6 +23,8 @@
     flex-flow: column;
     align-items: center;
     justify-content: center;
+    background: none;
+    border: none;
 
     .auth-card-header {
         .auth-card-header-container {
@@ -49,7 +59,13 @@
 /* normal larger devices */
 @media only screen and (min-width : 768px) {
     .auth-card {
-        width: 448px;
+        width: 100%; //448px;
+        background: none;
+        border: none;
+    }
+
+    .display-img {
+        height: 40vh;
     }
 }
 
@@ -62,6 +78,8 @@
         border-radius: 0;
         position: absolute;
         box-shadow: none !important;
+        background: none;
+        border: none;
     }
 }
 
@@ -92,6 +110,8 @@
     @media screen {
         .auth-card {
             display: block;
+            background: none;
+            border: none;
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, viewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -8,8 +8,8 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
+import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
 
 @Component({
   selector: 'app-class-settings',
@@ -36,7 +36,7 @@ export class ClassSettingsComponent {
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: SettingsService,
     private router: Router,
-    private snackbar:MatSnackBar,
+    private snackbar:SnackbarService,
     private spinnerService: SpinnerService,
     public dialog: MatDialog) {}
 
@@ -122,7 +122,7 @@ export class ClassSettingsComponent {
       this.spinnerService.show();
       this.service.updateClass({id: element.id, className: element.className}).subscribe(res=>{
         this.spinnerService.dispose();
-        this.snackbar.open('Updated Successfully', 'Close', {duration: 2000});
+        this.snackbar.openSuccessSnackbar('Updated Successfully');
         this.getClassList();
       },()=>{
         this.spinnerService.dispose();
@@ -135,7 +135,7 @@ export class ClassSettingsComponent {
       this.spinnerService.show();
       this.service.updateSection({id: element.id, section: element.section, className: element.className}).subscribe(res=>{
         this.spinnerService.dispose();
-        this.snackbar.open('Updated Successfully', 'Close', {duration: 2000});
+        this.snackbar.openSuccessSnackbar('Updated Successfully');
         element.isEditSectionMode = !element.isEditSectionMode;
         this.getSectionList();
       },()=>{
@@ -153,7 +153,7 @@ export class ClassSettingsComponent {
     this.service.createSection({id: 0, section: this.sectionName.value, className: this.openedClass!['className']}).subscribe({next: res=>{
       this.spinnerService.dispose();
       this.sectionName.setValue('');
-      this.snackbar.open('Created Successfully', 'Close', {duration: 2000});
+      this.snackbar.openSuccessSnackbar('Created Successfully');
       this.getSectionList();
     },error: ()=>{
       this.spinnerService.dispose();
@@ -168,7 +168,7 @@ export class ClassSettingsComponent {
     this.spinnerService.show();
     this.service.createClass({id: 0, className: this.className.value}).subscribe(res=>{
       this.spinnerService.dispose();
-      this.snackbar.open(res.message, 'Close', {duration: 2000});
+      this.snackbar.openSuccessSnackbar(res.message);
       this.getClassList();
     },()=>{
       this.spinnerService.dispose();

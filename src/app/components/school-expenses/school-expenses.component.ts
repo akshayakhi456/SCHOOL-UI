@@ -12,6 +12,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { SaveExpensesComponent } from '../save-expenses/save-expenses.component';
 import { ExpensesService } from '../../shared/services/expenses/expenses.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
+import { IBreadcrumb } from '../../shared/interfaces/global.model';
 
 export interface IExpenses {
   amount: string;
@@ -21,9 +23,9 @@ export interface IExpenses {
 }
 
 const ELEMENT_DATA: IExpenses[] = [
-  {doe: '1/2/2024', amount: '1000', miscellanous: 'Cash', remark: 'On time'},
-  {doe: '1/2/2024', amount: '200', miscellanous: 'Cheque', remark: 'Cheque  clearance'},
-  {doe: '1/2/2024', amount: '400', miscellanous: 'UPI', remark: 'Delay'},
+  { doe: '1/2/2024', amount: '1000', miscellanous: 'Cash', remark: 'On time' },
+  { doe: '1/2/2024', amount: '200', miscellanous: 'Cheque', remark: 'Cheque  clearance' },
+  { doe: '1/2/2024', amount: '400', miscellanous: 'UPI', remark: 'Delay' },
 ];
 
 @Component({
@@ -45,10 +47,22 @@ export class SchoolExpensesComponent {
   displayedColumns: string[] = ['miscellanous', 'doe', 'amount', 'remarks'];
   dataSource = new MatTableDataSource();
   orgDataSource: any;
+  breadcrumbData: IBreadcrumb = {
+    title: 'Expenses',
+    list: [{
+      routerLink: '/expenses',
+      subTitle: 'Expenses-List',
+      isRoute: true
+    }]
+  }
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: ExpensesService,
-    public dialog: MatDialog) {}
+    private breadcrumbService: BreadCrumbService,
+    public dialog: MatDialog) {
+    this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
+
+  }
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
@@ -95,12 +109,12 @@ export class SchoolExpensesComponent {
     const startDate = this.range.value.start;
     const endDate = this.range.value.end;
 
-    const filteredData = this.orgDataSource.filter( (d: any) => new Date(d['doe']) >=  startDate! && new Date(d['doe']) <= endDate! )
+    const filteredData = this.orgDataSource.filter((d: any) => new Date(d['doe']) >= startDate! && new Date(d['doe']) <= endDate!)
     this.dataSource.data = filteredData;
   }
 
   reset() {
     this.range.reset();
-    this.dataSource.data =this.orgDataSource;
+    this.dataSource.data = this.orgDataSource;
   }
 }

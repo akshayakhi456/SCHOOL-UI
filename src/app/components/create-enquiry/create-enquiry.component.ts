@@ -2,16 +2,16 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EnquiryService } from '../../shared/services/enquiry/enquiry.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewPrintReceiptComponent } from '../../shared/components/view-print-receipt/view-print-receipt.component';
 import html2canvas from 'html2canvas';
-import jspdf from 'jspdf';
+import jspdf, { jsPDF } from 'jspdf';
 import { StarRatingComponent } from '../../shared/components/star-rating/star-rating.component';
 import { SettingsService } from '../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
+import { SnackbarService } from '../../shared/signal-service/snackbar.service';
 
 @Component({
   selector: 'app-create-enquiry',
@@ -127,7 +127,7 @@ export class CreateEnquiryComponent {
     private router: Router,
     private settingService: SettingsService,
     private spinnerService: SpinnerService,
-    private snackbar: MatSnackBar) { }
+    private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.params['id'] ? 
@@ -237,24 +237,24 @@ export class CreateEnquiryComponent {
     }
     if (this.id == 0) {
       this.spinnerService.show();
-      this.service.create(payload).subscribe((res: any) => {
+      this.service.create(payload).subscribe({next: (res: any) => {
       this.spinnerService.dispose();
         if (res && res.result && res.result.id) {
           this.id = res.result.id;
-          this.router.navigate(['enquiry', this.id])
-          this.snackbar.open("Created Successfully", "Close", { duration: 2000 })
+          this.router.navigate(['enquiry', this.id]);
+          this.snackbarService.openSuccessSnackbar(res.message)
           this.saveParentInteraction = true;
         }
-      },()=>{
+      },error: ()=>{
       this.spinnerService.dispose();
-      })
+      }})
     }
     else {
       this.spinnerService.show();
-      this.service.update(payload).subscribe((res) => {
+      this.service.update(payload).subscribe((res: any) => {
       this.spinnerService.dispose();
         if (res) {
-          this.snackbar.open("Updated Successfully", "Close", { duration: 2000 })
+          this.snackbarService.openSuccessSnackbar(res.message)
           if (ParentSave){
             this.saveParentInteraction = true;
           }
@@ -272,10 +272,10 @@ export class CreateEnquiryComponent {
     }
     this.spinnerService.show();
     this.service.createPayment(this.enquiryPaymentForm.value).subscribe({
-      next: res => {
+      next: (res: any) => {
       this.spinnerService.dispose();
         this.generateReceiptBtn = this.enquiryPaymentForm.value.paymentStatus === 'Completed';
-        this.snackbar.open("Saved Successfully.", "Close", { duration: 2000 })
+        this.snackbarService.openSuccessSnackbar(res.message)
       },
       error: () => { 
       this.spinnerService.dispose();
@@ -298,18 +298,18 @@ export class CreateEnquiryComponent {
     this.isOpenReceipt = true;
   }
 
-  downloadReceipt(): void {
-    html2canvas(this.receipt.nativeElement).then(canvas => {
-      // Few necessary setting options
-      var imgWidth = 192;
-      var imgHeight = (canvas.height * imgWidth) / canvas.width;
+  // downloadReceipt(): void {
+  //   html2canvas(this.receipt.nativeElement).then(canvas => {
+  //     // Few necessary setting options
+  //     var imgWidth = 192;
+  //     var imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      const contentDataURL = canvas.toDataURL("image/png");
-      let pdf = new jspdf("p", "mm", "a4"); // A4 size page of PDF
-      pdf.addImage(contentDataURL, "PNG", 10, 10, imgWidth, imgHeight);
-      pdf.save(`${this.enquiryForm.value.firstName}_${this.enquiryForm.value.lastName}.pdf`); // Generated PDF
-    });
-  }
+  //     const contentDataURL = canvas.toDataURL("image/png");
+  //     let pdf = new jspdf("p", "mm", "a4"); // A4 size page of PDF
+  //     pdf.addImage(contentDataURL, "PNG", 10, 10, imgWidth, imgHeight);
+  //     pdf.save(`${this.enquiryForm.value.firstName}_${this.enquiryForm.value.lastName}.pdf`); // Generated PDF
+  //   });
+  // }
 
   saveParentInteractionForm(): void {
     this.parentInteractionForm.markAllAsTouched();
@@ -338,5 +338,43 @@ export class CreateEnquiryComponent {
       })
     }
     this.onSubmit();
+  }
+
+  downloadReceipt(): void {
+    let data: any = this.receipt.nativeElement;
+    if(this.isMobile() && data){
+      const viewportMetaTag = document.querySelector('meta[name="viewport"]') as any;
+      viewportMetaTag.setAttribute('content', '');
+      setTimeout(() => {
+        // this.ngxService.start();
+        this.downloadPDF(true, viewportMetaTag, data);
+      }, 0);
+    }else{
+      this.downloadPDF(false,null, data);
+    }
+  }
+
+  // this code for creating PDF START
+  downloadPDF(isMobile = false, viewportMetaTag: any = null, canvasData: any =null): void {
+    html2canvas(canvasData).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'px', 'a4', true);
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('download.pdf');
+      if(isMobile){
+          setTimeout(() => {
+            viewportMetaTag.setAttribute('content', 'width=device-width, initial-scale=1');
+            // this.ngxService.stop();
+          }, 0);
+        }
+    });
+  }
+  // this code for creating PDF ENDS
+
+  isMobile(): boolean {
+    return window.innerWidth < 768;
   }
 }

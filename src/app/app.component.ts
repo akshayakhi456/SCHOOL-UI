@@ -6,6 +6,7 @@ import { HeaderComponentComponent } from './components/header-component/header-c
 import { GlobalService } from './shared/signal-service/global.service';
 import { RightSideNavComponent } from './components/right-side-nav/right-side-nav.component';
 import { BreadcrumbComponent } from './shared/components/breadcrumb/breadcrumb.component';
+import { TokenService } from './shared/services/token/token.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import { BreadcrumbComponent } from './shared/components/breadcrumb/breadcrumb.c
 export class AppComponent {
   title = 'SCHOOL-UI';
   globalService = inject(GlobalService);
+  tokenService = inject(TokenService);
   isOpen = false;
   constructor(private router: Router) {
     effect(() => {
@@ -30,6 +32,6 @@ export class AppComponent {
     })
   }
   isLogin(): boolean {
-    return this.router.url.includes('/login')
+    return this.router.url.includes('login')
   }
 }

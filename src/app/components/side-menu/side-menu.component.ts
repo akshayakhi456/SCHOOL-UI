@@ -58,7 +58,6 @@ export class SideMenuComponent {
     private service: GlobalService,
     private tokenService: TokenService) {
     effect(() =>{
-      console.log(this.service.headerMenuClick());
       this.openMenu = this.service.headerMenuClick();
     })
   }

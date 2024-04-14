@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedModule } from '../../shared.module';
+import { SnackbarService } from '../../signal-service/snackbar.service';
 
 @Component({
   selector: 'app-star-rating',
@@ -18,7 +18,7 @@ export class StarRatingComponent {
   private snackBarDuration: number = 2000;
    ratingArr: Array<any> = [];
 
-  constructor(private snackBar: MatSnackBar) {
+  constructor(private snackBar: SnackbarService) {
   }
 
 
@@ -29,9 +29,7 @@ export class StarRatingComponent {
   }
   onClick(rating:number) {
     this.rating = rating;
-    this.snackBar.open('You rated ' + rating + ' / ' + this.starCount, '', {
-      duration: this.snackBarDuration
-    });
+    this.snackBar.openSuccessSnackbar('You rated ' + rating + ' / ' + this.starCount, '');
     this.ratingUpdated.emit(rating);
     return false;
   }

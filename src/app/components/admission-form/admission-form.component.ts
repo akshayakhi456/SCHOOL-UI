@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../shared/services/student/student.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, map, startWith } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
@@ -13,6 +12,7 @@ import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { SettingsService } from '../../shared/services/settings/settings.service';
 import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
+import { SnackbarService } from '../../shared/signal-service/snackbar.service';
 
 @Component({
   selector: 'app-admission-form',
@@ -34,7 +34,7 @@ export class AdmissionFormComponent {
   service = inject(StudentService);
   settingService = inject(SettingsService);
   spinnerService = inject(SpinnerService);
-  snackbar = inject(MatSnackBar);
+  snackbarService = inject(SnackbarService);
   activatedRoute = inject(ActivatedRoute);
   sanitizer = inject(DomSanitizer);
   spinner = inject(SpinnerService);
@@ -62,7 +62,8 @@ export class AdmissionFormComponent {
     status: new FormControl<boolean>(true),
     adharNumber: new FormControl<string>('', [Validators.required,Validators.minLength(12), Validators.maxLength(12)]),
     sibilings: new FormControl<string>(''),
-    certificateNames: new FormControl<string>('')
+    certificateNames: new FormControl<string>(''),
+    dateOfJoining: new FormControl<Date>(new Date(), Validators.required)
   });
 
   fatherInfoForm = new FormGroup({
@@ -150,7 +151,8 @@ export class AdmissionFormComponent {
       }
       this.studentInfoForm.patchValue({
         ...studentForm,
-        photo: ''
+        photo: '',
+        dateOfJoining: new Date(studentForm.dateOfJoining+'Z')
       });
       const fatherInfo = result.guardians.find((f: any) => f.relationship === 'Father');
       const motherInfo = result.guardians.find((f: any) => f.relationship === 'Mother');
@@ -288,7 +290,7 @@ export class AdmissionFormComponent {
         this.service.create(formData).subscribe({
           next: () => {
             this.spinner.dispose();
-            this.snackbar.open('Created Successfully.', 'Close', {duration: 2000})
+            this.snackbarService.openSuccessSnackbar('Created Successfully.');
           },
           error: ()=>{ this.spinner.dispose();}
         })
@@ -298,7 +300,7 @@ export class AdmissionFormComponent {
         this.service.update(formData).subscribe({
           next: () => {
             this.spinner.dispose();
-            this.snackbar.open('Updated Successfully.', 'Close', {duration: 2000})
+            this.snackbarService.openSuccessSnackbar('Updated Successfully.');
           },
           error: ()=>{ this.spinner.dispose();}
         })

@@ -3,18 +3,23 @@
         <mat-label>Admission Number</mat-label>
         <input matInput [formControl]="stdId" />
     </mat-form-field>
-    <button mat-flat-button color="primary" type="button" (click)="getStdInfo()">Search</button>
+    <button class="btn btn-primary" type="button" (click)="getStdInfo()">Search</button>
 </div>
 @if (stdInfo?.students) {
-    <div class="student-info">
+    <div class="d-flex justify-content-between mt-3">
         <div>
-            <span>Name:</span> <span>{{stdInfo?.students.firstName}} {{stdInfo?.students.lastName}}</span>
+            <div>
+                <span>Name:</span> <span>{{stdInfo?.students.firstName}} {{stdInfo?.students.lastName}}</span>
+            </div>
+            <div>
+                <span>Class:</span> <span>{{stdInfo?.students.className}}</span>
+            </div>
+            <div>
+                <span>Section:</span> <span>{{stdInfo?.students.section}}</span>
+            </div>
         </div>
-        <div>
-            <span>Class:</span> <span>{{stdInfo?.students.className}}</span>
-        </div>
-        <div>
-            <span>Section:</span> <span>{{stdInfo?.students.section}}</span>
+        <div class="d-flex justify-content-end align-items-end">
+            <button type="button" class="btn btn-primary" (click)="redirectToPayment()">Payment</button>
         </div>
     </div>
 }

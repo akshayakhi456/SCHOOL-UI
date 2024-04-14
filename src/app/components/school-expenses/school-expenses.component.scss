@@ -1,6 +1,5 @@
 .school-expenses {
     border: 1px solid #ffff;
-    margin: 30px 30px;
     border-radius: 17.5px;
     background-color: #ffff;
 
@@ -18,15 +17,8 @@
     }
 
     .body {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        // height: 250px;
-
-        .expenses-filters{
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+        mat-form-field {
+            width: 100%;
         }
 
         .expenses-table {

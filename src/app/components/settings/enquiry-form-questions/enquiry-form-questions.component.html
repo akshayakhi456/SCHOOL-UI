@@ -36,7 +36,9 @@
                     Action
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <mat-icon (click)="editQuestion(element)">edit</mat-icon>
+                    <!-- <mat-icon (click)="editQuestion(element)">edit</mat-icon> -->
+                    <i class="bi bi-pencil" (click)="editQuestion(element)"></i>
+
                 </td>
             </ng-container>
 

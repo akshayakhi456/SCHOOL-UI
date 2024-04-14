@@ -73,12 +73,21 @@
             </div>
             <div class="box-body" style="position: relative;">
                 <div id="chart-report" >
-                    <canvas id="barChart"></canvas>
+                    <!-- <canvas id="barChart"></canvas> -->
+                    <app-todays-collection></app-todays-collection>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-xl-4 col-12">
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">Expenses Report</h4>
+            </div>
+            <div class="box-body">
+               <app-expenses-graph></app-expenses-graph>
+            </div>
+        </div>
         <div class="box">
             <div class="box-header">
                 <h4 class="box-title">New Admission Report</h4>

@@ -1,12 +1,16 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { PaymentsService } from '../../shared/services/payments/payments.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SettingsService } from '../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
+import { SnackbarService } from '../../shared/signal-service/snackbar.service';
+import { IBreadcrumb } from '../../shared/interfaces/global.model';
+import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
+import { StudentService } from '../../shared/services/student/student.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-payments',
@@ -17,11 +21,12 @@ import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 })
 export class PaymentsComponent {
   paymentModeList: Array<string> = ['Cash','Card','Cheque','Online'];
-  stdInfo;
+  stdInfo: any;
   PaymentsFeeList: any = [];
   actualFeeAmount = 0;
   paidAmountList: any;
   paidFeeAmount = 0;
+  id = 0;
   paymentForm = new FormGroup({
     paymentName: new FormControl<string>('',Validators.required),
     paymentType: new FormControl<string>('',Validators.required),
@@ -31,19 +36,53 @@ export class PaymentsComponent {
     studentId: new FormControl<number>(0),
     acedamicYearId: new FormControl<number>(1),
     dueDateOfPayment: new FormControl<Date | null>(null)
-  })
+  });
+
+  cardDetails = new FormGroup({
+    cardNumber: new FormControl<number | null>(null),
+    expirationDate: new FormControl<string>(''),
+    cvv: new FormControl<number | null>(null),
+    cardHolderName: new FormControl<string> ('')
+  });
+
+  chequeDetails = new FormGroup({
+    bankName: new FormControl<string>(''),
+    chequeNo: new FormControl<string>(''),
+    branch: new FormControl<string> ('')
+  });
+  breadcrumbData: IBreadcrumb = {
+    title: 'Payments',
+    list: [{
+      routerLink: '/accounts',
+      subTitle: 'Accounts',
+      isRoute: true
+  },{
+    routerLink: '/Paymemts',
+    subTitle: 'Payment',
+    isRoute: true
+}]
+}
 
   constructor(private service: PaymentsService,
-    public dialogRef: MatDialogRef<PaymentsComponent>,
     private settingService: SettingsService,
     private spinnerService: SpinnerService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackbar: MatSnackBar) {
-      this.stdInfo = data.sudentInfo
+    private breadcrumbService: BreadCrumbService,
+    private activatedRoute: ActivatedRoute,
+    private studentService: StudentService,
+    private snackbarService: SnackbarService) {
+  this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
   }
 
   get f(): {[key: string]: AbstractControl} {
     return this.paymentForm.controls;
+  }
+
+  get cheque(): {[key: string]: AbstractControl} {
+    return this.chequeDetails.controls;
+  }
+
+  get card(): {[key: string]: AbstractControl} {
+    return this.cardDetails.controls;
   }
 
   get balanceFeeAmount(): number {
@@ -51,9 +90,11 @@ export class PaymentsComponent {
   }
 
   ngOnInit() {
-    this.paymentForm.patchValue({studentId: this.stdInfo.id});
-    this.getPaymentAllotment();
-    this.getReceiptList();
+    this.id = this.activatedRoute.snapshot.params['id'];
+    if (this.id){
+      this.getStudentById();
+      this.paymentForm.patchValue({studentId: this.id});
+    }
     this.paymentForm.controls.paymentName.valueChanges.subscribe(res => {
       const row = this.PaymentsFeeList.find((x: any)=>x.paymentName == res);
       if (this.paidAmountList) {
@@ -63,6 +104,60 @@ export class PaymentsComponent {
         }
       }
       this.actualFeeAmount = Number(row.amount);
+    });
+
+    this.paymentForm.controls.paymentType.valueChanges.subscribe(res => {
+      this.setValidationOfCardCheque(res ?? '');
+    });
+  }
+
+  setValidationOfCardCheque(paymentType: string): void {
+    if (paymentType == 'Card') {
+      this.cardDetails.controls.cardHolderName.setValidators(Validators.required);
+      this.cardDetails.controls.cardHolderName.updateValueAndValidity();
+      this.cardDetails.controls.cardNumber.setValidators(Validators.required);
+      this.cardDetails.controls.cardNumber.updateValueAndValidity();
+      this.cardDetails.controls.cvv.setValidators(Validators.required);
+      this.cardDetails.controls.cvv.updateValueAndValidity();
+      this.cardDetails.controls.expirationDate.setValidators(Validators.required);
+      this.cardDetails.controls.expirationDate.updateValueAndValidity();
+      this.chequeDetails.controls.bankName.removeValidators(Validators.required);
+      this.chequeDetails.controls.bankName.updateValueAndValidity();
+      this.chequeDetails.controls.branch.removeValidators(Validators.required);
+      this.chequeDetails.controls.branch.updateValueAndValidity();
+      this.chequeDetails.controls.chequeNo.removeValidators(Validators.required);
+      this.chequeDetails.controls.chequeNo.updateValueAndValidity();
+    }
+    else {
+      this.cardDetails.controls.cardHolderName.removeValidators(Validators.required);
+      this.cardDetails.controls.cardHolderName.updateValueAndValidity();
+      this.cardDetails.controls.cardNumber.removeValidators(Validators.required);
+      this.cardDetails.controls.cardNumber.updateValueAndValidity();
+      this.cardDetails.controls.cvv.removeValidators(Validators.required);
+      this.cardDetails.controls.cvv.updateValueAndValidity();
+      this.cardDetails.controls.expirationDate.removeValidators(Validators.required);
+      this.cardDetails.controls.expirationDate.updateValueAndValidity();
+      this.chequeDetails.controls.bankName.setValidators(Validators.required);
+      this.chequeDetails.controls.bankName.updateValueAndValidity();
+      this.chequeDetails.controls.branch.setValidators(Validators.required);
+      this.chequeDetails.controls.branch.updateValueAndValidity();
+      this.chequeDetails.controls.chequeNo.setValidators(Validators.required);
+      this.chequeDetails.controls.chequeNo.updateValueAndValidity();
+    }
+  }
+
+  getStudentById(): void {
+    this.spinnerService.show();
+    this.studentService.getById(this.id).subscribe({
+      next: res => {
+        this.spinnerService.dispose();
+        this.stdInfo = res.result ?? res;
+        this.getReceiptList();
+        this.getPaymentAllotment();
+      },
+      error: () => {
+        this.spinnerService.dispose();
+      }
     })
   }
 
@@ -75,7 +170,7 @@ export class PaymentsComponent {
 
   getReceiptList(): void{
     this.spinnerService.show();
-    this.service.getReceiptById(this.stdInfo.id).subscribe({next: res => {
+    this.service.getReceiptById(this.stdInfo.students.id).subscribe({next: res => {
     this.spinnerService.dispose();
       this.paidAmountList = res;
     },
@@ -87,13 +182,13 @@ export class PaymentsComponent {
 
   savePayments(): void {
     this.paymentForm.markAllAsTouched();
-    if(this.paymentForm.invalid){
+    if(this.paymentForm.invalid || this.cardDetails.invalid || this.chequeDetails.invalid){
       return;
     }
     this.spinnerService.show();
     this.service.create(this.paymentForm.value).subscribe({next: res => {
       this.spinnerService.dispose();
-      this.snackbar.open("Saved Successfully.", "Close", {duration: 2000})
+      this.snackbarService.openSuccessSnackbar("Saved Successfully.")
     },
     error: () => {
       this.spinnerService.dispose();
@@ -104,7 +199,7 @@ export class PaymentsComponent {
 
   getPaymentAllotment(){
     this.spinnerService.show();
-    this.settingService.getPaymentAllotment(this.stdInfo.className).subscribe(res => {
+    this.settingService.getPaymentAllotment(this.stdInfo.students.className).subscribe(res => {
       this.spinnerService.dispose();
       this.PaymentsFeeList = res.result ?? res
     },()=>{

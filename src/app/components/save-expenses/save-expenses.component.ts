@@ -2,8 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ExpensesService } from '../../shared/services/expenses/expenses.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SnackbarService } from '../../shared/signal-service/snackbar.service';
 
 @Component({
   selector: 'app-save-expenses',
@@ -30,7 +30,7 @@ export class SaveExpensesComponent {
   constructor(private service: ExpensesService,
     public dialogRef: MatDialogRef<SaveExpensesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackbar: MatSnackBar) {}
+    private snackbar: SnackbarService) {}
 
   saveExpenses(): void {
     this.expensesForm.markAllAsTouched();
@@ -40,7 +40,7 @@ export class SaveExpensesComponent {
     this.service.create(this.expensesForm.value).subscribe({
       next: res => {
         // if (res) {
-          this.snackbar.open("Created Successfully.", "Close", {duration: 2000});
+          this.snackbar.openSuccessSnackbar("Created Successfully.");
           this.data.Close();
         // }
       }

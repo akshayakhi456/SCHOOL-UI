@@ -2,12 +2,12 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
+import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
 
 @Component({
   selector: 'app-payment-settings',
@@ -29,7 +29,7 @@ export class PaymentSettingsComponent {
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: SettingsService,
     private spinnerService: SpinnerService,
-    private snackbar:MatSnackBar,
+    private snackbar:SnackbarService,
     public dialog: MatDialog) {}
 
   @ViewChild('feeNameSort') sort: MatSort = new MatSort();
@@ -100,7 +100,7 @@ export class PaymentSettingsComponent {
         acedamicYearId: 1
       }
       this.service.createPaymentAllotment(payload).subscribe(res => {
-        this.snackbar.open(res.message, 'Close', {duration:2000});
+        this.snackbar.openSuccessSnackbar(res.message);
         this.getPaymentAllotment();
         this.paymentName.reset();
         this.amount.reset();
@@ -119,7 +119,7 @@ export class PaymentSettingsComponent {
       this.spinnerService.show();
       this.service.updatePaymentAllotment(payload).subscribe(res => {
       this.spinnerService.dispose();
-        this.snackbar.open(res.message, 'Close', {duration:2000});
+        this.snackbar.openSuccessSnackbar(res.message);
         element.isEditPaymentNameMode = !element.isEditPaymentNameMode
       },()=>{
       this.spinnerService.dispose();

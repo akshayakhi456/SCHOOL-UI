@@ -1,90 +1,219 @@
-<h1 mat-dialog-title>Payments - {{stdInfo!.firstName}} {{stdInfo!.lastName}} - AD.No: {{stdInfo!.id}}</h1>
-<mat-dialog-content>
-    <form [formGroup]="paymentForm">
-        <div class="row mt-3">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Payment Name</mat-label>
-                    <mat-select formControlName="paymentName">
-                        @for (name of PaymentsFeeList; track name) {
-                        <mat-option [value]="name.paymentName">{{name.paymentName}}</mat-option>
-                        }
-                    </mat-select>
-                    @if (f['paymentName'].invalid && f['paymentName'].touched){
-                    <mat-error>Payment Name is required</mat-error>
-                    }
-                </mat-form-field>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Payment Mode</mat-label>
-                    <mat-select formControlName="paymentType">
-                        @for (mode of paymentModeList; track mode) {
-                        <mat-option [value]="mode">{{mode}}</mat-option>
-                        }
-                    </mat-select>
-                    @if (f['paymentType'].invalid && f['paymentType'].touched){
-                    <mat-error>Payment Mode is required</mat-error>
-                    }
-                </mat-form-field>
+<form [formGroup]="paymentForm">
+    <div class="row">
+        <div class="col-lg-8 col-md-6 col-sm-12" id="payment">
+            <div class="box">
+                <div class="box-header">
+                    <h4 class="box-title m-0">Payment</h4>
+                </div>
+                <div class="box-body">
+                    <div class="row mt-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Payment Name</mat-label>
+                                <mat-select formControlName="paymentName">
+                                    @for (name of PaymentsFeeList; track name) {
+                                    <mat-option [value]="name.paymentName">{{name.paymentName}}</mat-option>
+                                    }
+                                </mat-select>
+                                @if (f['paymentName'].invalid && f['paymentName'].touched){
+                                <mat-error>Payment Name is required</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Payment Mode</mat-label>
+                                <mat-select formControlName="paymentType">
+                                    @for (mode of paymentModeList; track mode) {
+                                    <mat-option [value]="mode">{{mode}}</mat-option>
+                                    }
+                                </mat-select>
+                                @if (f['paymentType'].invalid && f['paymentType'].touched){
+                                <mat-error>Payment Mode is required</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Actual Amount</mat-label>
+                                <input matInput readonly [value]="actualFeeAmount" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Paid Amount</mat-label>
+                                <input matInput readonly [value]="paidFeeAmount" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Balance Amount</mat-label>
+                                <input matInput readonly [value]="balanceFeeAmount" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Amount</mat-label>
+                                <input matInput formControlName="amount" type="number" />
+                                @if (f['amount'].errors && f['amount'].errors['required'] && f['amount'].touched){
+                                <mat-error>Amount is required</mat-error>
+                                }
+                                @else if (f['amount'].errors && f['amount'].errors['amountMinError'] &&
+                                f['amount'].touched){
+                                <mat-error>Amount must not be greater than {{balanceFeeAmount}}</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Due Date</mat-label>
+                                <input matInput [matDatepicker]="picker" formControlName="dueDateOfPayment">
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Remarks</mat-label>
+                                <textarea matInput formControlName="remarks"></textarea>
+                                @if (f['remarks'].invalid && f['remarks'].touched){
+                                <mat-error>Remarks is required</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                        <button type="button" class="btn btn-primary" (click)="savePayments()">Payment</button>
+                        <button type="button" class="btn btn-light ms-2" mat-dialog-close>Cancel</button>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Actual Amount</mat-label>
-                    <input matInput readonly [value]="actualFeeAmount" />
-                </mat-form-field>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Paid Amount</mat-label>
-                    <input matInput readonly [value]="paidFeeAmount" />
-                </mat-form-field>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Balance Amount</mat-label>
-                    <input matInput readonly [value]="balanceFeeAmount" />
-                </mat-form-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Amount</mat-label>
-                    <input matInput formControlName="amount" type="number" />
-                    @if (f['amount'].errors && f['amount'].errors['required'] && f['amount'].touched){
-                    <mat-error>Amount is required</mat-error>
+        <div class="col-lg-4 col-md-6 col-sm-12" id="general">
+            <div class="box">
+                <div class="box-header">
+                    <h4 class="box-title m-0">Student Info</h4>
+                </div>
+                <div class="box-body">
+                    @if (stdInfo) {
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput readonly [value]="stdInfo.students. firstName +' '+ stdInfo.students.lastName"/>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Class</mat-label>
+                                    <input matInput readonly [value]="stdInfo.students.className"/>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Section</mat-label>
+                                    <input matInput readonly [value]="stdInfo.students.section"/>
+                                </mat-form-field>
+                            </div>
+                        </div>
                     }
-                    @else if (f['amount'].errors && f['amount'].errors['amountMinError'] && f['amount'].touched){
-                    <mat-error>Amount must not be greater than {{balanceFeeAmount}}</mat-error>
-                    }
-                </mat-form-field>
+                </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Due Date</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="dueDateOfPayment">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
+            @if (f['paymentType'].value === 'Card') {
+                <div class="box">
+                    <div class="box-header">
+                        <h4 class="box-title">Card Details</h4>
+                    </div>
+                    <div class="box-body">
+                        <form [formGroup]="cardDetails">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>CARD NUMBER</mat-label>
+                                    <input matInput formControlName="cardNumber"/>
+                                    @if (card['cardNumber'].errors && card['cardNumber'].errors['required'] && card['cardNumber'].touched){
+                                        <mat-error>Card Number is required</mat-error>
+                                    } 
+                                </mat-form-field>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>EXPIRATION DATE</mat-label>
+                                        <input matInput formControlName="expirationDate"/>
+                                        @if (card['expirationDate'].errors && card['expirationDate'].errors['required'] && card['expirationDate'].touched){
+                                            <mat-error>Expire Date is required</mat-error>
+                                        } 
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>CV CODE</mat-label>
+                                        <input matInput formControlName="cvv"/>
+                                        @if (card['cvv'].errors && card['cvv'].errors['required'] && card['cvv'].touched){
+                                            <mat-error>CV Code is required</mat-error>
+                                        } 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>NAME OF THE CARD HOLDER</mat-label>
+                                    <input matInput formControlName="cardHolderName"/> 
+                                    @if (card['cardHolderName'].errors && card['cardHolderName'].errors['required'] && card['cardHolderName'].touched){
+                                        <mat-error>Card Holder Name is required</mat-error>
+                                    } 
+                                </mat-form-field>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+            @if (f['paymentType'].value === 'Cheque') {
+            <div class="box">
+                <div class="box-header">
+                    <h4 class="box-title m-0">Cheque Details</h4>
+                </div>
+                <div class="box-body mx-2">
+                    <form [formGroup]="chequeDetails">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>BANK NAME</mat-label>
+                                    <input matInput formControlName="bankName"/>
+                                    @if (cheque['bankName'].errors && cheque['bankName'].errors['required'] && cheque['bankName'].touched){
+                                        <mat-error>Bank Name is required</mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>CHEQUE NO</mat-label>
+                                    <input matInput formControlName="chequeNo"/>
+                                    @if (cheque['chequeNo'].errors && cheque['chequeNo'].errors['required'] && cheque['chequeNo'].touched){
+                                        <mat-error>Cheque.No is required</mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>BRANCH</mat-label>
+                                    <input matInput formControlName="branch"/>
+                                    @if (cheque['branch'].errors && cheque['branch'].errors['required'] && cheque['branch'].touched){
+                                        <mat-error>Branch Name is required</mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
+            }
         </div>
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Remarks</mat-label>
-                    <textarea matInput formControlName="remarks"></textarea>
-                    @if (f['remarks'].invalid && f['remarks'].touched){
-                    <mat-error>Remarks is required</mat-error>
-                    }
-                </mat-form-field>
-            </div>
-        </div>
-    </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-flat-button [mat-dialog-close]="true" color="primary" (click)="savePayments()">Payment</button>
-    <button mat-button mat-dialog-close>Cancel</button>
-</mat-dialog-actions>
+    </div>
+</form>

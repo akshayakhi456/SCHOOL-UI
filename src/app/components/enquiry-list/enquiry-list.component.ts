@@ -12,11 +12,12 @@ import { SettingsService } from '../../shared/services/settings/settings.service
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 import { IBreadcrumb } from '../../shared/interfaces/global.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-enquiry-list',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, CommonModule],
   templateUrl: './enquiry-list.component.html',
   styleUrl: './enquiry-list.component.scss'
 })
@@ -42,7 +43,7 @@ export class EnquiryListComponent {
     className: new FormControl<string>(''),
     status: new FormControl<boolean | null>(null)
   })
-  displayedColumns: string[] = ['firstName', 'className', 'guardian', 'action'];
+  displayedColumns: string[] = ['firstName', 'className', 'guardian', 'status', 'action'];
   dataSource = new MatTableDataSource();
   breadcrumbData: IBreadcrumb = {
     title: 'Enquiry',

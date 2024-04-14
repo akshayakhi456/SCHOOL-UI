@@ -1,33 +1,35 @@
 <div class="school-expenses">
-    <div class="header">
-        <h1>Expenses</h1>
-    </div>
     <div class="body">
-        <div class="expenses-filters">
-            <mat-form-field appearance="outline">
-                <mat-label>Enter a date range</mat-label>
-                <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                  <input matStartDate formControlName="start" placeholder="Start date">
-                  <input matEndDate formControlName="end" placeholder="End date">
-                </mat-date-range-input>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-              
-                @if (range.controls.start.hasError('required')) {
-                  <mat-error>start date is required</mat-error>
-                }
-                @if (range.controls.end.hasError('required')) {
-                  <mat-error>end date is required</mat-error>
-                }
-              </mat-form-field>
-              
-            <button mat-mini-fab color="primary" (click)="filterByDate()">
-                <mat-icon>search</mat-icon>
-            </button>
-            <button mat-flat-button color="primary" (click)="reset()">
-                Reset
-            </button>
-            <button mat-flat-button color="primary" (click)="openExpenses()">ADD Expenses</button>
+        <div class="row mt-1">
+            <div class="col-sm-12 col-md-6 col-lg-4 ms-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                      <input matStartDate formControlName="start" placeholder="Start date">
+                      <input matEndDate formControlName="end" placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                  
+                    @if (range.controls.start.hasError('required')) {
+                      <mat-error>start date is required</mat-error>
+                    }
+                    @if (range.controls.end.hasError('required')) {
+                      <mat-error>end date is required</mat-error>
+                    }
+                  </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <button type="button" class="btn btn-primary" (click)="filterByDate()">
+                    Search
+                </button>
+                <button type="button" class="btn btn-primary ms-2" (click)="reset()">
+                    Reset
+                </button>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <button type="button" class="btn btn-primary float-end me-1" (click)="openExpenses()">ADD Expenses</button>
+            </div>
         </div>
         @if(true) {
             <div class="expenses-table">

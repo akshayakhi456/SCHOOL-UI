@@ -9,8 +9,8 @@ import { CommonModule } from '@angular/common';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
+import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
 
 @Component({
   selector: 'app-enquiry-form-questions',
@@ -40,7 +40,7 @@ export class EnquiryFormQuestionsComponent {
     private service: SettingsService,
     private spinnerService: SpinnerService,
     private router: Router,
-    private snackbar: MatSnackBar,
+    private snackbar: SnackbarService,
     public dialog: MatDialog) { }
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
@@ -122,7 +122,7 @@ export class EnquiryFormQuestionsComponent {
       this.service.updateQuestion(payload).subscribe({next:res => {
       this.spinnerService.dispose();
         const result = res.message;
-        this.snackbar.open(result, 'Close',{duration: 2000});
+        this.snackbar.openSuccessSnackbar(result);
         this.getEnquiryQuestionList();
       },error:()=>{
       this.spinnerService.dispose();
@@ -133,7 +133,7 @@ export class EnquiryFormQuestionsComponent {
       this.service.createQuestion(payload).subscribe(res => {
         this.spinnerService.dispose();
         const result = res.message;
-        this.snackbar.open(result, 'Close',{duration: 2000});
+        this.snackbar.openSuccessSnackbar(result);
         this.getEnquiryQuestionList();
       },() =>{
         this.spinnerService.dispose();

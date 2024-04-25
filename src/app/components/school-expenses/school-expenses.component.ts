@@ -1,9 +1,9 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { DatePipe, JsonPipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerIntl, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -59,9 +59,12 @@ export class SchoolExpensesComponent {
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: ExpensesService,
     private breadcrumbService: BreadCrumbService,
+    private _adapter: DateAdapter<any>,
+    private _intl: MatDatepickerIntl,
+    @Inject(MAT_DATE_LOCALE) private _locale: string,
     public dialog: MatDialog) {
-    this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
-
+      this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
+      this.french();
   }
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
@@ -70,6 +73,18 @@ export class SchoolExpensesComponent {
     this.dataSource.sort = this.sort;
     this.getExpenses();
   }
+
+  french() {
+    this._locale = 'fr';
+    this._adapter.setLocale(this._locale);
+    this.updateCloseButtonLabel('Fermer le calendrier');
+  }
+
+  updateCloseButtonLabel(label: string) {
+    this._intl.closeCalendarLabel = label;
+    this._intl.changes.next();
+  }
+
 
   getExpenses() {
     this.service.get().subscribe({

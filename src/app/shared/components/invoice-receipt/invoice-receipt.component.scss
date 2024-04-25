@@ -1,0 +1,61 @@
+.parent-receipt {
+    display: flex;
+    gap: 20px;
+
+    .receipt-title {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        text-align: center;
+    }
+
+    .receipt-subtitle {
+        text-align: end;
+    }
+
+    .school-header {
+        text-align: center; 
+        text-align: center; 
+        padding: 20px 0px; 
+        border: 1px solid;
+    }
+
+    .school-name{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .school-subtitle{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .std-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        gap: 30px
+    }
+
+    .std-fee {
+        width: 100%; 
+        border: 1px solid black; 
+        border-collapse: collapse;
+    }
+
+    .tbl-header, .tbl-body {
+        border: 1px solid black; 
+        border-collapse: collapse;
+    }
+
+    .parent-signature {
+        display: flex; 
+        justify-content: space-between;
+        margin-top: 40px;
+    }
+
+    .cashier-signature {
+        display: flex; 
+        justify-content: space-between;
+    }
+}

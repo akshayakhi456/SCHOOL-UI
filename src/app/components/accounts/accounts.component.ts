@@ -5,11 +5,13 @@ import { ClasswiseAccountsComponent } from './classwise-accounts/classwise-accou
 import { OverallAccountsComponent } from './overall-accounts/overall-accounts.component';
 import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
+import { InvoiceReceiptComponent } from '../../shared/components/invoice-receipt/invoice-receipt.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-accounts',
   standalone: true,
-  imports: [SharedModule, StudentwiseAccountsComponent, ClasswiseAccountsComponent, OverallAccountsComponent],
+  imports: [SharedModule, CommonModule, InvoiceReceiptComponent, StudentwiseAccountsComponent, ClasswiseAccountsComponent, OverallAccountsComponent],
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.scss'
 })

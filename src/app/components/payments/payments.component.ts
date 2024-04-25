@@ -11,6 +11,8 @@ import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 import { StudentService } from '../../shared/services/student/student.service';
 import { ActivatedRoute } from '@angular/router';
+import { MatDatepickerIntl } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-payments',
@@ -69,8 +71,12 @@ export class PaymentsComponent {
     private breadcrumbService: BreadCrumbService,
     private activatedRoute: ActivatedRoute,
     private studentService: StudentService,
+    private _adapter: DateAdapter<any>,
+    private _intl: MatDatepickerIntl,
+    @Inject(MAT_DATE_LOCALE) private _locale: string,
     private snackbarService: SnackbarService) {
-  this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
+    this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
+    this.french();
   }
 
   get f(): {[key: string]: AbstractControl} {
@@ -109,6 +115,17 @@ export class PaymentsComponent {
     this.paymentForm.controls.paymentType.valueChanges.subscribe(res => {
       this.setValidationOfCardCheque(res ?? '');
     });
+  }
+
+  french() {
+    this._locale = 'fr';
+    this._adapter.setLocale(this._locale);
+    this.updateCloseButtonLabel('Fermer le calendrier');
+  }
+
+  updateCloseButtonLabel(label: string) {
+    this._intl.closeCalendarLabel = label;
+    this._intl.changes.next();
   }
 
   setValidationOfCardCheque(paymentType: string): void {

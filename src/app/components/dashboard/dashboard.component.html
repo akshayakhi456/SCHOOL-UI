@@ -6,7 +6,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="text-fade">Total Students</h4>
-                        <h4 class="fw-600">1,542</h4>
+                        <h4 class="fw-600">{{dashboardInfo.totalStudent}}</h4>
                         <!-- <p class="mb-0"><span class="text-success">12%</span> Increase</p> -->
                     </div>
                     <div>
@@ -22,7 +22,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="text-fade">New Students</h4>
-                        <h4 class="fw-600">742</h4>
+                        <h4 class="fw-600">{{dashboardInfo.newStudents}}</h4>
                         <!-- <p class="mb-0"><span class="text-success">09%</span> Increase</p> -->
                     </div>
                     <div>
@@ -38,7 +38,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="text-fade">Fees Collection</h4>
-                        <h4 class="fw-600">$542</h4>
+                        <h4 class="fw-600"><i class="bi bi-currency-rupee"></i>{{dashboardInfo.feeCollection}}</h4>
                         <!-- <p class="mb-0"><span class="text-success">49%</span> Total</p> -->
                     </div>
                     <div>
@@ -54,7 +54,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="text-fade">Fees Pending</h4>
-                        <h4 class="fw-600">$785</h4>
+                        <h4 class="fw-600"><i class="bi bi-currency-rupee"></i>{{dashboardInfo.feePending}}</h4>
                         <!-- <p class="mb-0"><span class="text-danger">-51%</span> Total</p> -->
                     </div>
                     <div>
@@ -96,15 +96,15 @@
                 <div class="d-flex align-items-center">
                     <div class="me-50">
                         <p class="mb-5">Today</p>
-                        <h4 class="fw-500">118 <i class="fa fa-arrow-up text-success"></i></h4>
+                        <h4 class="fw-500">{{dashboardInfo.newAdmissionToday}} <i class="fa fa-arrow-up text-success"></i></h4>
                     </div>
                     <div class="me-50">
                         <p class="mb-5">This Week</p>
-                        <h4 class="fw-500">189 <i class="fa fa-arrow-down text-danger"></i></h4>
+                        <h4 class="fw-500">{{dashboardInfo.newAdmissionThisWeek}} <i class="fa fa-arrow-down text-danger"></i></h4>
                     </div>
                     <div>
                         <p class="mb-5">This Month</p>
-                        <h4 class="fw-500">425 <i class="fa fa-arrow-up text-success"></i></h4>
+                        <h4 class="fw-500">{{dashboardInfo.newAdmissionThisMonth}} <i class="fa fa-arrow-up text-success"></i></h4>
                     </div>
                 </div>
                 <div class="progress mt-15">

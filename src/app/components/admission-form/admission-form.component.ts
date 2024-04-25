@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../shared/services/student/student.service';
@@ -13,6 +13,8 @@ import { SettingsService } from '../../shared/services/settings/settings.service
 import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerIntl } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-admission-form',
@@ -115,6 +117,12 @@ export class AdmissionFormComponent {
     return this.fatherInfoForm.controls;
   }
 
+  constructor(private _adapter: DateAdapter<any>,
+    private _intl: MatDatepickerIntl,
+    @Inject(MAT_DATE_LOCALE) private _locale: string,) {
+      this.french();
+    }
+
   ngOnInit(): void {
     this.getStudentsList();
     this.getClassList();
@@ -132,6 +140,17 @@ export class AdmissionFormComponent {
     this.studentInfoForm.controls.className.valueChanges.subscribe(res => {
       this.sectionList = this.orgSectionList.filter(x => x['className'] == res)
     })
+  }
+
+  french() {
+    this._locale = 'fr';
+    this._adapter.setLocale(this._locale);
+    this.updateCloseButtonLabel('Fermer le calendrier');
+  }
+
+  updateCloseButtonLabel(label: string) {
+    this._intl.closeCalendarLabel = label;
+    this._intl.changes.next();
   }
 
   getStudentById(id: number) {

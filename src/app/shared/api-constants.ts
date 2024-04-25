@@ -20,6 +20,7 @@ export const URLs = {
     getPaymentsById: `${environment.apiUrl}payments/`,
     getclassWiseReport: `${environment.apiUrl}payments/classWiseReport`,
     getyearWiseReport: `${environment.apiUrl}payments/yearWiseReport`,
+    postRecordsOfPayment: `${environment.apiUrl}payments/studentsRecordOfPayment`,
 
     createClassSettings: `${environment.apiUrl}settings/classes`,
     updateClassSettings: `${environment.apiUrl}settings/classes`,
@@ -36,5 +37,10 @@ export const URLs = {
     paymentAllotmentsSettings: `${environment.apiUrl}settings/paymentAllotment`,
     
     registerUser: `${environment.apiUrl}Auth/register`,
-    loginUser: `${environment.apiUrl}Auth/login`
+    loginUser: `${environment.apiUrl}Auth/login`,
+
+    dashboard: `${environment.apiUrl}dashboard`,
+
+    invoice: `${environment.apiUrl}invoice`,
+    invoiceId: `${environment.apiUrl}invoice/invoiceId`
 }

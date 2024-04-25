@@ -4,6 +4,8 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { ExpensesService } from '../../shared/services/expenses/expenses.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerIntl } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-save-expenses',
@@ -30,7 +32,24 @@ export class SaveExpensesComponent {
   constructor(private service: ExpensesService,
     public dialogRef: MatDialogRef<SaveExpensesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackbar: SnackbarService) {}
+    private _adapter: DateAdapter<any>,
+    private _intl: MatDatepickerIntl,
+    @Inject(MAT_DATE_LOCALE) private _locale: string,
+    private snackbar: SnackbarService) {
+      this.french();
+    }
+
+    french() {
+      this._locale = 'fr';
+      this._adapter.setLocale(this._locale);
+      this.updateCloseButtonLabel('Fermer le calendrier');
+    }
+  
+    updateCloseButtonLabel(label: string) {
+      this._intl.closeCalendarLabel = label;
+      this._intl.changes.next();
+    }
+  
 
   saveExpenses(): void {
     this.expensesForm.markAllAsTouched();

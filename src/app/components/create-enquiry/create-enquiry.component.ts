@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EnquiryService } from '../../shared/services/enquiry/enquiry.service';
@@ -12,6 +12,10 @@ import { StarRatingComponent } from '../../shared/components/star-rating/star-ra
 import { SettingsService } from '../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InvoiceReceiptComponent } from '../../shared/components/invoice-receipt/invoice-receipt.component';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerIntl } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-create-enquiry',
@@ -127,7 +131,13 @@ export class CreateEnquiryComponent {
     private router: Router,
     private settingService: SettingsService,
     private spinnerService: SpinnerService,
-    private snackbarService: SnackbarService) { }
+    private dialog: MatDialog,
+    private _adapter: DateAdapter<any>,
+    private _intl: MatDatepickerIntl,
+    @Inject(MAT_DATE_LOCALE) private _locale: string,
+    private snackbarService: SnackbarService) {
+      this.french();
+     }
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.params['id'] ? 
@@ -136,6 +146,17 @@ export class CreateEnquiryComponent {
       this.getEnquiryQuestionList();
     }    
     this.getClassList();
+  }
+
+  french() {
+    this._locale = 'fr';
+    this._adapter.setLocale(this._locale);
+    this.updateCloseButtonLabel('Fermer le calendrier');
+  }
+
+  updateCloseButtonLabel(label: string) {
+    this._intl.closeCalendarLabel = label;
+    this._intl.changes.next();
   }
 
   getEnquiryQuestionList() {
@@ -295,7 +316,7 @@ export class CreateEnquiryComponent {
   }
 
   openReceipt(){
-    this.isOpenReceipt = true;
+    this.dialog.open(InvoiceReceiptComponent)
   }
 
   // downloadReceipt(): void {

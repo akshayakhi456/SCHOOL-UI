@@ -6,9 +6,9 @@ import { TodaysCollectionComponent } from '../todays-collection/todays-collectio
 import { FeeSummaryComponent } from '../fee-summary/fee-summary.component';
 import {  } from '../receipts/receipts.component';
 import { ExpensesGraphComponent } from '../expenses-graph/expenses-graph.component';
-import { Chart } from 'chart.js';
-import { app } from '../../shared/global-constant.constants';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
+import { DashboardService } from '../../shared/services/dashboard/dashboard.service';
+import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,8 +25,38 @@ import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.servic
 })
 export class DashboardComponent {
   breadcrumbService = inject(BreadCrumbService);
-  constructor() {
+  dashboardInfo = {
+    feeCollection: 0,
+    feePending: 0,
+    totalStudent: 0,
+    newAdmissionThisMonth: 0,
+    newAdmissionThisWeek: 0,
+    newAdmissionToday: 0,
+    newStudents: 0
+  }
+  constructor(private dashboardService: DashboardService,
+    private spinnerService: SpinnerService
+  ) {
     this.breadcrumbService.setBreadcrumb(false, null);
+  }
+
+  ngOnInit(): void {
+    this.getDashboardData();
+  }
+
+  getDashboardData(): void {
+    this.spinnerService.show();
+    this.dashboardService.getDashboardData().subscribe({
+      next: (res: any) => {
+        this.spinnerService.dispose();
+        if (res.statusCode === 200) {
+          this.dashboardInfo = res.result.result;
+        }
+      },
+      error: () => {
+        this.spinnerService.dispose();
+      }
+    })
   }
 
   // ngAfterViewInit() {

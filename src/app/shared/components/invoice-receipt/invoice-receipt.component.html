@@ -1,129 +1,120 @@
-<div style="display: flex; gap: 20px;">
+<h2 mat-dialog-title>Downlaod PDF</h2>
+<mat-dialog-content>
+  <div #receipt class="parent-receipt">
     <div>
       <div>Parent Copy</div>
       <div>
-        <h1 style=" margin-top: 0px;margin-bottom: 0px;text-align: center;">Receipt</h1>
+        <h1 class="receipt-title">Receipt</h1>
       </div>
-      <div style="text-align: end;">Receipt No: 1</div>
+      <div class="receipt-subtitle">Receipt No: {{invoiceId}}</div>
       <div>
-        <div style="text-align: center; text-align: center; padding: 20px 0px; border: 1px solid;">
+        <div class="school-header">
           <div>
-            <h2 style="margin-top: 0px;margin-bottom: 0px;">SchoolUI Demo School</h2>
+            <h2 class="school-name">SchoolUI Demo School</h2>
           </div>
           <div>
-            <h4 style="margin-top: 0px;margin-bottom: 0px;">Charminar Hyderabad</h4>
+            <h4 class="school-subtitle">Charminar Hyderabad</h4>
           </div>
         </div>
-        <div style="display: flex;justify-content: space-between;margin-top: 10px;margin-bottom: 10px;gap: 30px">
+        <div class="std-info">
           <div>
-            <div> <strong>Student :</strong> StudentName </div>
-            <div> <strong>FatherName :</strong> Father Name </div>
+            <div> <strong>Student :</strong> {{stdInfo!.firstName}} {{stdInfo!.lastName}} </div>
+            <div> <strong>FatherName :</strong> {{stdInfo!.father ? stdInfo!.father.firstName : 'NA'}}</div>
           </div>
           <div>
-            <div> <strong>Class :</strong> Grade 1 </div>
-            <div> <strong>Student Reg No:</strong> SHF01 </div>
+            <div> <strong>Class :</strong> {{stdInfo!.className}} <strong>Section :</strong> {{stdInfo!.section}}</div>
+            <div> <strong>Student Reg No:</strong> {{stdInfo!.id}} </div>
           </div>
         </div>
         <div>
-          <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
-            <thead>
+          <table class="std-fee">
+            <thead class="text-center">
               <tr>
-                <th style="border: 1px solid black; border-collapse: collapse;">S.No</th>
-                <th style="border: 1px solid black; border-collapse: collapse;">Particulars</th>
-                <th style="border: 1px solid black; border-collapse: collapse;">Amount</th>
+                <th class="tbl-header">S.No</th>
+                <th class="tbl-header">Particulars</th>
+                <th class="tbl-header">Amount</th>
               </tr>
             </thead>
-            <tbody style="text-align: center;">
-              <tr>
-                <td style="border: 1px solid black; border-collapse: collapse;">1</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Tution Fee</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Rs. 2000</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid black; border-collapse: collapse;">2</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Admission Fee</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Rs. 2500</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid black; border-collapse: collapse;">3</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Term Fee</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Rs. 500</td>
-              </tr>
+            <tbody class="text-center">
+              @for(item of receiptList; track item; let i=$index){
+                <tr>
+                  <td class="tbl-body">{{i+1}}</td>
+                  <td class="tbl-body">{{item.paymentName}}</td>
+                  <td class="tbl-body">Rs. {{item.amount}}</td>
+                </tr>
+              }             
             </tbody>
           </table>
         </div>
-        <div style="display: flex; justify-content: space-between;margin-top: 40px;">
+        <div class="parent-signature">
           <div>Parent's Signature</div>
           <div>Received By</div>
         </div>
-        <div style="display: flex; justify-content: space-between;">
-          <small>Date: 2/4/2024</small>
+        <div class="cashier-signature">
+          <small>Date: {{today | date: 'd/M/YYYY'}}</small>
           <div>Cashier's Signature</div>
         </div>
       </div>
     </div>
-  
+
     <div>
       <div>Office Copy</div>
       <div>
-        <h1 style=" margin-top: 0px;margin-bottom: 0px;text-align: center;">Receipt</h1>
+        <h1 class="receipt-title">Receipt</h1>
       </div>
-      <div style="text-align: end;">Receipt No: 1</div>
+      <div class="receipt-subtitle">Receipt No: {{invoiceId}}</div>
       <div>
-        <div style="text-align: center; text-align: center; padding: 20px 0px; border: 1px solid;">
+        <div class="school-header">
           <div>
-            <h2 style="margin-top: 0px;margin-bottom: 0px;">SchoolUI Demo School</h2>
+            <h2 class="school-name">SchoolUI Demo School</h2>
           </div>
           <div>
-            <h4 style="margin-top: 0px;margin-bottom: 0px;">Charminar Hyderabad</h4>
+            <h4 class="school-subtitle">Charminar Hyderabad</h4>
           </div>
         </div>
-        <div style="display: flex;justify-content: space-between;margin-top: 10px;margin-bottom: 10px;gap: 30px">
+        <div class="std-info">
           <div>
-            <div> <strong>Student :</strong> StudentName </div>
-            <div> <strong>FatherName :</strong> Father Name </div>
+            <div> <strong>Student :</strong> {{stdInfo!.firstName}} {{stdInfo!.lastName}} </div>
+            <div> <strong>FatherName :</strong> {{stdInfo!.father ? stdInfo!.father.firstName : 'NA'}}</div>
           </div>
           <div>
-            <div> <strong>Class :</strong> Grade 1 </div>
-            <div> <strong>Student Reg No:</strong> SHF01 </div>
+            <div> <strong>Class :</strong> {{stdInfo!.className}} <strong>Section :</strong> {{stdInfo!.section}}</div>
+            <div> <strong>Student Reg No:</strong> {{stdInfo!.id}} </div>
           </div>
         </div>
         <div>
-          <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
-            <thead>
+          <table class="std-fee">
+            <thead class="text-center">
               <tr>
-                <th style="border: 1px solid black; border-collapse: collapse;">S.No</th>
-                <th style="border: 1px solid black; border-collapse: collapse;">Particulars</th>
-                <th style="border: 1px solid black; border-collapse: collapse;">Amount</th>
+                <th class="tbl-header">S.No</th>
+                <th class="tbl-header">Particulars</th>
+                <th class="tbl-header">Amount</th>
               </tr>
             </thead>
-            <tbody style="text-align: center;">
-              <tr>
-                <td style="border: 1px solid black; border-collapse: collapse;">1</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Tution Fee</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Rs. 2000</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid black; border-collapse: collapse;">2</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Admission Fee</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Rs. 2500</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid black; border-collapse: collapse;">3</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Term Fee</td>
-                <td style="border: 1px solid black; border-collapse: collapse;">Rs. 500</td>
-              </tr>
+            <tbody class="text-center">
+              @for(item of receiptList; track item; let i=$index){
+                <tr>
+                  <td class="tbl-body">{{i+1}}</td>
+                  <td class="tbl-body">{{item.paymentName}}</td>
+                  <td class="tbl-body">Rs. {{item.amount}}</td>
+                </tr>
+              }
             </tbody>
           </table>
         </div>
-        <div style="display: flex; justify-content: space-between;margin-top: 40px;">
+        <div class="parent-signature">
           <div>Parent's Signature</div>
           <div>Received By</div>
         </div>
-        <div style="display: flex; justify-content: space-between;">
-          <small>Date: 2/4/2024</small>
+        <div class="cashier-signature">
+          <small>Date: {{today | date: 'd/M/YYYY'}}</small>
           <div>Cashier's Signature</div>
         </div>
       </div>
     </div>
   </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button type="button" class="btn btn-secondary" mat-dialog-close>Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="downloadReceipt()">Download</button>
+</mat-dialog-actions>

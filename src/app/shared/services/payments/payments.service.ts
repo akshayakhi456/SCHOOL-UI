@@ -14,16 +14,19 @@ export class PaymentsService {
     return this.http.post<boolean>(`${URLs.createPayments}`, body);
   }
 
-
   getReceiptById(id: number): Observable<any> {
     return this.http.get(`${URLs.getPaymentsById}${id}`);
   }
 
   getclassWiseReport(): Observable<any> {
-    return this.http.get(`${URLs.getclassWiseReport}`);
+    return this.http.get(`${URLs.getclassWiseReport}/1`);
   }
 
   getyearWiseReport(): Observable<any> {
-    return this.http.get(`${URLs.getyearWiseReport}`);
+    return this.http.get(`${URLs.getyearWiseReport}/1`);
+  }
+
+  postRecordsOfPayment(payload: any): Observable<any> {
+    return this.http.post(`${URLs.postRecordsOfPayment}`, payload)
   }
 }

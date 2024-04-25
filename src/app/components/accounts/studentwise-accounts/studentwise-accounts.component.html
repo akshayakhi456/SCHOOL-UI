@@ -1,12 +1,13 @@
-<div class="admission-field">
-    <mat-form-field appearance="outline">
-        <mat-label>Admission Number</mat-label>
-        <input matInput [formControl]="stdId" />
-    </mat-form-field>
-    <button class="btn btn-primary" type="button" (click)="getStdInfo()">Search</button>
-</div>
-@if (stdInfo?.students) {
-    <div class="d-flex justify-content-between mt-3">
+<div class="d-flex justify-content-between flex-wrap mt-3 mx-2">
+    <div >
+        <mat-form-field appearance="outline">
+            <mat-label>Admission Number</mat-label>
+            <input matInput [formControl]="stdId" />
+        </mat-form-field>
+        <button class="btn btn-primary ms-2" type="button" (click)="getStdInfo()">Search</button>
+    </div>
+    @if (stdInfo?.students) {
+    <div>
         <div>
             <div>
                 <span>Name:</span> <span>{{stdInfo?.students.firstName}} {{stdInfo?.students.lastName}}</span>
@@ -18,17 +19,26 @@
                 <span>Section:</span> <span>{{stdInfo?.students.section}}</span>
             </div>
         </div>
-        <div class="d-flex justify-content-end align-items-end">
+        <div class="">
             <button type="button" class="btn btn-primary" (click)="redirectToPayment()">Payment</button>
+            <button type="button" class="btn btn-primary ms-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  (click)="openReceipt()">Receipt</button>
         </div>
     </div>
-}
+    }
+</div>
 @if (dataSource.data.length != 0) {
 <table mat-table [dataSource]="dataSource">
 
     <!--- Note that these columns can be defined in any order.
                         The actual rendered columns are set as a property on the row definition" -->
-
+    <ng-container matColumnDef="checkbox">
+        <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox [formControl]="selectAllReceipts" (change)="generateAllReceipt()"></mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-checkbox [(ngModel)]="element.checkbox"></mat-checkbox>
+        </td>
+    </ng-container>
     <!-- invoiceId Column -->
     <ng-container matColumnDef="invoiceId">
         <th mat-header-cell *matHeaderCellDef> Receipt No. </th>
@@ -88,5 +98,7 @@
 <div class="no-record">No Records Found</div>
 }
 @if (!stdInfo?.students) {
-    <div class="no-record">Use Search option to show details</div>
+<div class="no-record">Use Search option to show details</div>
 }
+
+<!-- <app-invoice-receipt></app-invoice-receipt> -->

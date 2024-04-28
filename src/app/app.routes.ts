@@ -15,6 +15,8 @@ import { authGuard } from './shared/guards/auth.guard';
 import { unauthGuard } from './shared/guards/unauth.guard';
 import { StudentDetailComponent } from './components/student-detail/student-detail.component';
 import { PaymentsComponent } from './components/payments/payments.component';
+import { UserAccountsComponent } from './components/user-accounts/user-accounts.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -33,5 +35,7 @@ export const routes: Routes = [
     {path: 'settings', component: SettingsComponent, canActivate: [authGuard]},
     {path: 'accounts', component: AccountsComponent, canActivate: [authGuard]},
     {path: 'student-details/:id', component: StudentDetailComponent, canActivate: [authGuard]},
-    {path: 'payment/:id', component: PaymentsComponent, canActivate: [authGuard]}
+    {path: 'payment/:id', component: PaymentsComponent, canActivate: [authGuard]},
+    {path: 'userAccounts', component: UserAccountsComponent, canActivate: [authGuard]},
+    {path: 'changePassword', component: ChangePasswordComponent, canActivate: [authGuard]}
 ];

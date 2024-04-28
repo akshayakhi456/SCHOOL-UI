@@ -39,6 +39,10 @@ export const URLs = {
     registerUser: `${environment.apiUrl}Auth/register`,
     loginUser: `${environment.apiUrl}Auth/login`,
 
+    roles: `${environment.apiUrl}AuthUser/roles`,
+    registerUserDetail: `${environment.apiUrl}AuthUser/UserDetails`,
+    changePassword: `${environment.apiUrl}AuthUser/changePassword`,
+
     dashboard: `${environment.apiUrl}dashboard`,
 
     invoice: `${environment.apiUrl}invoice`,

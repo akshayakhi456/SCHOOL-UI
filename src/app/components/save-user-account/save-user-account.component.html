@@ -1,0 +1,73 @@
+<h1 mat-dialog-title>Save User</h1>
+<mat-dialog-content>
+    <form class="row mt-1" [formGroup]="registerForm">
+        <div class="col-sm-12 co=l-md-6 col-lg-6">
+            <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" />
+                @if(registerFormControls['firstName'].invalid
+                && registerFormControls['firstName'].touched){
+                <mat-error>First Name is required.</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName"/>
+                @if(registerFormControls['lastName'].invalid
+                && registerFormControls['lastName'].touched){
+                <mat-error>Last Name is required.</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <mat-form-field appearance="outline">
+                <mat-label>User Name</mat-label>
+                <input matInput formControlName="userName"/>
+                @if(registerFormControls['userName'].invalid
+                && registerFormControls['userName'].touched){
+                <mat-error>User Name is required.</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email"/>
+                @if(registerFormControls['email'].invalid
+                && registerFormControls['email'].touched){
+                <mat-error>Email is required.</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password"/>
+                @if(registerFormControls['password'].invalid
+                && registerFormControls['password'].touched){
+                <mat-error>Password is required.</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="role">
+                    @for (role of roles; track role) {
+                    <mat-option [value]="role">{{role}}</mat-option>
+                    }
+                </mat-select>
+                @if(registerFormControls['role'].invalid
+                && registerFormControls['role'].touched){
+                <mat-error>Role is required.</mat-error>
+                }
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button class="btn btn-primary" (click)="userCreate()">Create</button>
+    <button class="btn btn-light ms-1" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

@@ -1,0 +1,37 @@
+<div class="user-account-list">
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-12">
+
+        </div>
+        <div class="col-lg-9 col-md-6 col-sm-12">
+            <button class="btn btn-primary float-end mt-1 me-1" (click)="userCreate()">Create</button>
+        </div>
+    </div>
+    <div>
+        <table mat-table matSort [dataSource]="userAccountDataSource">
+            <ng-container matColumnDef="userName">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element">{{element.userName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element">{{element.email}}</td>
+            </ng-container>
+            <ng-container matColumnDef="role">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef> Role </th>
+                <td mat-cell *matCellDef="let element">{{element.role}}</td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element"></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="userAccountDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: userAccountDisplayedColumns;"></tr>
+        </table>
+        <mat-paginator
+        #paginator
+        [pageSizeOptions]="pageSizes"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+</div>

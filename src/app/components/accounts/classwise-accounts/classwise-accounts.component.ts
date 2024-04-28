@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaymentsService } from '../../../shared/services/payments/payments.service';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
@@ -7,6 +7,9 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { ACADEMIC_YEAR } from '../../../shared/models/payment.model';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { GlobalService } from '../../../shared/signal-service/global.service';
 
 @Component({
   selector: 'app-classwise-accounts',
@@ -23,8 +26,13 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
   ],
 })
 export class ClasswiseAccountsComponent implements OnInit {
+  @ViewChild('paginator') paginator!: MatPaginator | null;
+  @ViewChild(MatSort) sort!: MatSort | null;
+  @Output() changeTab = new EventEmitter();
   displayedColumns: Array<string> = ['className', 'actualAmount', 'receivedAmount', 'pendingAmount'];
+  StudentDisplayedColumns: Array<string> = ['studentName', 'actualAmount', 'pendingAmount', 'receivedAmount'];
   dataSource = new MatTableDataSource();
+  studentsDataSource = new MatTableDataSource();
   expandedElement: any | null;
   classList: any;
   sectionList: any;
@@ -32,16 +40,18 @@ export class ClasswiseAccountsComponent implements OnInit {
   orgPaymentsFeeList: Array<{id: string; paymentName: string; className: string}> = [];
   paymentsFeeList: Array<{id: string; paymentName: string; className: string}> = [];
   academicList = ACADEMIC_YEAR;
+  pageSizes = [10,20,50];
   classWiseFormGroup = new FormGroup({
     className: new FormControl<string>('', Validators.required),
     section: new FormControl<string>('', Validators.required),
-    academicYear: new FormControl<number|null>(null, Validators.required),
+    academicYearId: new FormControl<number|null>(null, Validators.required),
     PaymentAllotmentId: new FormControl<Array<number>| null>(null, Validators.required)
   })
 
   constructor(private paymentService: PaymentsService,
     private settingService: SettingsService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private globalService: GlobalService
   ) {
     this.getClassWiseList();
     // this.getClassList();
@@ -99,7 +109,9 @@ export class ClasswiseAccountsComponent implements OnInit {
   }
 
   classWiseStudentRecord(row: any): void {
+    this.classWiseFormGroup.reset();
     this.classWiseFormGroup.patchValue({className: row.className});
+    this.studentsDataSource.data = [];
     this.sectionList = this.orgSectionList.filter(x => x['className'] == row.className);
     if (this.sectionList.length) {
       this.classWiseFormGroup.controls.section.setValidators(Validators.required);
@@ -110,5 +122,25 @@ export class ClasswiseAccountsComponent implements OnInit {
       this.classWiseFormGroup.controls.section.updateValueAndValidity({onlySelf: true});
     }
     this.getPaymentAllotment();
+  }
+
+  searchStudentRecords(): void {
+    this.spinnerService.show();
+    this.paymentService.postRecordsOfPayment(this.classWiseFormGroup.value).subscribe({
+      next: (res) => {
+        this.spinnerService.dispose();
+        this.studentsDataSource.data = res;
+        this.studentsDataSource.sort = this.sort;
+        this.studentsDataSource.paginator = this.paginator;
+      },
+      error: () => {
+        this.spinnerService.dispose();
+      }
+    })
+  }
+
+  redirectToStudentDetails(element: any): void {
+    this.globalService.setSelectedStudent(element.studentId);
+    this.changeTab.emit(0);
   }
 }

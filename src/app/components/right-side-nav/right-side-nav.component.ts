@@ -26,6 +26,11 @@ export class RightSideNavComponent {
       routerLink: 'school-expenses',
       iconClass: 'bi bi-cash-coin fs-36',
       title: 'Expenses'
+    },
+    {
+      routerLink: 'userAccounts',
+      iconClass: 'bi bi-people fs-36',
+      title: 'User Account'
     }
   ]
 

@@ -1,14 +1,22 @@
 <div class="account-setting">
     <div class="body">
-        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedIndex" 
+            (selectedIndexChange)="changeTab($event)">
             <mat-tab label="student-wise Accounts">
-                <app-studentwise-accounts></app-studentwise-accounts>
+                <!-- if(selectedIndex == 0) { -->
+                    <app-studentwise-accounts></app-studentwise-accounts>
+                <!-- } -->
             </mat-tab>
             <mat-tab label="Class-wise Accounts">
-                <app-classwise-accounts></app-classwise-accounts>
+                <!-- if(selectedIndex == 1) { -->
+                    <app-classwise-accounts (changeTab)="changeTab($event)"></app-classwise-accounts>
+                <!-- } -->
             </mat-tab>
             <mat-tab label="overall-Accounts">
-                <app-overall-accounts></app-overall-accounts>
+                <!-- if(selectedIndex == 2) { -->
+                    <app-overall-accounts></app-overall-accounts>
+                <!-- } -->
             </mat-tab>
         </mat-tab-group>
     </div>
+</div>

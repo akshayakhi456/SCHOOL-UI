@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, effect, inject } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaymentsService } from '../../../shared/services/payments/payments.service';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { InvoiceReceiptComponent } from '../../../shared/components/invoice-receipt/invoice-receipt.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
+import { GlobalService } from '../../../shared/signal-service/global.service';
 
 @Component({
   selector: 'app-studentwise-accounts',
@@ -38,10 +39,17 @@ export class StudentwiseAccountsComponent {
     private studentService: StudentService,
     private spinnerService: SpinnerService,
     private snackbar: SnackbarService,
+    private globalService: GlobalService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    effect(() => {
+      this.stdId.setValue(this.globalService.selectedStudentIdForDetails());
+      this.getStudentById();
+    })
+  }
 
   ngOnInit(): void {
+
   }
 
   getStdInfo() {

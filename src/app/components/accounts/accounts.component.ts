@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './accounts.component.scss'
 })
 export class AccountsComponent {
+  selectedIndex = 0;
   breadcrumbData: IBreadcrumb = {
     title: 'Accounts',
     list: [{
@@ -26,6 +27,10 @@ export class AccountsComponent {
 }
 constructor(private breadcrumbService: BreadCrumbService) {
   this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
+}
+
+changeTab(tabIndex: number): void {
+  this.selectedIndex = tabIndex;
 }
 
 }

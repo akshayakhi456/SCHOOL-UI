@@ -143,7 +143,7 @@ export class AdmissionFormComponent {
   }
 
   french() {
-    this._locale = 'fr';
+    this._locale = 'in';
     this._adapter.setLocale(this._locale);
     this.updateCloseButtonLabel('Fermer le calendrier');
   }

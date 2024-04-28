@@ -39,7 +39,7 @@ export class SideMenuComponent {
       isActive: true,
       subList: [
         {
-          title: 'Enquiry Form',
+          title: 'Enquiry List',
           routerLink: '/enquiry-list',
         },
         {

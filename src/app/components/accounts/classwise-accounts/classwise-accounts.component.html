@@ -89,7 +89,37 @@
                             }
                         </mat-form-field>
                     </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <button type="button" class="btn btn-primary" (click)="searchStudentRecords()">Search</button>
+                    </div>
                 </form>
+                <div>
+                    <table mat-table matSort [dataSource]="studentsDataSource">
+                        <ng-container matColumnDef="studentName">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef> Student Name </th>
+                            <td mat-cell *matCellDef="let element"> <a (click)="redirectToStudentDetails(element)">{{element.studentName}}</a> </td>
+                        </ng-container>
+                        <ng-container matColumnDef="actualAmount">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef> Actual Amount </th>
+                            <td mat-cell *matCellDef="let element"> {{element.actualAmount}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="pendingAmount">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef> Pending Amount </th>
+                            <td mat-cell *matCellDef="let element"> {{element.pendingAmount}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="receivedAmount">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef> Received Amount </th>
+                            <td mat-cell *matCellDef="let element"> {{element.receivedAmount}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="StudentDisplayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: StudentDisplayedColumns;"></tr>
+                    </table> 
+                    <mat-paginator
+                        #paginator
+                        [pageSizeOptions]="pageSizes"
+                        showFirstLastButtons
+                    ></mat-paginator>
+                </div>
             </div>
             </td>
         </ng-container>

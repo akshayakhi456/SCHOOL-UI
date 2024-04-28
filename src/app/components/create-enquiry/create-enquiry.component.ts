@@ -230,11 +230,11 @@ export class CreateEnquiryComponent {
             this.parentInteractionForm.disable();
             this.saveParentInteraction = true;
           }
-          if (res.result.enquiry.rating ?? res.enquiry.rating) {
-            this.rating.setValue(res.result.enquiry.rating ?? res.enquiry.rating)
+          if (res.result.enquiry?.rating) {
+            this.rating.setValue(res.result.enquiry.rating)
           }
-          if (res.result.enquiry.review ?? res.enquiry.review) {
-            this.review.setValue(res.result.enquiry.review ?? res.enquiry.review)
+          if (res.result.enquiry?.review) {
+            this.review.setValue(res.result.enquiry.review)
           }
         }
       },
@@ -316,7 +316,19 @@ export class CreateEnquiryComponent {
   }
 
   openReceipt(){
-    this.dialog.open(InvoiceReceiptComponent)
+    const stdInfo = {
+      ...this.enquiryForm.value,
+      father: {firstName: this.enquiryForm.value.guardian }
+    }
+    this.dialog.open(InvoiceReceiptComponent,{
+      data: {
+        stdInfo,
+        receiptList: [{
+          paymentName: this.enquiryPaymentForm.value.feeName,
+          amount: this.enquiryPaymentForm.value.amount
+        }]
+      }
+    })
   }
 
   // downloadReceipt(): void {

@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
-import { TodaysCollectionReportComponent } from './components/todays-collection-report/todays-collection-report.component';
 import { StudentsListComponent } from './components/students-list/students-list.component';
 import { CreateEnquiryComponent } from './components/create-enquiry/create-enquiry.component';
 import { SchoolExpensesComponent } from './components/school-expenses/school-expenses.component';
@@ -17,12 +16,13 @@ import { StudentDetailComponent } from './components/student-detail/student-deta
 import { PaymentsComponent } from './components/payments/payments.component';
 import { UserAccountsComponent } from './components/user-accounts/user-accounts.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
     {path: 'login', component: LoginFormComponent, canActivate: [unauthGuard]},
     {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
-    {path: 'collection-report', component: TodaysCollectionReportComponent, canActivate: [authGuard]},
+    {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
     {path: 'admission', component: AdmissionFormComponent, canActivate: [authGuard]},
     {path: 'student/:id', component: AdmissionFormComponent, canActivate: [authGuard]},
     {path: 'student-list', component: StudentsListComponent, canActivate: [authGuard]},

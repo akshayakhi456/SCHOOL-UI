@@ -44,7 +44,9 @@ export class StudentwiseAccountsComponent {
   ) {
     effect(() => {
       this.stdId.setValue(this.globalService.selectedStudentIdForDetails());
-      this.getStudentById();
+      if (this.stdId.value) {
+        this.getStudentById();
+      }
     })
   }
 
@@ -119,7 +121,7 @@ export class StudentwiseAccountsComponent {
       data: {
         stdInfo,
         receiptList: receiptFor
-      }
+      },
     })
   }
 

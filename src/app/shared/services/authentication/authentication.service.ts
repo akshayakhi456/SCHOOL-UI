@@ -3,7 +3,7 @@ import { Injectable, signal } from "@angular/core";
 import { Observable, map } from "rxjs";
 import { URLs } from "../../api-constants";
 import { TokenService } from "../token/token.service";
-import { IChangePasswordRequest, IChangePasswordResponse, IRegisterRequest, IRegisterUsers } from "../../models/auth.models";
+import { IChangePasswordRequest, IChangePasswordResponse, IHttpResponse, IRegisterRequest } from "../../models/auth.models";
 
 @Injectable({
     providedIn: 'root'
@@ -25,6 +25,10 @@ export class AuthenticationService {
         return this.http.post(URLs.registerUser,payload);
     }
 
+    updateUser(payload: IRegisterRequest): Observable<IHttpResponse<string>> {
+      return this.http.post<IHttpResponse<string>>(URLs.updateUser,payload);
+    }
+
     forgotPasswordUser(payload: any): Observable<any> {
         return this.http.post('',payload);
     }
@@ -33,11 +37,62 @@ export class AuthenticationService {
       return this.http.get<Array<string>>(URLs.roles);
     }
 
-    getUserDetails(): Observable<IRegisterUsers> {
-      return this.http.get<IRegisterUsers>(URLs.registerUserDetail);    
+    getUserDetails(): Observable<IHttpResponse<Array<IRegisterRequest>>> {
+      return this.http.get<IHttpResponse<Array<IRegisterRequest>>>(URLs.registerUserDetail);    
     }
 
-    changePasswordUser(payload: IChangePasswordRequest): Observable<IChangePasswordResponse> {
-      return this.http.post<IChangePasswordResponse>(URLs.changePassword,payload);
+    changePasswordUser(payload: IChangePasswordRequest): Observable<IHttpResponse<IChangePasswordResponse>> {
+      return this.http.post<IHttpResponse<IChangePasswordResponse>>(URLs.changePassword,payload);
+    }
+
+    me(): Observable<IHttpResponse<IRegisterRequest>> {
+      return this.http.get<IHttpResponse<IRegisterRequest>>(URLs.me);
+    }
+
+  isAuthenticated(): boolean {
+    const user = this.decodeToken();
+    if(!user) {
+      return false;
+    }
+    if (user.exp * 1000 < Date.now()) {
+      return true;
+    }
+    return false;
+  }
+
+  userName(): string {
+    const user = this.decodeToken();
+    if(!user) {
+      return '';
+    }
+    return user.FirstName +' '+ user.LastName;
+  }
+
+  role(): string {
+    const user = this.decodeToken();
+    if(!user) {
+      return '';
+    }
+    const role = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+    return user[role];
+  }
+
+  displayName(): string {
+    const name = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+    const user = this.decodeToken();
+    if(!user) {
+      return '';
+    }
+    return user[name];
+  }
+
+  decodeToken() {
+    const token = this.tokenService.getToken();
+    if (!token) {
+      return null;
+    }
+
+    const user = atob(token!.split('.')[1]);
+    return JSON.parse(user);
   }
 }

@@ -15,6 +15,7 @@ import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { ViewPrintReceiptComponent } from '../../shared/components/view-print-receipt/view-print-receipt.component';
 
 export interface PeriodicElement {
   sname: string;
@@ -182,5 +183,13 @@ export class StudentsListComponent {
       section: ''
     });
     this.dataSource.data = this.students;
+  }
+
+  openAdmissionForm(stdId: number) {
+    this.dialog.open(ViewPrintReceiptComponent, {
+      data: {
+        id: stdId
+      }
+    });
   }
 }

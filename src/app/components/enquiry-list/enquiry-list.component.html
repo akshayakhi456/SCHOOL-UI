@@ -82,8 +82,9 @@
                         Action
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        <!-- <mat-icon (click)="editEnquiryForm(element)">edit</mat-icon> -->
-                        <i class="bi bi-pencil" (click)="editEnquiryForm(element)"></i>
+                        <i class="bi bi-pencil" matTooltipPosition="above" matTooltip="Edit Student" (click)="editEnquiryForm(element)"></i>
+                        <i class="bi bi-arrow-repeat ms-3" matTooltipPosition="above" matTooltip="Change student Status" (click)="changeStatusOfStudent(element)"></i>
+                        <i class="bi bi-chat-left-text ms-3" matTooltipPosition="above" matTooltip="Student Feedback" (click)="feedbackForm(element)"></i>
                     </td>
                 </ng-container>
 

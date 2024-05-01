@@ -1,144 +1,140 @@
-  <div class="receipts">
-    <div class="parent-receipt">
-      <div class="receipt-download">
-        <h1>FATIMAH ZAHARA (R.A.) SCHOOL</h1>
-        <p>English Medium School For Girls</p>
-        <p>B/h. Royal Appartment, Junighadi, Vadodara, Gujarat-390006.</p>
-        <p>Phone No.: 0205-2518677</p>
+<h2 mat-dialog-title>Downlaod PDF</h2>
+<mat-dialog-content>
+  <div #receipt class="receipts">
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-9 text-center">
+        <h1 class="mb-0">FATIMAH ZAHARA (R.A.) SCHOOL</h1>
+        <p class="mb-0">English Medium School For Girls</p>
+        <p class="mb-0">B/h. Royal Appartment, Junighadi, Vadodara, Gujarat-390006.</p>
+        <p class="mb-0">Phone No.: 0205-2518677</p>
       </div>
-    
-      <div class="std-info">
-        <div>
-          @if(isSingleReceipt){
-          <p>Receipt No: {{selectedReceipt.invoiceId ? selectedReceipt.invoiceId : selectedReceipt.id}}</p>
-          }
-          <p>Student Name: {{stdInfo.firstName}} {{stdInfo.lastName}}</p>
-          <p>Class: {{stdInfo.className}}  Sec: {{stdInfo.section}}</p>
-        </div>
-        <div>
-          <p>DATE: {{todayDate | date:"d/M/YYYY"}}</p>
-        </div>
+      <div class="col-1"></div>
+    </div>
+    <hr/>
+    <div class="text-center"><strong>Admission Form</strong></div>
+    <div class="d-flex justify-content-between">
+      <div class="d-flex">
+        <strong>No:</strong>
+        <p>{{studentForm!.id}}</p>
       </div>
-    
-      <table class="fee-structure">
-        <thead>
-          <tr>
-            <th style="text-align: left;">Sr.</th>
-            <th style="text-align: left;">Particulars</th>
-            <th style="text-align: right;">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          @if(!isSingleReceipt){
-            @for(item of originalReceipt; track item; let index = $index){
-              <tr>
-                <td>{{index + 1}}</td>
-                <td>{{item.feeName}}</td>
-                <td style="text-align: right;">{{item.amount}}</td>
-              </tr>
-            }
-          }
-          @else {
-            <tr>
-              <td>1</td>
-              <td>{{selectedReceipt.feeName}}</td>
-              <td style="text-align: right;">{{selectedReceipt.amount}}</td>
-            </tr>
-          }
-        </tbody>
-        @if(false){
-        <tfoot>
-          <tr>
-            <th colspan="1" style="text-align: left;">Payment By:</th>
-            <th colspan="1" style="text-align: right;">Total Amount Rs.</th>
-            <td style="text-align: right;">2440</td>
-          </tr>
-          <tr>
-            <th colspan="2" style="text-align: right;">Fees Paid Amount</th>
-            <td style="text-align: right;">1200</td>
-          </tr>
-          <tr>
-            <th colspan="2" style="text-align: right;">Fees Balance Amount</th>
-            <td style="text-align: right;">7640.00</td>
-          </tr>
-        </tfoot>
-        }
-      </table>
-    
-      <div class="signature">
-        <p style="text-align: right;">Fees/Amount once paid will not be refundable or transferable.</p>
-        <p style="text-align: right;">Sign</p>
+      <div class="d-flex">
+        <strong>Date:</strong>
+        <p>{{todayDate | date: 'dd/MM/YYYY'}}</p>
       </div>
     </div>
-    <div class="office-receipt">
-      <div class="receipt-download">
-        <h1>FATIMAH ZAHARA (R.A.) SCHOOL</h1>
-        <p>English Medium School For Girls</p>
-        <p>B/h. Royal Appartment, Junighadi, Vadodara, Gujarat-390006.</p>
-        <p>Phone No.: 0205-2518677</p>
-      </div>
-    
-      <div class="std-info">
-        <div>
-          @if(isSingleReceipt){
-          <p>Receipt No: {{selectedReceipt.invoiceId ? selectedReceipt.invoiceId : selectedReceipt.id}}</p>
-          }
-          <p>Student Name: {{stdInfo.firstName}} {{stdInfo.lastName}}</p>
-          <p>Class: {{stdInfo.className}}  Sec: {{stdInfo.section}}</p>
+    <div class="row">
+      <div class="col-sm-9 row">
+        <div class="col-sm-4">
+          <strong>Students Name:</strong>
+          <p>{{studentForm!.firstName ? studentForm!.firstName +' '+ studentForm!.lastName : ''}}</p>
         </div>
-        <div>
-          <p>DATE: {{todayDate | date:"d/M/YYYY"}}</p>
+        <div class="col-sm-4">
+          <strong>Date OF Birth:</strong>
+          <p> {{studentForm!.dob ? (studentForm!.dob | date: 'mediumDate') : 'N/A'}}</p>
+        </div>
+        <div class="col-sm-4">
+          <strong>Class:</strong>
+          <p> {{studentForm!.className ? studentForm!.className : 'N/A'}}</p>
+        </div>
+        <div class="col-sm-4">
+          <strong>Section:</strong>
+          <p> {{studentForm!.section ? studentForm!.section : 'N/A'}}</p>
+        </div>
+        <div class="col-sm-4">
+          <strong>Gender:</strong>
+          <p> {{studentForm!.gender ? studentForm!.gender : 'N/A'}}</p>
+        </div>
+        <div class="col-sm-4">
+          <strong>Aadhar Number:</strong>
+          <p> {{studentForm!.adharNumber ? studentForm!.adharNumber : 'N/A'}}</p>
         </div>
       </div>
-    
-      <table class="fee-structure">
-        <thead>
-          <tr>
-            <th style="text-align: left;">Sr.</th>
-            <th style="text-align: left;">Particulars</th>
-            <th style="text-align: right;">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          @if(!isSingleReceipt){
-            @for(item of originalReceipt; track item; let index = $index){
-              <tr>
-                <td>{{index + 1}}</td>
-                <td>{{item.feeName}}</td>
-                <td style="text-align: right;">{{item.amount}}</td>
-              </tr>
-            }
+      <div class="col-sm-3">
+        @if (imgViewer) {
+          <div class="img-viewer">
+              <img id="imgviewer" [src]="imgViewer" width="100" height="100" style="width: 100%;" />
+          </div>
           }
           @else {
-            <tr>
-              <td>1</td>
-              <td>{{selectedReceipt.feeName}}</td>
-              <td style="text-align: right;">{{selectedReceipt.amount}}</td>
-            </tr>
+          <div class="empty-img">Photo</div>
           }
-        </tbody>
-        @if(false){
-        <tfoot>
-          <tr>
-            <th colspan="1" style="text-align: left;">Payment By:</th>
-            <th colspan="1" style="text-align: right;">Total Amount Rs.</th>
-            <td style="text-align: right;">2440</td>
-          </tr>
-          <tr>
-            <th colspan="2" style="text-align: right;">Fees Paid Amount</th>
-            <td style="text-align: right;">1200</td>
-          </tr>
-          <tr>
-            <th colspan="2" style="text-align: right;">Fees Balance Amount</th>
-            <td style="text-align: right;">7640.00</td>
-          </tr>
-        </tfoot>
-        }
-      </table>
-    
-      <div class="signature">
-        <p style="text-align: right;">Fees/Amount once paid will not be refundable or transferable.</p>
-        <p style="text-align: right;">Sign</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <strong>Father Name:</strong>
+        <p> {{fatherInfo!.firstName ? fatherInfo!.firstName +' '+ fatherInfo!.lastName : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Occupation:</strong>
+        <p> {{fatherInfo!.occupation ? fatherInfo!.occupation : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Qualification:</strong>
+        <p> {{fatherInfo!.qualification ? fatherInfo!.qualification : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Contact No:</strong>
+        <p> {{fatherInfo!.contactNumber ? fatherInfo!.contactNumber : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Email:</strong>
+        <p> {{fatherInfo!.email ? fatherInfo!.email : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Aadhar Number:</strong>
+        <p> {{fatherInfo!.adharNumber ? fatherInfo!.adharNumber : 'N/A'}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <strong>Mother Name:</strong>
+        <p> {{motherInfo!.firstName ? motherInfo!.firstName +' '+ motherInfo!.lastName : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Occupation:</strong>
+        <p> {{motherInfo!.occupation ? motherInfo!.occupation : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Qualification:</strong>
+        <p> {{motherInfo!.qualification ? motherInfo!.qualification : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Contact No:</strong>
+        <p> {{motherInfo!.contactNumber ? motherInfo!.contactNumber : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Email:</strong>
+        <p> {{motherInfo!.email ? motherInfo!.email : 'N/A'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <strong>Aadhar Number:</strong>
+        <p> {{motherInfo!.adharNumber ? motherInfo!.adharNumber : 'N/A'}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <strong>Address</strong>
+        <p>H.No: {{address!.houseNo ? address!.houseNo : '-'}}, Street: {{address!.streetName ? address!.streetName : '-'}}, {{address!.city ? address!.city : '-'}},
+          <br>District: {{address!.district ? address!.district : ''}},State: {{address!.state ? address!.state : ''}},
+          <br>Country: {{address!.country ? address!.country : ''}},PinCode: {{address!.zipCode ? address!.zipCode : ''}}.</p>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-sm-4">
+        Principal Sign.
+      </div>
+      <div class="col-sm-4 text-center">
+        Academic Incharge Sign.
+      </div>
+      <div class="col-sm-4 text-center">
+        Parent Sign.
       </div>
     </div>
   </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button type="button" class="btn btn-primary" (click)="downloadReceipt()">Download</button>
+  <button type="button" class="btn btn-light ms-2" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

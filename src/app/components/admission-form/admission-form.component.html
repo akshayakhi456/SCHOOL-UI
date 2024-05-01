@@ -149,12 +149,22 @@
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput formControlName="firstName" />
+                        @if (fatherForm['firstName'].errors &&
+                        fatherForm['firstName'].errors['required'] &&
+                        fatherForm['firstName'].touched) {
+                        <mat-error>First Name is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput formControlName="lastName" />
+                        @if (fatherForm['lastName'].errors &&
+                        fatherForm['lastName'].errors['required'] &&
+                        fatherForm['lastName'].touched) {
+                        <mat-error>Last Name is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
@@ -178,7 +188,12 @@
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Email</mat-label>
-                        <input matInput formControlName="email" />
+                        <input matInput type="email" email="true" formControlName="email" />
+                        @if (fatherForm['email'].errors &&
+                        fatherForm['email'].errors['email'] &&
+                        fatherForm['email'].touched) {
+                        <mat-error>Email is incorrect</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
@@ -186,7 +201,7 @@
                         <mat-label>Aadhar Number</mat-label>
                         <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
                         @if (fatherForm['adharNumber'].errors &&
-                        fatherForm['adharNumber'].errors['maxlength'] &&
+                        fatherForm['adharNumber'].errors['mask'] &&
                         fatherForm['adharNumber'].touched) {
                         <mat-error>Aadhar Number must not exceed 12 characters</mat-error>
                         }
@@ -203,12 +218,22 @@
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput formControlName="firstName" />
+                        @if (motherForm['firstName'].errors &&
+                        motherForm['firstName'].errors['required'] &&
+                        motherForm['firstName'].touched) {
+                        <mat-error>First Name is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput formControlName="lastName" />
+                        @if (motherForm['lastName'].errors &&
+                        motherForm['lastName'].errors['required'] &&
+                        motherForm['lastName'].touched) {
+                        <mat-error>Last Name is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
@@ -232,13 +257,23 @@
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Email</mat-label>
-                        <input matInput formControlName="email" />
+                        <input matInput type="email" email="true" formControlName="email" />
+                        @if (motherForm['email'].errors &&
+                        motherForm['email'].errors['email'] &&
+                        motherForm['email'].touched) {
+                        <mat-error>Email is incorrect.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Aadhar Number</mat-label>
                         <input matInput formControlName="adharNumber" mask="0000 0000 0000" />
+                        @if (motherForm['adharNumber'].errors &&
+                        motherForm['adharNumber'].errors['mask'] &&
+                        motherForm['adharNumber'].touched) {
+                        <mat-error>Aadhar Number must be 12 digits.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
             </form>
@@ -269,24 +304,44 @@
                     <mat-form-field appearance="outline">
                         <mat-label>District</mat-label>
                         <input matInput formControlName="district" />
+                        @if (addressForm['district'].errors &&
+                        addressForm['district'].errors['required'] &&
+                        addressForm['district'].touched) {
+                        <mat-error>District is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline">
                         <mat-label>State</mat-label>
                         <input matInput formControlName="state" />
+                        @if (addressForm['state'].errors &&
+                        addressForm['state'].errors['required'] &&
+                        addressForm['state'].touched) {
+                        <mat-error>State is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Country</mat-label>
                         <input matInput formControlName="country" />
+                        @if (addressForm['country'].errors &&
+                        addressForm['country'].errors['required'] &&
+                        addressForm['country'].touched) {
+                        <mat-error>Country is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Pin Code</mat-label>
-                        <input matInput formControlName="zipCode" />
+                        <input matInput formControlName="zipCode" mask="000 000"/>
+                        @if (addressForm['zipCode'].errors &&
+                        addressForm['zipCode'].errors['required'] &&
+                        addressForm['zipCode'].touched) {
+                        <mat-error>Pin Code is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
             </form>
@@ -348,7 +403,7 @@
 
             <mat-chip-set aria-label="Dog selection" class="mx-3">
                 @for (certificate of certificateList; track certificate; let i = $index) {
-                <mat-chip  class="py-4 chip">
+                <mat-chip class="py-4 chip">
                     <div class="d-flex align-items-center chip-text">
                         <div class="ps-2">
                             {{certificate}}

@@ -5,7 +5,7 @@ import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.servic
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
-import { IChangePasswordRequest } from '../../shared/models/auth.models';
+import { IChangePasswordRequest, IChangePasswordResponse } from '../../shared/models/auth.models';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
 
 @Component({
@@ -80,13 +80,13 @@ export class ChangePasswordComponent {
     this.authenticationService.changePasswordUser(this.changePasswordForm.value as IChangePasswordRequest).subscribe({
       next: (res) => {
         this.spinnerService.dispose();
-        const result = res.result.result;
-        if(result.succeeded){
+        const result = res.result as IChangePasswordResponse;
+        if(result.result.succeeded){
           this.snackbar.openSuccessSnackbar('Password Change Successfully.');
         }
         else {
           let error = '';
-          result.errors.forEach(x => {
+          result.result.errors.forEach(x => {
             error += ' ' + x.description 
           })
           this.snackbar.openDangerSnackbar(error);

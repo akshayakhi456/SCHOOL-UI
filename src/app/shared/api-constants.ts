@@ -11,6 +11,9 @@ export const URLs = {
     getEnquiry: `${environment.apiUrl}enquiry`,
     getEnquiryById: `${environment.apiUrl}enquiry/`,
     createEnquiryPayments: `${environment.apiUrl}enquiry/entranceExamFee`,
+    changeStatusEnquiryStudent: `${environment.apiUrl}enquiry/changeStatusEnquiryStudent/`,
+    saveFeedBack: `${environment.apiUrl}enquiry/SaveFeedBack`,
+    feedbackList: `${environment.apiUrl}enquiry/FeedbackList/`,
 
     createExpenses: `${environment.apiUrl}expenses/create`,
     getExpenses: `${environment.apiUrl}expenses`,
@@ -40,7 +43,9 @@ export const URLs = {
     loginUser: `${environment.apiUrl}Auth/login`,
 
     roles: `${environment.apiUrl}AuthUser/roles`,
+    updateUser: `${environment.apiUrl}AuthUser/updateUser`,
     registerUserDetail: `${environment.apiUrl}AuthUser/UserDetails`,
+    me: `${environment.apiUrl}AuthUser/me`,
     changePassword: `${environment.apiUrl}AuthUser/changePassword`,
 
     dashboard: `${environment.apiUrl}dashboard`,

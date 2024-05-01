@@ -9,7 +9,7 @@
         <div class="row">
             @for (item of menuList; track item) {
                 <div class="col-6">
-                    <a [routerLink]="item.routerLink" class="waves-effect waves-light btn btn-app btn btn-primary-light btn-flat mx-0 mb-20 no-shadow py-35 h-auto d-block" href="accounting.html">
+                    <a [routerLink]="item.routerLink" data-bs-dismiss="offcanvas" class="waves-effect waves-light btn btn-app btn btn-primary-light btn-flat mx-0 mb-20 no-shadow py-35 h-auto d-block" href="accounting.html">
                         <i [class]="item.iconClass"></i><br/>
                         <span class="fs-16">{{item.title}}</span>
                     </a>

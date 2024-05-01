@@ -69,9 +69,9 @@ export class InvoiceReceiptComponent {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'px', 'a4', true);
       const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfWidth = 410//pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.addImage(imgData, 'PNG', 20, 0, pdfWidth, pdfHeight);
       this.generateReceipt(imgData, pdf, viewportMetaTag, isMobile);
     });
   }
@@ -94,7 +94,7 @@ export class InvoiceReceiptComponent {
         this.spinnerService.dispose();
         if (res.statusCode === 200) {
           this.snackbar.openSuccessSnackbar(res.message);
-          pdf.save('download.pdf');
+          pdf.save(`${this.stdInfo!.firstName}_${this.stdInfo!.lastName}.pdf`);
           if(isMobile){
             setTimeout(() => {
               viewportMetaTag.setAttribute('content', 'width=device-width, initial-scale=1');

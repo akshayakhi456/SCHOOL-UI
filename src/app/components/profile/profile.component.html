@@ -1,0 +1,57 @@
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Profile
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form class="row mt-1" [formGroup]="registerForm">
+            <div class="col-sm-12 co=l-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName" />
+                    @if(registerFormControls['firstName'].invalid
+                    && registerFormControls['firstName'].touched){
+                    <mat-error>First Name is required.</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName="lastName"/>
+                    @if(registerFormControls['lastName'].invalid
+                    && registerFormControls['lastName'].touched){
+                    <mat-error>Last Name is required.</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>User Name</mat-label>
+                    <input matInput formControlName="userName" readonly/>
+                    @if(registerFormControls['userName'].invalid
+                    && registerFormControls['userName'].touched){
+                    <mat-error>User Name is required.</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" readonly/>
+                    @if(registerFormControls['email'].invalid
+                    && registerFormControls['email'].touched){
+                    <mat-error>Email is required.</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+        </form>
+        <div class="text-center">
+            <button class="btn btn-primary" (click)="updateUser()">Update</button>
+            <button class="btn btn-light ms-1" mat-dialog-close>Cancel</button>
+        </div>
+      </mat-expansion-panel>
+</mat-accordion>

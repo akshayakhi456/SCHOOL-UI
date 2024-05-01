@@ -3,19 +3,19 @@
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedIndex" 
             (selectedIndexChange)="changeTab($event)">
             <mat-tab label="student-wise Accounts">
-                <!-- if(selectedIndex == 0) { -->
-                    <app-studentwise-accounts></app-studentwise-accounts>
-                <!-- } -->
+                <ng-template matTabContent>
+                        <app-studentwise-accounts></app-studentwise-accounts>
+                </ng-template>
             </mat-tab>
             <mat-tab label="Class-wise Accounts">
-                <!-- if(selectedIndex == 1) { -->
-                    <app-classwise-accounts (changeTab)="changeTab($event)"></app-classwise-accounts>
-                <!-- } -->
+                <ng-template matTabContent>
+                        <app-classwise-accounts (changeTab)="changeTab($event)"></app-classwise-accounts>
+                </ng-template>
             </mat-tab>
             <mat-tab label="overall-Accounts">
-                <!-- if(selectedIndex == 2) { -->
-                    <app-overall-accounts></app-overall-accounts>
-                <!-- } -->
+                <ng-template matTabContent>
+                        <app-overall-accounts></app-overall-accounts>
+                </ng-template>
             </mat-tab>
         </mat-tab-group>
     </div>

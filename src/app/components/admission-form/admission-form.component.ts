@@ -70,8 +70,8 @@ export class AdmissionFormComponent {
 
   fatherInfoForm = new FormGroup({
     id: new FormControl<number>(0),
-    firstName: new FormControl<string>(''),
-    lastName: new FormControl<string>(''),
+    firstName: new FormControl<string>('', Validators.required),
+    lastName: new FormControl<string>('', Validators.required),
     occupation: new FormControl<string>(''),
     qualification: new FormControl<string>(''),
     contactNumber: new FormControl<number | null>(null),
@@ -83,8 +83,8 @@ export class AdmissionFormComponent {
 
   motherInfoForm = new FormGroup({
     id: new FormControl<number>(0),
-    firstName: new FormControl<string>(''),
-    lastName: new FormControl<string>(''),
+    firstName: new FormControl<string>('', Validators.required),
+    lastName: new FormControl<string>('', Validators.required),
     occupation: new FormControl<string>(''),
     qualification: new FormControl<string>(''),
     contactNumber: new FormControl<number | null>(null),
@@ -99,10 +99,10 @@ export class AdmissionFormComponent {
     houseNo: new FormControl<string>(''),
     streetName: new FormControl<string>(''),
     city: new FormControl<string>(''),
-    district: new FormControl<string>(''),
-    state: new FormControl<string>(''),
-    zipCode: new FormControl<string>(''),
-    country: new FormControl<string>(''),
+    district: new FormControl<string>('', Validators.required),
+    state: new FormControl<string>('', Validators.required),
+    zipCode: new FormControl<string>('', Validators.required),
+    country: new FormControl<string>('', Validators.required),
     studentId: new FormControl<number>(0)
   });
 
@@ -115,6 +115,14 @@ export class AdmissionFormComponent {
   }
   get fatherForm():  { [key: string]: AbstractControl } {
     return this.fatherInfoForm.controls;
+  }
+
+  get motherForm():  { [key: string]: AbstractControl } {
+    return this.motherInfoForm.controls;
+  }
+
+  get addressForm():  { [key: string]: AbstractControl } {
+    return this.AddressInfoForm.controls;
   }
 
   constructor(private _adapter: DateAdapter<any>,
@@ -140,6 +148,26 @@ export class AdmissionFormComponent {
     this.studentInfoForm.controls.className.valueChanges.subscribe(res => {
       this.sectionList = this.orgSectionList.filter(x => x['className'] == res)
     })
+    this.fatherInfoForm.controls.adharNumber.valueChanges.subscribe(res => {
+      if(res && !this.fatherInfoForm.controls.adharNumber.hasValidator(Validators.maxLength(12))) {
+        this.fatherInfoForm.controls.adharNumber.addValidators(Validators.maxLength(12));
+        this.fatherInfoForm.controls.adharNumber.updateValueAndValidity({emitEvent: false, onlySelf: true});
+      }
+      else if(!res && this.fatherInfoForm.controls.adharNumber.hasValidator(Validators.maxLength(12))){
+        this.fatherInfoForm.controls.adharNumber.clearValidators();
+        this.fatherInfoForm.controls.adharNumber.updateValueAndValidity({emitEvent: false, onlySelf: true});
+      }
+    });
+    this.motherInfoForm.controls.adharNumber.valueChanges.subscribe(res => {
+      if(res && !this.motherInfoForm.controls.adharNumber.hasValidator(Validators.maxLength(12))) {
+        this.motherInfoForm.controls.adharNumber.addValidators(Validators.maxLength(12));
+        this.motherInfoForm.controls.adharNumber.updateValueAndValidity({emitEvent: false, onlySelf: true});
+      }
+      else if(!res && this.motherInfoForm.controls.adharNumber.hasValidator(Validators.maxLength(12))){
+        this.motherInfoForm.controls.adharNumber.clearValidators();
+        this.motherInfoForm.controls.adharNumber.updateValueAndValidity({emitEvent: false, onlySelf: true});
+      }
+    });
   }
 
   french() {
@@ -249,6 +277,10 @@ export class AdmissionFormComponent {
   }
 
   OnSubmit(): void {
+    this.studentInfoForm.markAllAsTouched();
+    this.fatherInfoForm.markAllAsTouched();
+    this.motherInfoForm.markAllAsTouched();
+    this.AddressInfoForm.markAllAsTouched();
     if (this.studentInfoForm.invalid) {
       return;
     }

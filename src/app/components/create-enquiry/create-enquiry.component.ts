@@ -5,7 +5,6 @@ import { EnquiryService } from '../../shared/services/enquiry/enquiry.service';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ViewPrintReceiptComponent } from '../../shared/components/view-print-receipt/view-print-receipt.component';
 import html2canvas from 'html2canvas';
 import jspdf, { jsPDF } from 'jspdf';
 import { StarRatingComponent } from '../../shared/components/star-rating/star-rating.component';
@@ -20,7 +19,7 @@ import { MatDatepickerIntl } from '@angular/material/datepicker';
 @Component({
   selector: 'app-create-enquiry',
   standalone: true,
-  imports: [SharedModule, NgxMaskDirective, NgxMaskPipe, ViewPrintReceiptComponent, StarRatingComponent],
+  imports: [SharedModule, NgxMaskDirective, NgxMaskPipe, StarRatingComponent],
   templateUrl: './create-enquiry.component.html',
   styleUrl: './create-enquiry.component.scss',
   providers: [provideNgxMask()]

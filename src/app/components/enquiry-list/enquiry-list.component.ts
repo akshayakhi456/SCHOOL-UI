@@ -13,6 +13,9 @@ import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { CommonModule } from '@angular/common';
+import { AlertmessageService } from '../../shared/services/alert-message/alertmessage.service';
+import { SnackbarService } from '../../shared/signal-service/snackbar.service';
+import { EnquiryFeedbackComponent } from './enquiry-feedback/enquiry-feedback.component';
 
 @Component({
   selector: 'app-enquiry-list',
@@ -60,6 +63,8 @@ export class EnquiryListComponent {
     private breadcrumbService: BreadCrumbService,
     private router: Router,
     private settingService: SettingsService,
+    private snackbar: SnackbarService,
+    private alertMessageService: AlertmessageService,
     public dialog: MatDialog) {
       this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData)
     }
@@ -94,6 +99,7 @@ export class EnquiryListComponent {
       this.dataSource.data = res.result;
       this.enquiryList = res.result;
       this.dataSource.paginator = this.paginator;
+      this.filterChanges();
     },error:()=>{
       this.spinnerService.dispose();
     }})
@@ -127,5 +133,36 @@ export class EnquiryListComponent {
       ((form.className?.toString() == '' || x.className.toString() == form.className)) &&
       ((form.status == null || x.status == form.status))
     )
+  }
+
+  changeStatusOfStudent(element: any): void {
+    const payload = {
+      title: 'Enquiry Status',
+      body: `Do you want to change Status of ${element.firstName} ${element.lastName} ?`
+    }
+    const dialogRef = this.alertMessageService.openSuccessWithSubscriber(payload);
+    dialogRef.dialogResult$.subscribe((res: boolean) =>{
+      if(res) {
+        this.spinnerService.show();
+        this.service.changeStatusEnquiryStudent(element.id, !element.status).subscribe({
+          next: (res: any) =>{
+            this.spinnerService.dispose();
+            if (res.statusCode == 200){
+              this.snackbar.openSuccessSnackbar(res.message);
+              this.getEnquiryList();
+            }
+          },
+          error:() =>{
+            this.spinnerService.dispose();
+          }
+        })
+      }
+    })
+  }
+
+  feedbackForm(id: number): void {
+    this.dialog.open(EnquiryFeedbackComponent, {
+      data: id
+    });
   }
 }

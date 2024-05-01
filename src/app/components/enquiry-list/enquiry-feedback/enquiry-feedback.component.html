@@ -1,0 +1,33 @@
+<h1 mat-dialog-title class="mb-0 d-flex justify-content-between ">
+    <p>Enquiry Feedback</p>
+    <i class="bi bi-x" mat-dialog-close></i>
+</h1>
+<mat-dialog-content>
+    <div class="row">
+        @for(item of feedbackList; track item; let i=$index) {
+            <div class="col-sm-12">
+                <p class="mb-0">{{item.feedback}}</p>
+                <div class="d-flex justify-content-between">
+                    <p  class="mb-0">{{item.createdBy}}</p>
+                    <p>{{item.createdAt | date:'dd/MM/YYYY hh:MM:ss a'}}</p>
+                </div>
+            </div>
+            <hr/>
+        }
+        @empty {
+            <p>No feedback</p>
+        }
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions class="d-block">
+    <div class="d-flex gap-5 align-items-baseline">
+        <div class="w-75">
+            <mat-form-field appearance="outline">
+                <textarea matInput cols="5" [formControl]="feedback"></textarea>
+            </mat-form-field>
+        </div>
+        <div>
+            <button class="btn btn-primary" [disabled]="!feedback.value" (click)="saveFeedBack()">Save</button>
+        </div>
+    </div>
+</mat-dialog-actions>

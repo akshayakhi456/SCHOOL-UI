@@ -5,6 +5,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Router, RouterOutlet } from '@angular/router';
 import { TokenService } from '../../shared/services/token/token.service';
 import { GlobalService } from '../../shared/signal-service/global.service';
+import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -54,7 +55,8 @@ export class SideMenuComponent {
     }
   ]
 
-  constructor(private router: Router, 
+  constructor(private router: Router,
+    public authentication: AuthenticationService,
     private service: GlobalService,
     private tokenService: TokenService) {
     effect(() =>{

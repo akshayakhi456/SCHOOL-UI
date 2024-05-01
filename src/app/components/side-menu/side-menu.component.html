@@ -5,15 +5,15 @@
 			<div class="image d-flex align-items-center">
 				<img src="../../../assets/avatar-13.png" class="rounded-0 me-10" alt="User Image">
 				<div>
-					<h4 class="mb-0 fw-600">Nil Yeager</h4>
-					<p class="mb-0">Super Admin</p>
+					<h4 class="mb-0 fw-600">{{authentication.displayName()}}</h4>
+					<p class="mb-0">{{authentication.role()}}</p>
 				</div>
 			</div>
 			<div class="info">
 				<div class="dropdown">
 					<a class="dropdown-toggle" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false"></a>
 					<ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenu2">
-						<li><a class="dropdown-item" href="extra_profile.html"><i class="bi bi-person"></i> Profile</a></li>
+						<li><a class="dropdown-item" routerLink="profile"><i class="bi bi-person"></i> Profile</a></li>
 						<a class="dropdown-item" routerLink="changePassword"><i class="bi bi-arrow-repeat"></i> Change Password</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" (click)="signOut()"><i class="bi bi-lock"></i> Logout</a>

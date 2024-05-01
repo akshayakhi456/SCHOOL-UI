@@ -1,24 +1,20 @@
 export interface IRegisterRequest {
     firstName: string;
     lastName: string;
-    userName: string;
-    email: string;
-    password: string;
-    role: string;
+    userName?: string;
+    email?: string;
+    password?: string;
+    role?: string;
 }
 
-export interface IHttpResponse {
+export interface IHttpResponse<T> {
     statusCode: number;
     message: string;
-    version: number; 
+    version: number;
+    result?: T
 }
 
-export interface IRegisterUsers extends IHttpResponse {
-    result: Array<IRegisterRequest>;
-}
-
-export interface IChangePasswordResponse extends IHttpResponse {
-    result: {
+export interface IChangePasswordResponse {
         result: {
             succeeded: string;
             errors: Array<{
@@ -26,7 +22,6 @@ export interface IChangePasswordResponse extends IHttpResponse {
                 description: string
             }>
         }
-    };
 }
 
 export interface IChangePasswordRequest {

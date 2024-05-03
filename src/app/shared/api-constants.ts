@@ -45,6 +45,7 @@ export const URLs = {
     roles: `${environment.apiUrl}AuthUser/roles`,
     updateUser: `${environment.apiUrl}AuthUser/updateUser`,
     registerUserDetail: `${environment.apiUrl}AuthUser/UserDetails`,
+    resetPassword: `${environment.apiUrl}AuthUser/resetPassword`,
     me: `${environment.apiUrl}AuthUser/me`,
     changePassword: `${environment.apiUrl}AuthUser/changePassword`,
 

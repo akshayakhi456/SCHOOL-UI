@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
 import { IRegisterRequest } from '../../shared/models/auth.models';
 import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
-import { SaveUserAccountComponent } from '../save-user-account/save-user-account.component';
 import { HTTP_CODES } from '../../shared/constants/common.constants';
+import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,6 +25,7 @@ export class ProfileComponent {
   roles: Array<string> = [];
 
   constructor(private authService: AuthenticationService,
+    private breadcrumbService: BreadCrumbService,
     private snackbarservice: SnackbarService,
     private spinnerService: SpinnerService
   ) {}
@@ -35,6 +35,7 @@ export class ProfileComponent {
   }
 
   ngOnInit(): void {
+    this.breadcrumbService.setBreadcrumb(false);
     this.getMeAPI();
   }
 

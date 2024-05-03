@@ -32,6 +32,6 @@ export class AppComponent {
     })
   }
   isLogin(): boolean {
-    return this.router.url.includes('login')
+    return this.router.url.includes('login') || this.router.url.includes('newPassword')
   }
 }

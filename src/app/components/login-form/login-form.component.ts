@@ -5,7 +5,7 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
-import { Token } from '@angular/compiler';
+import { SnackbarService } from '../../shared/signal-service/snackbar.service';
 
 @Component({
   selector: 'app-login-form',
@@ -15,10 +15,13 @@ import { Token } from '@angular/compiler';
   styleUrl: './login-form.component.scss'
 })
 export class LoginFormComponent implements OnInit{
+  loginPage = true;
   loginForm = new FormGroup({
     userName: new FormControl<string>('', Validators.required),
     password: new FormControl<string>('', Validators.required)
   })
+
+  userName = new FormControl('', Validators.required);
 
   get f(): {[key: string]: AbstractControl} {
     return this.loginForm.controls;
@@ -26,6 +29,7 @@ export class LoginFormComponent implements OnInit{
 
   constructor(private router: Router,
     private spinnerService: SpinnerService,
+    private snackbar: SnackbarService,
     private authService: AuthenticationService){}
 
   ngOnInit() {
@@ -48,4 +52,22 @@ export class LoginFormComponent implements OnInit{
       }
     })
   }
+
+  resetPassword() {
+    this.userName.markAsTouched();
+    if(!this.userName.value){
+      return;
+    }
+    this.spinnerService.show();
+    this.authService.resetPassword(this.userName.value).subscribe({
+      next: res => {
+        this.spinnerService.dispose();
+        this.snackbar.openSuccessSnackbar(res.result!);
+      },
+      error: () => {
+        this.spinnerService.dispose();
+      }
+    })
+  }
+
 }

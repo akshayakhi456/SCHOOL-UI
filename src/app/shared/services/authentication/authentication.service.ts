@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable, signal } from "@angular/core";
 import { Observable, map } from "rxjs";
 import { URLs } from "../../api-constants";
@@ -43,6 +43,23 @@ export class AuthenticationService {
 
     changePasswordUser(payload: IChangePasswordRequest): Observable<IHttpResponse<IChangePasswordResponse>> {
       return this.http.post<IHttpResponse<IChangePasswordResponse>>(URLs.changePassword,payload);
+    }
+
+    resetPassword(username: string): Observable<IHttpResponse<string>> {
+      return this.http.get<IHttpResponse<string>>(`${URLs.resetPassword}/${username}`);  
+    }
+
+    resetPasswordWithToken(token:string, username: string, password: string): Observable<IHttpResponse<string>> {
+      const headers = new HttpHeaders().set('token', token);
+      const params = {
+        token,
+        username,
+        password
+      }
+      return this.http.get<IHttpResponse<string>>(URLs.resetPassword, {
+        headers: headers,
+        params: params
+      });  
     }
 
     me(): Observable<IHttpResponse<IRegisterRequest>> {

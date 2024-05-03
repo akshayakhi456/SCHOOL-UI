@@ -12,39 +12,67 @@
                 </mat-card-title>
                 <mat-card-content class="auth-card-body">
                     <div id="sign-in-form">
-                        <form [formGroup]="loginForm">
-                            <div class="form-input">
+                        @if(loginPage) {
+                            <h2 class="text-center">Login User</h2>
+                            <form [formGroup]="loginForm">
+                                <div class="form-input">
+                                    <mat-form-field appearance="outline" class="mfg-sign-in">
+                                        <mat-label>UserName</mat-label>
+                                        <input matInput formControlName="userName" name="user-name" id="sign-in-user-name"
+                                            autocomplete="username">
+                                        @if (f['userName'].invalid && f['userName'].touched){
+                                        <mat-error id="email-required-error">User Name is
+                                            required.</mat-error>
+                                        }
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-input">
+                                    <mat-form-field appearance="outline" id="password-form-field" class="mfg-sign-in">
+                                        <mat-label>Password</mat-label>
+                                        <input type="password" formControlName="password" matInput name="password"
+                                            id="sign-in-password" autocomplete="current-password">
+                                        @if (f['password'].invalid && f['password'].touched){
+                                        <mat-error id="email-required-error">Password is
+                                            required.</mat-error>
+                                        }
+                                    </mat-form-field>
+                                </div>
+                                
+                                <div class="form-button-container">
+                                    <button type="submit" mat-raised-button class="confirmation-but1ton" color="primary"
+                                        id="sign-in-button" (click)="login()">
+                                        Sign in
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="sign-in-form-reset-password mt-3">
+                                <b>Forgot password? <a id="sign-in-reset-password" (click)="loginPage = !loginPage">Reset your password</a> </b>
+                            </div>
+                        }
+                        @else {
+                            <h2 class="text-center">Forgot Your Password</h2>
+                            <form>
                                 <mat-form-field appearance="outline" class="mfg-sign-in">
                                     <mat-label>UserName</mat-label>
-                                    <input matInput formControlName="userName" name="user-name" id="sign-in-user-name"
+                                    <input matInput [formControl]="userName" name="user-name" id="sign-in-user-name"
                                         autocomplete="username">
-                                    @if (f['userName'].invalid && f['userName'].touched){
+                                    @if (userName.invalid && userName.touched){
                                     <mat-error id="email-required-error">User Name is
                                         required.</mat-error>
                                     }
                                 </mat-form-field>
-                            </div>
-                            <div class="form-input">
-                                <mat-form-field appearance="outline" id="password-form-field" class="mfg-sign-in">
-                                    <mat-label>Password</mat-label>
-                                    <input type="password" formControlName="password" matInput name="password"
-                                        id="sign-in-password" autocomplete="current-password">
-                                    @if (f['password'].invalid && f['password'].touched){
-                                    <mat-error id="email-required-error">Password is
-                                        required.</mat-error>
-                                    }
-                                </mat-form-field>
-                            </div>
-                            <!-- <div class="sign-in-form-reset-password">
-                                <b>Forgot password? <a id="sign-in-reset-password">Reset your password</a> </b>
-                            </div> -->
+                            </form>
                             <div class="form-button-container">
                                 <button type="submit" mat-raised-button class="confirmation-but1ton" color="primary"
-                                    id="sign-in-button" (click)="login()">
-                                    Sign in
+                                    id="sign-in-button" (click)="resetPassword()">
+                                    Reset
+                                </button>
+                                <button type="submit" mat-raised-button class="confirmation-but1ton mt-2" color="accent"
+                                    id="sign-in-button" (click)="loginPage = !loginPage">
+                                    Cancel
                                 </button>
                             </div>
-                        </form>
+                        }
                     </div>
                 </mat-card-content>
             </mat-card>

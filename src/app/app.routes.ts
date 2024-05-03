@@ -17,6 +17,7 @@ import { PaymentsComponent } from './components/payments/payments.component';
 import { UserAccountsComponent } from './components/user-accounts/user-accounts.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { NewPasswordComponent } from './components/new-password/new-password.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -37,5 +38,6 @@ export const routes: Routes = [
     {path: 'student-details/:id', component: StudentDetailComponent, canActivate: [authGuard]},
     {path: 'payment/:id', component: PaymentsComponent, canActivate: [authGuard]},
     {path: 'userAccounts', component: UserAccountsComponent, canActivate: [authGuard]},
-    {path: 'changePassword', component: ChangePasswordComponent, canActivate: [authGuard]}
+    {path: 'changePassword', component: ChangePasswordComponent, canActivate: [authGuard]},
+    {path: 'newPassword', component: NewPasswordComponent},
 ];

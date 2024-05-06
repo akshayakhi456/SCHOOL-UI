@@ -22,14 +22,14 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <mat-form-field appearance="outline">
-                                <mat-label>Payment Mode</mat-label>
-                                <mat-select formControlName="paymentType">
-                                    @for (mode of paymentModeList; track mode) {
-                                    <mat-option [value]="mode">{{mode}}</mat-option>
+                                <mat-label>Academic Year</mat-label>
+                                <mat-select formControlName="acedamicYearId">
+                                    @for (year of academicYearList; track year) {
+                                    <mat-option [value]="year.value">{{year.label}}</mat-option>
                                     }
                                 </mat-select>
-                                @if (f['paymentType'].invalid && f['paymentType'].touched){
-                                <mat-error>Payment Mode is required</mat-error>
+                                @if (f['acedamicYearId'].invalid && f['acedamicYearId'].touched){
+                                <mat-error>Academic Year is required</mat-error>
                                 }
                             </mat-form-field>
                         </div>
@@ -76,6 +76,19 @@
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Payment Mode</mat-label>
+                                <mat-select formControlName="paymentType">
+                                    @for (mode of paymentModeList; track mode) {
+                                    <mat-option [value]="mode">{{mode}}</mat-option>
+                                    }
+                                </mat-select>
+                                @if (f['paymentType'].invalid && f['paymentType'].touched){
+                                <mat-error>Payment Mode is required</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -91,7 +104,7 @@
                 </div>
                 <div class="box-footer">
                         <button type="button" class="btn btn-primary" (click)="savePayments()">Payment</button>
-                        <button type="button" class="btn btn-light ms-2" mat-dialog-close>Cancel</button>
+                        <button type="button" class="btn btn-light ms-2" routerLink="/accounts">Cancel</button>
                 </div>
             </div>
         </div>

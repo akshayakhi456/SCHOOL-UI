@@ -1,0 +1,92 @@
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    .mat-mdc-table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        display: table;
+        border-collapse: collapse;
+        margin: 0px;
+    }
+    .mat-mdc-row,
+    .mat-mdc-header-row {
+        display: table-row;
+    }
+    th,td{
+    text-align: center;
+    }
+    .mat-mdc-cell,
+    .mat-mdc-header-cell {
+        word-wrap: initial;
+        display: table-cell;
+        padding: 0px 5px;
+        line-break: unset;
+        width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: middle;
+    }
+  }
+
+  .checkbox-container {
+    display: inline-block;
+  }
+  
+  .hidden-checkbox {
+    display: none;
+  }
+  
+  .checkbox-label {
+    display: inline-block;
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    // border: 2px solid #000; /* Border color */
+    border-radius: 50%; /* Makes the box round */
+    cursor: pointer;
+    position: relative;
+    padding-top: 7px;
+  }
+
+  .green {
+    border: 2px solid green;
+  }
+
+  .red {
+    border: 2px solid red;
+  }
+
+  .yellow {
+    border: 2px solid yellow;
+  }
+  
+  .checkbox-label::after {
+    content: "";
+    display: block;
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    border-radius: 50%;
+    // background-color: #000; /* Color of the dot */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); /* Initially hidden */
+    transition: transform 0.2s ease-in-out; /* Smooth animation */
+  }
+
+  .green::after {
+    background-color: green;
+  }
+
+  .red::after {
+    background-color: red;
+  }
+
+  .yellow::after {
+    background-color: yellow;
+  }
+  
+  .hidden-checkbox:checked + .checkbox-label::after {
+    transform: translate(-50%, -50%) scale(1); /* Show the dot when checked */
+  }

@@ -13,6 +13,7 @@ import { StudentService } from '../../shared/services/student/student.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { ACADEMIC_YEAR } from '../../shared/models/payment.model';
 
 @Component({
   selector: 'app-payments',
@@ -28,6 +29,7 @@ export class PaymentsComponent {
   actualFeeAmount = 0;
   paidAmountList: any;
   paidFeeAmount = 0;
+  academicYearList = ACADEMIC_YEAR;
   id = 0;
   paymentForm = new FormGroup({
     paymentName: new FormControl<string>('',Validators.required),
@@ -37,7 +39,8 @@ export class PaymentsComponent {
     dateOfPayment: new FormControl<Date>(new Date()),
     studentId: new FormControl<number>(0),
     acedamicYearId: new FormControl<number>(1),
-    dueDateOfPayment: new FormControl<Date | null>(null)
+    dueDateOfPayment: new FormControl<Date | null>(null),
+    PaymentAllotmentId: new FormControl<number | null>(null)
   });
 
   cardDetails = new FormGroup({
@@ -105,10 +108,11 @@ export class PaymentsComponent {
       const row = this.PaymentsFeeList.find((x: any)=>x.paymentName == res);
       if (this.paidAmountList) {
         const paidList = this.paidAmountList.filter((x: any) => x.paymentName == res);
-        if (paidList) {
+        if (paidList?.length) {
           this.paidFeeAmount = paidList.map((item: any) => item.amount).reduce((p: number, c: number) => p + c)
         }
-      }
+      };
+      this.paymentForm.patchValue({PaymentAllotmentId: Number(row.id)})
       this.actualFeeAmount = Number(row.amount);
     });
 
@@ -118,7 +122,7 @@ export class PaymentsComponent {
   }
 
   french() {
-    this._locale = 'fr';
+    this._locale = 'en';
     this._adapter.setLocale(this._locale);
     this.updateCloseButtonLabel('Fermer le calendrier');
   }
@@ -145,7 +149,7 @@ export class PaymentsComponent {
       this.chequeDetails.controls.chequeNo.removeValidators(Validators.required);
       this.chequeDetails.controls.chequeNo.updateValueAndValidity();
     }
-    else {
+    else if (paymentType == 'Cheque') {
       this.cardDetails.controls.cardHolderName.removeValidators(Validators.required);
       this.cardDetails.controls.cardHolderName.updateValueAndValidity();
       this.cardDetails.controls.cardNumber.removeValidators(Validators.required);
@@ -159,6 +163,22 @@ export class PaymentsComponent {
       this.chequeDetails.controls.branch.setValidators(Validators.required);
       this.chequeDetails.controls.branch.updateValueAndValidity();
       this.chequeDetails.controls.chequeNo.setValidators(Validators.required);
+      this.chequeDetails.controls.chequeNo.updateValueAndValidity();
+    }
+    else {
+      this.cardDetails.controls.cardHolderName.removeValidators(Validators.required);
+      this.cardDetails.controls.cardHolderName.updateValueAndValidity();
+      this.cardDetails.controls.cardNumber.removeValidators(Validators.required);
+      this.cardDetails.controls.cardNumber.updateValueAndValidity();
+      this.cardDetails.controls.cvv.removeValidators(Validators.required);
+      this.cardDetails.controls.cvv.updateValueAndValidity();
+      this.cardDetails.controls.expirationDate.removeValidators(Validators.required);
+      this.cardDetails.controls.expirationDate.updateValueAndValidity();
+      this.chequeDetails.controls.bankName.removeValidators(Validators.required);
+      this.chequeDetails.controls.bankName.updateValueAndValidity();
+      this.chequeDetails.controls.branch.removeValidators(Validators.required);
+      this.chequeDetails.controls.branch.updateValueAndValidity();
+      this.chequeDetails.controls.chequeNo.removeValidators(Validators.required);
       this.chequeDetails.controls.chequeNo.updateValueAndValidity();
     }
   }

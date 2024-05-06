@@ -40,7 +40,7 @@ export class SaveExpensesComponent {
     }
 
     french() {
-      this._locale = 'fr';
+      this._locale = 'en';
       this._adapter.setLocale(this._locale);
       this.updateCloseButtonLabel('Fermer le calendrier');
     }

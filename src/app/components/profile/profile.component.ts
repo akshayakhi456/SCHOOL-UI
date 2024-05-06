@@ -7,6 +7,7 @@ import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
 import { HTTP_CODES } from '../../shared/constants/common.constants';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
+import { IBreadcrumb } from '../../shared/interfaces/global.model';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,14 @@ export class ProfileComponent {
     email: new FormControl<string>('', Validators.required),
   });
   roles: Array<string> = [];
-
+  breadcrumbData: IBreadcrumb = {
+    title: 'Profile',
+    list: [{
+      routerLink: '/profile',
+      subTitle: 'Profile',
+      isRoute: true
+  }]
+  }
   constructor(private authService: AuthenticationService,
     private breadcrumbService: BreadCrumbService,
     private snackbarservice: SnackbarService,
@@ -35,7 +43,7 @@ export class ProfileComponent {
   }
 
   ngOnInit(): void {
-    this.breadcrumbService.setBreadcrumb(false);
+    this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
     this.getMeAPI();
   }
 

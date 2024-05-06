@@ -50,10 +50,10 @@
 								<span>{{item.title}}</span>
 							}
 							@if (!openMenu){
-								<i class="bi bi-caret-down fs-16 float-end"></i>
+								<i class="bi bi-caret-down fs-16 float-end" (click)="item.isExpanded = !item.isExpanded"></i>
 							}
 						</a>
-						<ul [ngClass]="!openMenu ? 'sub-sidebar-menu' : 'sidebar-submenu'">
+						<ul [ngClass]="!openMenu ? item.isExpanded ? 'sub-sidebar-menu d-block' : 'sub-sidebar-menu d-none' : 'sidebar-submenu'">
 							@for (subItem of item.subList; track subItem; let i=$index) {
 								<li><a class="link" [routerLink]="subItem.routerLink">{{subItem.title}}</a></li>
 							}

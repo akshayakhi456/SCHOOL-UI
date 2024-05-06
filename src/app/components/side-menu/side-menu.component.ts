@@ -52,6 +52,42 @@ export class SideMenuComponent {
           routerLink: '/student-list',
         }
       ]
+    },
+    {
+      isSubMenu: true,
+      icon: 'bi bi-file-person-fill',
+      dropdownIcon: 'bi bi-caret-down fs-16 float-end',
+      title: 'Teacher',
+      isExpanded: false,
+      isActive: true,
+      subList: [
+        {
+          title: 'Teacher List',
+          routerLink: '/teacher-list',
+        },
+        {
+          title: 'Teacher Detail',
+          routerLink: '/teacher-detail',
+        }
+      ]
+    },
+    {
+      isSubMenu: true,
+      icon: 'bi bi-award',
+      dropdownIcon: 'bi bi-caret-down fs-16 float-end',
+      title: 'Certificate',
+      isExpanded: false,
+      isActive: true,
+      subList: [
+        {
+          title: 'Progress',
+          routerLink: '/progressCard',
+        },
+        {
+          title: 'attendance',
+          routerLink: '/attendance',
+        }
+      ]
     }
   ]
 

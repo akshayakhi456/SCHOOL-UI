@@ -10,7 +10,7 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
     color: #172b4c;
-    font-size: 1rem;
+    // font-size: 1rem;
     font-style: normal;
     font-weight: 400;
     font-family: "Poppins", sans-serif;
@@ -56,6 +56,10 @@ mat-form-field {
 
 .b-1 {
     border: 1px solid #f3f6f9 !important;
+}
+
+.fw-500 {
+    font-weight: 500;
 }
 
 .rounded10 {
@@ -157,29 +161,41 @@ mat-form-field {
     border-top-right-radius: 10px;
 }
 
-.theme-primary .badge-warning-light {
+.theme-primary .badge-warning-light, .badge-warning {
     background-color: #fff8ea;
     color: #ffa800;
 }
 
-.theme-primary .badge-info-light {
+.theme-primary .badge-info-light, .badge-light {
     background-color: #cce5ff;
     color: #3596f7;
 }
 
-.theme-primary .badge-success-light {
+.theme-primary .badge-success-light,  .badge-success {
     background-color: #ebf9f5;
     color: #05825f;
 }
 
-.theme-primary .badge-danger-light {
+.theme-primary .badge-danger-light, .badge-danger {
     background-color: #ffd6de;
     color: #ee3158;
 }
 
-.theme-primary .badge-primary-light {
+.theme-primary .badge-primary-light, .badge-primary {
     background-color: #e8e1ff;
     color: #7047ee;
+}
+
+.border-left-success {
+    border-left: 5px solid #05825f
+}
+
+.border-left-danger {
+    border-left: 5px solid #ee3158
+}
+
+.border-left-warning {
+    border-left: 5px solid #ffa800
 }
 
 .success-snackbar div{

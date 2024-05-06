@@ -5,7 +5,7 @@
 $my-custom-typography-config: mat.define-typography-config(
   $body-2:
     mat.define-typography-level(
-      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-family: 'Poppins, sans-serif',
       $font-weight: 400,
       $font-size: 14px,
       $line-height: 1.5,
@@ -13,7 +13,7 @@ $my-custom-typography-config: mat.define-typography-config(
     ),
   $subtitle-2:
     mat.define-typography-level(
-      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-family: 'Poppins, sans-serif',
       $font-weight: 500,
       $font-size: 12px,
       $line-height: 1,
@@ -21,14 +21,14 @@ $my-custom-typography-config: mat.define-typography-config(
     ),
   $caption:
     mat.define-typography-level(
-      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-family: 'Poppins, sans-serif',
       $font-weight: 400,
       $font-size: 12px,
       $letter-spacing: normal,
     ),
   $button:
     mat.define-typography-level(
-      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-family: 'Poppins, sans-serif',
       $font-weight: 500,
       $font-size: 14px,
       $line-height: 1,
@@ -36,7 +36,7 @@ $my-custom-typography-config: mat.define-typography-config(
     ),
   $body-1:
     mat.define-typography-level(
-      $font-family: 'Roboto,Helvetica Neue,sans-serif',
+      $font-family: 'Poppins, sans-serif',
       $font-weight: 400,
       $font-size: 14px,
       $line-height: 1.8,
@@ -53,7 +53,7 @@ $dark-theme: mat.define-dark-theme((
   // Only include `typography` and `density` in the default dark theme.
 //   typography: mat.define-typography-config(),
 //   density: 0,
- typography: $my-custom-typography-config,
+//  typography: $my-custom-typography-config,
  density: 0,
 ));
 

@@ -52,7 +52,8 @@ export class StudentDetailComponent {
     if (id) {
       this.getStudentById(Number(id));
     }
-    this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
+    const isShowBreadCrumb = !this.activatedRoute.snapshot.routeConfig?.path?.startsWith('studentProfile');
+    this.breadcrumbService.setBreadcrumb(isShowBreadCrumb, this.breadcrumbData);
   }
 
   getStudentById(id: number) {

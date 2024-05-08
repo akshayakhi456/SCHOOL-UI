@@ -1,0 +1,102 @@
+<h1 mat-dialog-title>ADD Teacher</h1>
+<mat-dialog-content>
+    <form [formGroup]="teacherForm" class="mt-2">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 row">
+                <div class="col-sm-12 col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Father Name</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Date Of Birth</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Phone Number</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Education Qualification</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Pass out year</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <h1>Experience</h1>
+        <button class="btn btn-primary" (click)="onAddExperience()">Add Experience</button>
+        @if (addExperienceFormArray.controls.length > 0){
+            <div class="row">
+                <div class="col-sm-12">
+                    <table border="1">
+                        <thead>
+                            <th>School Name</th>
+                            <th>No of Years</th>
+                            <th>Start-End Year</th>
+                            <th>Designation</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            <ng-container formArrayName="experienceDetail">
+                                @for(row of addExperienceFormArray.controls; track row; let index = $index){
+                                <tr [formGroupName]="index">
+                                    <td>
+                                        <input class="form-control" formControlName="schoolName">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" formControlName="noOfYears">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" formControlName="workingYear">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" formControlName="designation">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger" (click)="onRemoveExperience(index)">Remove</button>
+                                    </td>
+                                </tr>
+                                }
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+<button class="btn btn-primary">Save</button>
+<button class="btn btn-light ms-2" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

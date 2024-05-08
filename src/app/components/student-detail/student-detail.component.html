@@ -13,27 +13,27 @@
                 <div class="row text-center mt-10">
                     <div class="col-md-6 border-end">
                         <strong>Student Name</strong>
-                        <p>{{studentForm!.firstName ? studentForm!.firstName : ''}} {{studentForm!.lastName ? studentForm!.lastName : 'N/A'}}</p>
+                        <p>{{studentForm?.firstName ? studentForm?.firstName : ''}} {{studentForm?.lastName ? studentForm?.lastName : 'N/A'}}</p>
                     </div>
                     <div class="col-md-6"><strong>Father Name</strong>
-                        <p>{{fatherInfo!.firstName ? fatherInfo!.firstName : ''}}</p>
+                        <p>{{fatherInfo?.firstName ? fatherInfo?.firstName : ''}}</p>
                     </div>
                 </div>
                 <hr>
                 <div class="row text-center mt-10">
                     <div class="col-md-6 border-end"><strong>Grade/Class</strong>
-                        <p>{{studentForm!.className ? studentForm!.className : ''}}</p>
+                        <p>{{studentForm?.className ? studentForm?.className : ''}}</p>
                     </div>
                     <div class="col-md-6"><strong>Phone</strong>
-                        <p>{{fatherInfo!.contactNumber ? fatherInfo!.contactNumber : ''}}</p>
+                        <p>{{fatherInfo?.contactNumber ? fatherInfo?.contactNumber : ''}}</p>
                     </div>
                 </div>
                 <hr>
                 <div class="row text-center mt-10">
                     <div class="col-md-12"><strong>Address</strong>
-                        <p>{{address!.houseNo ? address!.houseNo : '-'}}, {{address!.streetName ? address!.streetName : '-'}}, {{address!.city ? address!.city : '-'}},
-                        <br> {{address!.district ? address!.district : ''}}, {{address!.state ? address!.state : ''}},
-                        <br> {{address!.country ? address!.country : ''}}, {{address!.zipCode ? address!.zipCode : ''}}.</p>
+                        <p>{{address?.houseNo ? address?.houseNo : '-'}}, {{address?.streetName ? address?.streetName : '-'}}, {{address?.city ? address?.city : '-'}},
+                        <br> {{address?.district ? address?.district : ''}}, {{address?.state ? address?.state : ''}},
+                        <br> {{address?.country ? address?.country : ''}}, {{address?.zipCode ? address?.zipCode : ''}}.</p>
                     </div>
                 </div>                
             </div>
@@ -57,43 +57,43 @@
                                 <strong>
                                     First Name: 
                                 </strong>
-                                <p> {{studentForm!.firstName ? studentForm!.firstName : 'N/A'}}</p>
+                                <p> {{studentForm?.firstName ? studentForm?.firstName : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Last Name: 
                                 </strong>
-                                <p> {{studentForm!.lastName ? studentForm!.lastName : 'N/A'}}</p>
+                                <p> {{studentForm?.lastName ? studentForm?.lastName : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     DOB: 
                                 </strong>
-                                <p> {{studentForm!.dob ? (studentForm!.dob | date: 'mediumDate') : 'N/A'}}</p>
+                                <p> {{studentForm?.dob ? (studentForm?.dob | date: 'mediumDate') : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Grade: 
                                 </strong>
-                                <p> {{studentForm!.className ? studentForm!.className : 'N/A'}}</p>
+                                <p> {{studentForm?.className ? studentForm?.className : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Section: 
                                 </strong>
-                                <p> {{studentForm!.section ? studentForm!.section : 'N/A'}}</p>
+                                <p> {{studentForm?.section ? studentForm?.section : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Gender: 
                                 </strong>
-                                <p> {{studentForm!.gender ? studentForm!.gender : 'N/A'}}</p>
+                                <p> {{studentForm?.gender ? studentForm?.gender : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Adhar Number: 
                                 </strong>
-                                <p> {{studentForm!.adharNumber ? studentForm!.adharNumber : 'N/A'}}</p>
+                                <p> {{studentForm?.adharNumber ? studentForm?.adharNumber : 'N/A'}}</p>
                             </div>
                         </div>
                         <div class="box-header with-border">
@@ -104,43 +104,43 @@
                                 <strong>
                                     First Name: 
                                 </strong>
-                                <p> {{fatherInfo!.firstName ? fatherInfo!.firstName : 'N/A'}}</p>
+                                <p> {{fatherInfo?.firstName ? fatherInfo?.firstName : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Last Name: 
                                 </strong>
-                                <p> {{fatherInfo!.lastName ? fatherInfo!.lastName : 'N/A'}}</p>
+                                <p> {{fatherInfo?.lastName ? fatherInfo?.lastName : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Occupation: 
                                 </strong>
-                                <p> {{fatherInfo!.occupation ? fatherInfo!.occupation : 'N/A'}}</p>
+                                <p> {{fatherInfo?.occupation ? fatherInfo?.occupation : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Qualification: 
                                 </strong>
-                                <p> {{fatherInfo!.qualification ? fatherInfo!.qualification : 'N/A'}}</p>
+                                <p> {{fatherInfo?.qualification ? fatherInfo?.qualification : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Contact Number: 
                                 </strong>
-                                <p> {{fatherInfo!.contactNumber ? fatherInfo!.contactNumber : 'N/A'}}</p>
+                                <p> {{fatherInfo?.contactNumber ? fatherInfo?.contactNumber : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Email: 
                                 </strong>
-                                <p> {{fatherInfo!.email ? fatherInfo!.email : 'N/A'}}</p>
+                                <p> {{fatherInfo?.email ? fatherInfo?.email : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Adhar Number: 
                                 </strong>
-                                <p> {{fatherInfo!.adharNumber ? fatherInfo!.adharNumber : 'N/A'}}</p>
+                                <p> {{fatherInfo?.adharNumber ? fatherInfo?.adharNumber : 'N/A'}}</p>
                             </div>
                         </div>
                         <div class="box-header with-border">
@@ -151,43 +151,43 @@
                                 <strong>
                                     First Name: 
                                 </strong>
-                                <p> {{motherInfo!.firstName ? motherInfo!.firstName : 'N/A'}}</p>
+                                <p> {{motherInfo?.firstName ? motherInfo?.firstName : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Last Name: 
                                 </strong>
-                                <p> {{motherInfo!.lastName ? motherInfo!.lastName : 'N/A'}}</p>
+                                <p> {{motherInfo?.lastName ? motherInfo?.lastName : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Occupation: 
                                 </strong>
-                                <p> {{motherInfo!.occupation ? motherInfo!.occupation : 'N/A'}}</p>
+                                <p> {{motherInfo?.occupation ? motherInfo?.occupation : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Qualification: 
                                 </strong>
-                                <p> {{motherInfo!.qualification ? motherInfo!.qualification : 'N/A'}}</p>
+                                <p> {{motherInfo?.qualification ? motherInfo?.qualification : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Contact Number: 
                                 </strong>
-                                <p> {{motherInfo!.contactNumber ? motherInfo!.contactNumber : 'N/A'}}</p>
+                                <p> {{motherInfo?.contactNumber ? motherInfo?.contactNumber : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Email: 
                                 </strong>
-                                <p> {{motherInfo!.email ? motherInfo!.email : 'N/A'}}</p>
+                                <p> {{motherInfo?.email ? motherInfo?.email : 'N/A'}}</p>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <strong>
                                     Adhar Number: 
                                 </strong>
-                                <p> {{motherInfo!.adharNumber ? motherInfo!.adharNumber : 'N/A'}}</p>
+                                <p> {{motherInfo?.adharNumber ? motherInfo?.adharNumber : 'N/A'}}</p>
                             </div>
                         </div>
 
@@ -199,8 +199,8 @@
                             <mat-chip class="py-4 chip">
                                 <div class="d-flex align-items-center chip-text">
                                     <div class="ps-2">
-                                        <span>{{record!.userName ? record!.userName : ''}}</span> |
-                                        <span>Class: {{record!.className ? record!.className : ''}}</span>
+                                        <span>{{record?.userName ? record?.userName : ''}}</span> |
+                                        <span>Class: {{record?.className ? record?.className : ''}}</span>
                                     </div>
                                 </div>
                             </mat-chip>

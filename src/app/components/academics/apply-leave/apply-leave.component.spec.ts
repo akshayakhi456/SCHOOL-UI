@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FeeSummaryComponent } from './fee-summary.component';
+import { ApplyLeaveComponent } from './apply-leave.component';
 
-describe('FeeSummaryComponent', () => {
-  let component: FeeSummaryComponent;
-  let fixture: ComponentFixture<FeeSummaryComponent>;
+describe('ApplyLeaveComponent', () => {
+  let component: ApplyLeaveComponent;
+  let fixture: ComponentFixture<ApplyLeaveComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeeSummaryComponent]
+      imports: [ApplyLeaveComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(FeeSummaryComponent);
+    fixture = TestBed.createComponent(ApplyLeaveComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

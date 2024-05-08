@@ -72,20 +72,33 @@ export class SideMenuComponent {
       ]
     },
     {
+      isSubMenu: false,
+      icon: 'bi bi-person-lines-fill',
+      dropdownIcon: '',
+      title: 'Student Profile',
+      isExpanded: false,
+      isActive: true,
+      routerLink: 'studentProfile'
+    },
+    {
       isSubMenu: true,
       icon: 'bi bi-award',
       dropdownIcon: 'bi bi-caret-down fs-16 float-end',
-      title: 'Certificate',
+      title: 'Student Academics',
       isExpanded: false,
       isActive: true,
       subList: [
         {
-          title: 'Progress',
-          routerLink: '/progressCard',
+          title: 'View Attendance',
+          routerLink: '/viewAttendance',
         },
         {
-          title: 'attendance',
-          routerLink: '/attendance',
+          title: 'View Progress',
+          routerLink: '/viewProgress',
+        },
+        {
+          title: 'Apply Leave',
+          routerLink: '/applyLeave',
         }
       ]
     }

@@ -1,0 +1,88 @@
+<div class="box">
+    <div class="box-body">
+        <div>
+            <button class="btn btn-primary float-end" (click)="openAppplyLeave()">Apply Leave</button>
+        </div>
+        <div>
+            <table mat-table [dataSource]="dataSource">
+    
+                <!--- Note that these columns can be defined in any order.
+                                    The actual rendered columns are set as a property on the row definition" -->
+            
+                <!-- purpose Column paymentName-->
+                <ng-container matColumnDef="rollNo">
+                    <th mat-header-cell *matHeaderCellDef> Roll No </th>
+                    <td mat-cell *matCellDef="let element"> {{element.rollNo}} </td>
+                </ng-container>
+            
+                <!-- Amount Column -->
+                <ng-container matColumnDef="purposeOfLeave">
+                    <th mat-header-cell *matHeaderCellDef> Purpose Of Leave </th>
+                    <td mat-cell *matCellDef="let element"> {{element.purposeOfLeave}} </td>
+                </ng-container>
+            
+                <!-- Amount Column -->
+                <ng-container matColumnDef="dateRangeOfLeave">
+                    <th mat-header-cell *matHeaderCellDef> Date Range Of Leave </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dateRangeOfLeave}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="remarks">
+                    <th mat-header-cell *matHeaderCellDef> Remarks </th>
+                    <td mat-cell *matCellDef="let element"> {{element.remarks}} </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #openApplyLeave>
+    <h1 mat-dialog-title>Apply Leave</h1>
+    <mat-dialog-content>
+        <div class="row mt-2">
+            <div class="col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Purpose Of Leave</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>No of Days</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Leave applying Dates</mat-label>
+                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                        <input matStartDate formControlName="start" placeholder="Start date">
+                        <input matEndDate formControlName="end" placeholder="End date">
+                      </mat-date-range-input>
+                      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Remarks</mat-label>
+                    <textarea matInput rows="5"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button class="btn btn-primary " >Save</button>
+        <button class="btn btn-light ms-1" mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</ng-template>

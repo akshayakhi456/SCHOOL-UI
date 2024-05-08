@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
-import { StudentAttendanceComponent } from '../student-attendance/student-attendance.component';
+import { StudentAttendanceComponent } from '../../academics/student-attendance/student-attendance.component';
 
 @Component({
   selector: 'app-student-sub-dashboard',

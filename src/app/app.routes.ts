@@ -20,6 +20,8 @@ import { NewPasswordComponent } from './components/new-password/new-password.com
 import { TeacherListComponent } from './components/teachers/teacher-list/teacher-list.component';
 import { TeacherDetailsComponent } from './components/teachers/teacher-details/teacher-details.component';
 import { AttendanceComponent } from './components/certificates/attendance/attendance.component';
+import { StudentAttendanceComponent } from './components/academics/student-attendance/student-attendance.component';
+import { ApplyLeaveComponent } from './components/academics/apply-leave/apply-leave.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -43,5 +45,8 @@ export const routes: Routes = [
     {path: 'changePassword', component: ChangePasswordComponent, canActivate: [authGuard]},
     {path: 'teacher-list', component: TeacherListComponent, canActivate: [authGuard]},
     {path: 'teacher-detail', component: TeacherDetailsComponent, canActivate: [authGuard]},
+    {path: 'studentProfile', component: StudentDetailComponent, canActivate: [authGuard]},
+    {path: 'viewAttendance', component: StudentAttendanceComponent, canActivate: [authGuard]},
+    {path: 'applyLeave', component: ApplyLeaveComponent, canActivate: [authGuard]},
     {path: 'newPassword', component: NewPasswordComponent},
 ];

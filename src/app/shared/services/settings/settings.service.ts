@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { URLs } from '../../api-constants';
 import { Observable } from 'rxjs';
+import { IHttpResponse } from '../../models/auth.models';
+import { ISubjectModel } from '../../models/setting.models';
 
 @Injectable({
   providedIn: 'root'
@@ -72,5 +74,21 @@ export class SettingsService {
 
   getPaymentAllotment(className: string): Observable<any> {
     return this.http.get(`${URLs.paymentAllotmentsSettings}/${className}`);
+  }
+
+  createSubject(payload: ISubjectModel): Observable<IHttpResponse<string>> {
+    return this.http.post<IHttpResponse<string>>(`${URLs.subjectCreate}`, payload);
+  }
+
+  subjectList(): Observable<IHttpResponse<Array<ISubjectModel>>> {
+    return this.http.get<IHttpResponse<Array<ISubjectModel>>>(`${URLs.subjectList}`);
+  }
+
+  subjectUpdate(payload: ISubjectModel): Observable<IHttpResponse<string>> {
+    return this.http.post<IHttpResponse<string>>(`${URLs.subjectUpdate}`, payload);
+  }
+
+  subjectDelete(id: number): Observable<IHttpResponse<string>> {
+    return this.http.delete<IHttpResponse<string>>(`${URLs.subjectDelete}/${id}`);
   }
 }

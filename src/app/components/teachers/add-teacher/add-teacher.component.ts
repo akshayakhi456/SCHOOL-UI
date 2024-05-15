@@ -33,7 +33,8 @@ export class AddTeacherComponent {
       schoolName: new FormControl(),
       noOfYears: new FormControl(),
       workingYear: new FormControl(),
-      designation: new FormControl()
+      designation: new FormControl(),
+      status: new FormControl(true)
     });
   }
 }

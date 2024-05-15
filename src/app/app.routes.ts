@@ -7,7 +7,6 @@ import { SchoolExpensesComponent } from './components/school-expenses/school-exp
 import { AdmissionFormComponent } from './components/admission-form/admission-form.component';
 import { EnquiryListComponent } from './components/enquiry-list/enquiry-list.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { ProgressCardComponent } from './components/certificates/progress-card/progress-card.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { authGuard } from './shared/guards/auth.guard';
 import { unauthGuard } from './shared/guards/unauth.guard';
@@ -22,6 +21,9 @@ import { TeacherDetailsComponent } from './components/teachers/teacher-details/t
 import { AttendanceComponent } from './components/certificates/attendance/attendance.component';
 import { StudentAttendanceComponent } from './components/academics/student-attendance/student-attendance.component';
 import { ApplyLeaveComponent } from './components/academics/apply-leave/apply-leave.component';
+import { MarkAttendanceComponent } from './components/class/mark-attendance/mark-attendance.component';
+import { StudentSectionAssignmentComponent } from './components/class/student-section-assignment/student-section-assignment.component';
+import { StudentProfileComponent } from './components/student-profile/student-profile.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -35,7 +37,6 @@ export const routes: Routes = [
     {path: 'enquiry/:id', component: CreateEnquiryComponent, canActivate: [authGuard]},
     {path: 'enquiry-list', component: EnquiryListComponent, canActivate: [authGuard]},
     {path: 'school-expenses', component: SchoolExpensesComponent, canActivate: [authGuard]},
-    {path: 'progressCard', component: ProgressCardComponent, canActivate: [authGuard]},
     {path: 'attendance', component: AttendanceComponent, canActivate: [authGuard]},
     {path: 'settings', component: SettingsComponent, canActivate: [authGuard]},
     {path: 'accounts', component: AccountsComponent, canActivate: [authGuard]},
@@ -45,8 +46,10 @@ export const routes: Routes = [
     {path: 'changePassword', component: ChangePasswordComponent, canActivate: [authGuard]},
     {path: 'teacher-list', component: TeacherListComponent, canActivate: [authGuard]},
     {path: 'teacher-detail', component: TeacherDetailsComponent, canActivate: [authGuard]},
-    {path: 'studentProfile', component: StudentDetailComponent, canActivate: [authGuard]},
+    {path: 'student-profile', component: StudentProfileComponent, canActivate: [authGuard]},
     {path: 'viewAttendance', component: StudentAttendanceComponent, canActivate: [authGuard]},
     {path: 'applyLeave', component: ApplyLeaveComponent, canActivate: [authGuard]},
+    {path: 'mark-attendance', component: MarkAttendanceComponent, canActivate: [authGuard]},
+    {path: 'section-assignment', component: StudentSectionAssignmentComponent, canActivate: [authGuard]},
     {path: 'newPassword', component: NewPasswordComponent},
 ];

@@ -1,0 +1,43 @@
+@if (allStudents){
+    <div class="row">
+        @for (item of studentListData; track item) {
+        <div class="col-md-4 my-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" (click)="stdDetail(item)">
+                            <div class="col-md-4 col-sm-12 text-center">
+                                @if (item?.students?.photo) {
+                                    <img [src]="photo(item?.students?.photo)" class="img-circle img-responsive" />
+                                }
+                                @else if (item?.students?.gender === 'Male') {
+                                    <a><img src="../../../../assets/avatar-13.png" 
+                                        alt="user" class="img-circle img-responsive"></a>
+                                }
+                                @else {
+                                    <a><img src="../../../../assets/avatar-14.jpg" 
+                                        alt="user" class="img-circle img-responsive"></a>
+                                }
+                            </div>
+                            <div class="col-md-8">
+                                <h5 class="card-title mb-0">{{item?.students?.firstName ? item?.students?.firstName : ''}} {{item?.students?.lastName ? item?.students?.lastName : ''}}</h5> <small>STUDENT</small>
+                                <p>
+                                    <small>Class: {{item?.students?.className}} </small>
+                                    @if(item?.students?.section) {
+                                        <small> Section: {{item?.students?.section}}</small>
+                                    }
+                                </p>
+                                <p class="mt-15">
+                                    <span class="d-block mb-10">{{item?.address?.district}}, {{item?.address?.state}}, {{item?.address?.country}}, {{item?.address?.zipCode}}</span>
+                                    <abbr title="Phone"><i class="bi bi-telephone"></i></abbr>{{ item.guardians && item.guardians[0]  ? item.guardians[0].contactNumber : '' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+@else {
+    <app-student-detail [selectedStudent]="selectedStudent"></app-student-detail>
+}

@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URLs } from '../../api-constants';
+import { IStudentGuardianResponse } from '../../models/student.models';
+import { IHttpResponse } from '../../models/auth.models';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +26,13 @@ export class StudentService {
 
   getById(id: number): Observable<any> {
     return this.http.get(`${URLs.getStudentById}${id}`);
+  }
+
+  getStudentByClassName(className: string): Observable<any> {
+    return this.http.get(`${URLs.getStudentByClassName}${className}`);
+  }
+
+  getStudentsByRoles(): Observable<IHttpResponse<Array<IStudentGuardianResponse>>> {
+    return this.http.get<IHttpResponse<Array<IStudentGuardianResponse>>>(`${URLs.getStudentsByRoles}`);
   }
 }

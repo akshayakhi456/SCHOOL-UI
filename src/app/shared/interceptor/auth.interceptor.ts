@@ -28,7 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         tokenService.removeToken();
         router.navigate(['/login']);
       }
-      const error = e.error.message || e.error?.error?.message || 'Something went wrong';
+      const error = e.error.result || e.error?.error?.result || e.error.message || e.error?.error?.message || 'Something went wrong';
       snackbarService.openDangerSnackbar(error)
       return throwError(() => error);
     })

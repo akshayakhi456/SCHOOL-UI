@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -10,6 +10,7 @@ import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.servic
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { MatChipsModule } from '@angular/material/chips';
+import { IStudentGuardianResponse } from '../../shared/models/student.models';
 
 @Component({
   selector: 'app-student-detail',
@@ -19,6 +20,7 @@ import { MatChipsModule } from '@angular/material/chips';
   styleUrl: './student-detail.component.scss'
 })
 export class StudentDetailComponent {
+  @Input() selectedStudent: IStudentGuardianResponse | undefined;
   service = inject(StudentService);
   settingService = inject(SettingsService);
   spinnerService = inject(SpinnerService);
@@ -52,7 +54,10 @@ export class StudentDetailComponent {
     if (id) {
       this.getStudentById(Number(id));
     }
-    const isShowBreadCrumb = !this.activatedRoute.snapshot.routeConfig?.path?.startsWith('studentProfile');
+    else if (this.selectedStudent) {
+      this.bindStudent(this.selectedStudent);
+    }
+    const isShowBreadCrumb = !this.activatedRoute.snapshot.routeConfig?.path?.startsWith('student-profile');
     this.breadcrumbService.setBreadcrumb(isShowBreadCrumb, this.breadcrumbData);
   }
 
@@ -61,23 +66,27 @@ export class StudentDetailComponent {
     this.service.getById(id).subscribe({next: res => {
       this.spinner.dispose();
       const result = res.result ?? res;
-      const studentPhoto = result.students.photo;
-      const studentBase64Photo = 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(studentPhoto) as any).changingThisBreaksApplicationSecurity;
-      this.studentForm = result.students;
-      this.imgViewer = studentBase64Photo;
-      if (result.students.sibilings) {
-        this.selectedStudents = JSON.parse(result.students.sibilings)
-      }
-      if (result.students.certificateNames) {
-        this.certificateList = JSON.parse(result.students.certificateNames);
-      }
-      this.fatherInfo = result.guardians.find((f: any) => f.relationship === 'Father');
-      this.motherInfo = result.guardians.find((f: any) => f.relationship === 'Mother');
-      this.address = result.address;
+      this.bindStudent(result);
     },
     error: () => {
       this.spinner.dispose();
     }
   })
+  }
+
+  bindStudent(student: IStudentGuardianResponse) {
+    const studentPhoto = student.students.photo;
+      const studentBase64Photo = 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(studentPhoto) as any).changingThisBreaksApplicationSecurity;
+      this.studentForm = student.students;
+      this.imgViewer = studentBase64Photo;
+      if (student.students.sibilings) {
+        this.selectedStudents = JSON.parse(student.students.sibilings)
+      }
+      if (student.students.certificateNames) {
+        this.certificateList = JSON.parse(student.students.certificateNames);
+      }
+      this.fatherInfo = student.guardians.find((f: any) => f?.relationship === 'Father');
+      this.motherInfo = student.guardians.find((f: any) => f?.relationship === 'Mother');
+      this.address = student.address;
   }
 }

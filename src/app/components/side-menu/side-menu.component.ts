@@ -78,7 +78,7 @@ export class SideMenuComponent {
       title: 'Student Profile',
       isExpanded: false,
       isActive: true,
-      routerLink: 'studentProfile'
+      routerLink: 'student-profile'
     },
     {
       isSubMenu: true,
@@ -99,6 +99,24 @@ export class SideMenuComponent {
         {
           title: 'Apply Leave',
           routerLink: '/applyLeave',
+        }
+      ]
+    },
+    {
+      isSubMenu: true,
+      icon: 'bi bi-kanban-fill',
+      dropdownIcon: 'bi bi-caret-down fs-16 float-end',
+      title: 'Class',
+      isExpanded: false,
+      isActive: true,
+      subList: [
+        {
+          title: 'Mark Attendance',
+          routerLink: '/mark-attendance',
+        },
+        {
+          title: 'Section Assignment',
+          routerLink: '/section-assignment',
         }
       ]
     }

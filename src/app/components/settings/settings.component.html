@@ -2,13 +2,24 @@
     <div class="body">
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
             <mat-tab label="Enquiry Setup">
-                <app-enquiry-form-questions></app-enquiry-form-questions>
+                <ng-template matTabContent>
+                    <app-enquiry-form-questions></app-enquiry-form-questions>
+                </ng-template>
             </mat-tab>
             <mat-tab label="Class Room Setup">
-                <app-class-settings></app-class-settings>
+                <ng-template matTabContent>
+                    <app-class-settings></app-class-settings>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Subject">
+                <ng-template matTabContent>
+                    <app-subjects></app-subjects>
+                </ng-template>
             </mat-tab>
             <mat-tab label="Payment">
-                <app-payment-settings></app-payment-settings>
+                <ng-template matTabContent>
+                    <app-payment-settings></app-payment-settings>
+                </ng-template>
             </mat-tab>
         </mat-tab-group>
     </div>

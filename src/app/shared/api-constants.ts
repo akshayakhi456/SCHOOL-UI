@@ -5,6 +5,8 @@ export const URLs = {
     updateStudent : `${environment.apiUrl}student/update`,
     getStudents: `${environment.apiUrl}student`,
     getStudentById: `${environment.apiUrl}student/`,
+    getStudentByClassName: `${environment.apiUrl}student/getStudentByClassName/`,
+    getStudentsByRoles: `${environment.apiUrl}student/getStudentsByRoles`,
 
     createEnquiry: `${environment.apiUrl}enquiry/create`,
     updateEnquiry: `${environment.apiUrl}enquiry/update`,
@@ -38,6 +40,10 @@ export const URLs = {
     enquiryQuestionsSettings: `${environment.apiUrl}settings/enquiryQuestion`,
     getEnquiryQuestionsSettings: `${environment.apiUrl}settings/enquiryQuestions`,
     paymentAllotmentsSettings: `${environment.apiUrl}settings/paymentAllotment`,
+    subjectCreate: `${environment.apiUrl}settings/subjectCreate`,
+    subjectList: `${environment.apiUrl}settings/subjectList`,
+    subjectUpdate: `${environment.apiUrl}settings/subjectUpdate`,
+    subjectDelete: `${environment.apiUrl}settings/subjectDelete`,
     
     registerUser: `${environment.apiUrl}Auth/register`,
     loginUser: `${environment.apiUrl}Auth/login`,
@@ -52,5 +58,10 @@ export const URLs = {
     dashboard: `${environment.apiUrl}dashboard`,
 
     invoice: `${environment.apiUrl}invoice`,
-    invoiceId: `${environment.apiUrl}invoice/invoiceId`
+    invoiceId: `${environment.apiUrl}invoice/invoiceId`,
+
+    studentAttendance: `${environment.apiUrl}StudentMapTeacher/StudentAttendance`,
+    updateStudentAttendance: `${environment.apiUrl}StudentMapTeacher/UpdateStudentAttendance`,
+    StudentAssignSection: `${environment.apiUrl}StudentMapTeacher/StudentAssignSection`,
+    GetStudentAttendanceByMonthYear: `${environment.apiUrl}StudentMapTeacher/GetStudentAttendanceByMonthYear`,
 }

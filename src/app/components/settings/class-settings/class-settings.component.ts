@@ -21,20 +21,16 @@ import { SnackbarService } from '../../../shared/signal-service/snackbar.service
 export class ClassSettingsComponent {
   @ViewChild('openClassPopup') openClassPopup!: TemplateRef<any>;
   @ViewChild('openSectionPopup') openSectionPopup!: TemplateRef<any>;
-  @ViewChild('openSubjectPopup') openSubjectPopup!: TemplateRef<any>;
   @ViewChild('paginator') paginator!: MatPaginator | null;
   className = new FormControl('', Validators.required);
   sectionName = new FormControl('', Validators.required);
-  subjectName = new FormControl('', Validators.required)
   isEditSectionMode = false;
   openedClass = null;
   pageSizes = [10, 25, 50, 100];
   displayedColumns: string[] = ['className', 'action'];
   displayedSectionColumns: string[] = ['section', 'action'];
-  displayedSubjectColumns: string[] = ['subject', 'action'];
   classDataSource = new MatTableDataSource([]);
   sectionDataSource = new MatTableDataSource([]);
-  subjectDataSource = new MatTableDataSource([]);
   questionForm = new FormGroup({});
   isEditMode= false;
   constructor(private _liveAnnouncer: LiveAnnouncer,
@@ -121,10 +117,6 @@ export class ClassSettingsComponent {
     })
   }
 
-  openSubjectModal(element: any) {
-    this.dialog.open(this.openSubjectPopup)
-  }
-
   updateClass(element: any) {
     if (element.className) {
       this.spinnerService.show();
@@ -181,13 +173,5 @@ export class ClassSettingsComponent {
     },()=>{
       this.spinnerService.dispose();
     })
-  }
-
-  saveSubject() {
-
-  }
-
-  updateSubject(element: any) {
-
   }
 }

@@ -7,6 +7,7 @@ import { EnquiryFormQuestionsComponent } from './enquiry-form-questions/enquiry-
 import { PaymentSettingsComponent } from './payment-settings/payment-settings.component';
 import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
+import { SubjectsComponent } from './subjects/subjects.component';
 
 
 export interface ClassInfo {
@@ -18,7 +19,11 @@ export interface ClassInfo {
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [SharedModule, CommonModule, MatFormFieldModule, PaymentSettingsComponent, ClassSettingsComponent, EnquiryFormQuestionsComponent],
+  imports: [SharedModule, CommonModule, MatFormFieldModule, 
+    SubjectsComponent,
+    PaymentSettingsComponent, 
+    ClassSettingsComponent, 
+    EnquiryFormQuestionsComponent],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })

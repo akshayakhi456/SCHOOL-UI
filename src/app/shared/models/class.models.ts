@@ -18,7 +18,7 @@ export interface IstudentAttendance {
     section: string;
     sName?: string;
     month: string;
-    Year: string;
+    year: string;
     d1?: string;
     d2?: string;
     d3?: string;
@@ -54,7 +54,7 @@ export interface IstudentAttendance {
 
 export interface IStudentAttendanceRequest {
     id?: number;
-    sId: string;
+    sId?: string;
     className: string;
     section: string;
     month: string;
@@ -66,4 +66,25 @@ export interface IStudentAttendanceRequest {
 export interface AttendanceRecord {
     date: string;
     status: 'P' | 'A' | 'HD';
+}
+
+export interface IStudentAttendanceMonthYearRequest {
+    className: string;
+    section: string;
+    sId: string;
+    startMonth: number;
+    startYear: string;
+    endMonth: number;
+    endYear: string;
+}
+
+export interface IStudentAttendanceDisplay {
+    absent: number;
+    attendanceArray: Array<{
+        date: Date | string,
+        status: string
+    }>;
+    halfDay: number;
+    present: number;
+    total: number
 }

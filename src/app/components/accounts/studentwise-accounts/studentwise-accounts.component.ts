@@ -1,4 +1,4 @@
-import { Component, ViewChild, effect, inject } from '@angular/core';
+import { Component, TemplateRef, ViewChild, effect, inject } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaymentsService } from '../../../shared/services/payments/payments.service';
@@ -22,7 +22,8 @@ import { GlobalService } from '../../../shared/signal-service/global.service';
 })
 export class StudentwiseAccountsComponent {
   @ViewChild('paginator') paginator!: MatPaginator | null;
-  // @ViewChild(InvoiceReceiptComponent) invoiceReceiptComponent!: InvoiceReceiptComponent;
+  @ViewChild('studentSearchList') studentSearchList! : TemplateRef<any>;
+  studentDataSource = new MatTableDataSource();
   stdId = new FormControl();
   selectAllReceipts = new FormControl();
   pageSizes = [10, 50, 100];
@@ -30,6 +31,8 @@ export class StudentwiseAccountsComponent {
   stdInfo: any;
   selectedReceipt: any;
   displayedColumns: string[] = ['checkbox', 'invoiceId', 'paymentName', 'paymentAllotmentAmount', 'amount', 'paymentType', 'dateOfPayment', 'remarks'];
+  studentDisplayedColumns: string[] = ['firstName', 'class', 'section', 'action'];
+  completeStudentList = [];
   dataSource = new MatTableDataSource();
   originalReceipt: any;
   isSingleReceipt = false;
@@ -62,16 +65,29 @@ export class StudentwiseAccountsComponent {
 
   getStudentById(): void {
     this.spinnerService.show();
-    this.studentService.getById(this.stdId.value).subscribe({
+    this.studentService.getByKey(this.stdId.value).subscribe({
       next: res => {
         this.spinnerService.dispose();
-        this.stdInfo = res.result ?? res;
-        this.getReceiptList();
+        this.completeStudentList = res;
+        this.studentDataSource = res.map((x: any) => x.students);
+        this.openStudentPayment();
       },
       error: () => {
         this.spinnerService.dispose();
       }
     })
+  }
+
+  openStudentPayment() {
+    const dialog = this.dialog.open(this.studentSearchList, {
+      width: '40vw',
+      disableClose: true,
+    })
+  }
+
+  studentData(element: any) {
+    this.stdInfo = this.completeStudentList.filter((std: any) => std.students.id == element.id)[0];
+    this.getReceiptList();
   }
 
   getReceiptList(): void{

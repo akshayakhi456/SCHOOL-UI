@@ -10,3 +10,11 @@ export interface IHttpResponse {
     message: string;
     version: string;
 }
+
+export const ROLES = {
+    USER: 'USER',
+    OWNER: 'OWNER',
+    ADMIN: 'ADMIN',
+    TEACHER: 'TEACHER',
+    PARENT: 'PARENT'
+}

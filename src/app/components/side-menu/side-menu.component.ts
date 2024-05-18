@@ -6,6 +6,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { TokenService } from '../../shared/services/token/token.service';
 import { GlobalService } from '../../shared/signal-service/global.service';
 import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
+import { ROLES } from '../../shared/models/common.models';
 
 @Component({
   selector: 'app-side-menu',
@@ -29,7 +30,9 @@ export class SideMenuComponent {
       title: 'Dashboard',
       isExpanded: false,
       isActive: true,
-      routerLink: 'dashboard'
+      routerLink: 'dashboard',
+      role: [ROLES.ADMIN, ROLES.OWNER],
+      isDisplay: false,
     },
     {
       isSubMenu: true,
@@ -38,6 +41,8 @@ export class SideMenuComponent {
       title: 'Students',
       isExpanded: false,
       isActive: true,
+      role: [ROLES.ADMIN, ROLES.OWNER],
+      isDisplay: false,
       subList: [
         {
           title: 'Enquiry List',
@@ -60,6 +65,8 @@ export class SideMenuComponent {
       title: 'Teacher',
       isExpanded: false,
       isActive: true,
+      role: [ROLES.ADMIN, ROLES.OWNER],
+      isDisplay: false,
       subList: [
         {
           title: 'Teacher List',
@@ -78,7 +85,9 @@ export class SideMenuComponent {
       title: 'Student Profile',
       isExpanded: false,
       isActive: true,
-      routerLink: 'student-profile'
+      routerLink: 'student-profile',
+      role: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER, ROLES.PARENT],
+      isDisplay: false,
     },
     {
       isSubMenu: true,
@@ -87,6 +96,8 @@ export class SideMenuComponent {
       title: 'Student Academics',
       isExpanded: false,
       isActive: true,
+      role: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER, ROLES.PARENT],
+      isDisplay: false,
       subList: [
         {
           title: 'View Attendance',
@@ -109,6 +120,8 @@ export class SideMenuComponent {
       title: 'Class',
       isExpanded: false,
       isActive: true,
+      role: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER],
+      isDisplay: false,
       subList: [
         {
           title: 'Mark Attendance',
@@ -129,6 +142,15 @@ export class SideMenuComponent {
     effect(() =>{
       this.openMenu = this.service.headerMenuClick();
     })
+  }
+
+  ngAfterViewInit(): void {
+    const role = this.authentication.role();
+    if(role) {
+      this.menuList.forEach(item =>{
+        item.isDisplay = item.role?.includes(role)
+      })
+    }
   }
 
   mouseenter() {

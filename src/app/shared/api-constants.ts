@@ -5,6 +5,7 @@ export const URLs = {
     updateStudent : `${environment.apiUrl}student/update`,
     getStudents: `${environment.apiUrl}student`,
     getStudentById: `${environment.apiUrl}student/`,
+    studentByKey: `${environment.apiUrl}student/studentByKey`,
     getStudentByClassName: `${environment.apiUrl}student/getStudentByClassName/`,
     getStudentsByRoles: `${environment.apiUrl}student/getStudentsByRoles`,
 
@@ -63,5 +64,6 @@ export const URLs = {
     studentAttendance: `${environment.apiUrl}StudentMapTeacher/StudentAttendance`,
     updateStudentAttendance: `${environment.apiUrl}StudentMapTeacher/UpdateStudentAttendance`,
     StudentAssignSection: `${environment.apiUrl}StudentMapTeacher/StudentAssignSection`,
+    GetStudentAttendance: `${environment.apiUrl}StudentMapTeacher/GetStudentAttendance`,
     GetStudentAttendanceByMonthYear: `${environment.apiUrl}StudentMapTeacher/GetStudentAttendanceByMonthYear`,
 }

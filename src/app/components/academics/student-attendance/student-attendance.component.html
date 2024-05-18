@@ -1,3 +1,45 @@
+@if (allStudents){
+<div class="row">
+    @for (item of studentListData; track item) {
+    <div class="col-md-4 my-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row" (click)="stdDetail(item)">
+                    <div class="col-md-4 col-sm-12 text-center">
+                        @if (item?.students?.photo) {
+                        <img [src]="photo(item?.students?.photo)" class="img-circle img-responsive" />
+                        }
+                        @else if (item?.students?.gender === 'Male') {
+                        <a><img src="../../../../assets/avatar-13.png" alt="user" class="img-circle img-responsive"></a>
+                        }
+                        @else {
+                        <a><img src="../../../../assets/avatar-14.jpg" alt="user" class="img-circle img-responsive"></a>
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <h5 class="card-title mb-0">{{item?.students?.firstName ? item?.students?.firstName : ''}}
+                            {{item?.students?.lastName ? item?.students?.lastName : ''}}</h5> <small>STUDENT</small>
+                        <p>
+                            <small>Class: {{item?.students?.className}} </small>
+                            @if(item?.students?.section) {
+                            <small> Section: {{item?.students?.section}}</small>
+                            }
+                        </p>
+                        <p class="mt-15">
+                            <span class="d-block mb-10">{{item?.address?.district}}, {{item?.address?.state}},
+                                {{item?.address?.country}}, {{item?.address?.zipCode}}</span>
+                            <abbr title="Phone"><i class="bi bi-telephone"></i></abbr>{{ item.guardians &&
+                            item.guardians[0] ? item.guardians[0].contactNumber : '' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+}
+@else {
 <div class="box">
     <div class="box-body">
         <div class="row">
@@ -6,7 +48,7 @@
                     Attendance History
                 </h1>
                 <h4>Today Wed, Sep 2,2023</h4>
-                
+
                 <hr>
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
@@ -22,10 +64,10 @@
                             <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
                                 <input matStartDate formControlName="start" placeholder="Start date">
                                 <input matEndDate formControlName="end" placeholder="End date">
-                              </mat-date-range-input>
-                              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-date-range-input>
+                            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field>
                     </div>
                 </div>
@@ -34,57 +76,43 @@
                 <div class="row text-end">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <h4 class="mb-0">Total Attendance</h4>
-                        <h2 class="mb-0">11 days</h2>
+                        <h2 class="mb-0">{{studentList.total}} days</h2>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <h4 class="mb-0">Present</h4>
-                        <h2 class="mb-0">6 days</h2>
+                        <h2 class="mb-0">{{studentList.present}} days</h2>
                     </div>
                 </div>
                 <div class="row text-end">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <h4 class="mb-0">Absent</h4>
-                        <h2 class="mb-0">4 days</h2>
+                        <h2 class="mb-0">{{studentList.absent}} days</h2>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <h4 class="mb-0">Half Day</h4>
-                        <h2 class="mb-0">2 days</h2>
+                        <h2 class="mb-0">{{studentList.halfDay}} days</h2>
                     </div>
                 </div>
             </div>
         </div>
         <hr>
         <div class="row">
+            @for(item of studentList.attendanceArray; track item) {
             <div class="col-lg-4 col-sm-12 col-md-6">
                 <div class="card">
-                    <div class="card-body border-left-success badge-success">
+                    <div class="card-body" [ngClass]="{'border-left-success badge-success': item.status == 'P',
+                                    'border-left-danger badge-danger': item.status == 'A',
+                                    'border-left-warning badge-warning': item.status == 'HD'}">
                         <div class="card-title d-flex justify-content-between align-items-center">
-                          <span>Wed, Aug 13, 2024</span>
-                          <span>Present</span>
+                            <span>{{item.date | date: 'EEEE, MMMM d, y'}}</span>
+                            <span>{{item.status == 'P' ? 'Present' :
+                                item.status == 'HD' ? 'Half Day' : 'Absent'}}</span>
                         </div>
                     </div>
-                  </div>
+                </div>
             </div>
-            <div class="col-lg-4 col-sm-12 col-md-6">
-                <div class="card">
-                    <div class="card-body border-left-danger badge-danger">
-                        <div class="card-title d-flex justify-content-between align-items-center">
-                          <span>Wed, Aug 13, 2024</span>
-                          <span>Absent</span>
-                        </div>
-                    </div>
-                  </div>
-            </div>
-            <div class="col-lg-4 col-sm-12 col-md-6">
-                <div class="card">
-                    <div class="card-body border-left-warning badge-warning">
-                        <div class="card-title d-flex justify-content-between align-items-center">
-                          <span>Wed, Aug 13, 2024</span>
-                          <span>Half Day</span>
-                        </div>
-                    </div>
-                  </div>
-            </div>
+            }
         </div>
     </div>
 </div>
+}

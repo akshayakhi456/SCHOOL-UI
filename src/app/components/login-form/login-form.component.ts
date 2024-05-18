@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
+import { ROLES } from '../../shared/models/common.models';
 
 @Component({
   selector: 'app-login-form',
@@ -45,6 +46,10 @@ export class LoginFormComponent implements OnInit{
     this.authService.loginUser(this.loginForm.value).subscribe({
       next: res => {
         this.spinnerService.dispose();
+        if (this.authService.role().includes(ROLES.PARENT)) {
+          this.router.navigate(['/student-profile']);
+          return;
+        }
         this.router.navigate(['/dashboard']);
       },
       error: () => {

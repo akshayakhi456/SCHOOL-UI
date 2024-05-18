@@ -1,0 +1,90 @@
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                @if (classList.length) {
+                    <mat-form-field appearance="outline">
+                        <mat-label>Class</mat-label>
+                        <mat-select [formControl]="className">
+                            <mat-option [value]="''">[Any]</mat-option>
+                            @for (class of classList; track class) {
+                            <mat-option [value]="class.value">{{class.label}}</mat-option>
+                            }
+                        </mat-select>
+                        @if (className.errors &&
+                        className.errors['required'] &&
+                        className.touched) {
+                        <mat-error>Class is required.</mat-error>
+                        }
+                    </mat-form-field>
+                     }
+            </div>
+            @if (sectionList.length) {
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Section</mat-label>
+                    <mat-select [formControl]="section">
+                        <mat-option [value]="''">[Any]</mat-option>
+                            @for (sec of sectionList; track sec) {
+                            <mat-option [value]="sec.value">{{sec.label}}</mat-option>
+                            }
+                        </mat-select>
+                        @if (section.errors &&
+                        section.errors['required'] &&
+                        section.touched) {
+                        <mat-error>Section is required.</mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+            }
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" [formControl]="selectedDM">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    @if (selectedDM.errors &&
+                    selectedDM.errors['required'] &&
+                    selectedDM.touched) {
+                    <mat-error>Date is required.</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <button class="btn btn-primary" (click)="getStudentAssignSectionByYear()">Filter</button>
+            </div>
+        </div>
+
+        @if (isShowData){
+            <div class="row justify-content-end">
+                <button class="btn btn-primary col-md-4" (click)="submitAttendance()">Save Changes</button>
+            </div>
+            <div class="row">
+                <table mat-table [dataSource]="dataSource" class="table-responsive">
+                    @for(column of displayedColumns; track column; let i=$index) {
+                    <ng-container [matColumnDef]="column" [sticky]="column == 'rollNo' || column == 'sName'">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <div> {{column}} </div> <br />
+                            @if (column !== 'rollNo' && column !== 'sName'){
+                            <div>({{getWeekOfDay(column)}})</div>
+                            }
+                        </th>
+                        <td mat-cell *matCellDef="let element;let j = index"
+                            [attr.colspan]="getWeekOfDay(column) !== 'Saturday' && getWeekOfDay(column) !== 'Sunday' ? 0 : 1">
+                            @if (column == 'rollNo' || column == 'sName'){
+                            {{ element[column] }}
+                            }
+                            @else {
+                            
+                            }
+                        </td>
+                    </ng-container>
+                    }
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+                </table>
+            </div>
+        }
+    </div>
+</div>

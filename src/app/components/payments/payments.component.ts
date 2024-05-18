@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { PaymentsService } from '../../shared/services/payments/payments.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SettingsService } from '../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
@@ -13,7 +13,8 @@ import { StudentService } from '../../shared/services/student/student.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { ACADEMIC_YEAR } from '../../shared/models/payment.model';
+import { ACADEMIC_YEAR, IPaymentTransaction } from '../../shared/models/payment.model';
+import { InvoiceReceiptComponent } from '../../shared/components/invoice-receipt/invoice-receipt.component';
 
 @Component({
   selector: 'app-payments',
@@ -31,17 +32,7 @@ export class PaymentsComponent {
   paidFeeAmount = 0;
   academicYearList = ACADEMIC_YEAR;
   id = 0;
-  paymentForm = new FormGroup({
-    paymentName: new FormControl<string>('',Validators.required),
-    paymentType: new FormControl<string>('',Validators.required),
-    amount: new FormControl<number | null>(null, [Validators.required, this.customValidatorFn()]),
-    remarks: new FormControl<string>('',Validators.required),
-    dateOfPayment: new FormControl<Date>(new Date()),
-    studentId: new FormControl<number>(0),
-    acedamicYearId: new FormControl<number>(1),
-    dueDateOfPayment: new FormControl<Date | null>(null),
-    PaymentAllotmentId: new FormControl<number | null>(null)
-  });
+  paymentForm: FormGroup;
 
   cardDetails = new FormGroup({
     cardNumber: new FormControl<number | null>(null),
@@ -54,6 +45,12 @@ export class PaymentsComponent {
     bankName: new FormControl<string>(''),
     chequeNo: new FormControl<string>(''),
     branch: new FormControl<string> ('')
+  });
+
+  onlineDetails = new FormGroup({
+    transactionNumber: new FormControl<string>(''),
+    transactionDate: new FormControl<string>(''),
+    transactionType: new FormControl<string>('')
   });
   breadcrumbData: IBreadcrumb = {
     title: 'Payments',
@@ -69,17 +66,30 @@ export class PaymentsComponent {
 }
 
   constructor(private service: PaymentsService,
+    private fb: FormBuilder,
     private settingService: SettingsService,
     private spinnerService: SpinnerService,
     private breadcrumbService: BreadCrumbService,
     private activatedRoute: ActivatedRoute,
     private studentService: StudentService,
+    private dialog: MatDialog,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,
     private snackbarService: SnackbarService) {
     this.breadcrumbService.setBreadcrumb(true, this.breadcrumbData);
     this.french();
+    this.paymentForm = fb.group({
+      paymentName: ['', Validators.required],
+      paymentType: ['', Validators.required],
+      amount: [null, [Validators.required, this.customValidatorFn()]],
+      remarks: ['', Validators.required],
+      dateOfPayment: [new Date(), Validators.required],
+      studentId: [null, Validators.required],
+      acedamicYearId: [null, Validators.required],
+      PaymentAllotmentId: [null, Validators.required],
+      dueDateOfPayment: [null]
+    });
   }
 
   get f(): {[key: string]: AbstractControl} {
@@ -94,6 +104,10 @@ export class PaymentsComponent {
     return this.cardDetails.controls;
   }
 
+  get online(): {[key: string]: AbstractControl} {
+    return this.onlineDetails.controls;
+  }
+
   get balanceFeeAmount(): number {
     return Number(this.actualFeeAmount) - Number(this.paidFeeAmount)
   }
@@ -104,7 +118,7 @@ export class PaymentsComponent {
       this.getStudentById();
       this.paymentForm.patchValue({studentId: this.id});
     }
-    this.paymentForm.controls.paymentName.valueChanges.subscribe(res => {
+    this.paymentForm.controls['paymentName'].valueChanges.subscribe(res => {
       const row = this.PaymentsFeeList.find((x: any)=>x.paymentName == res);
       if (this.paidAmountList) {
         const paidList = this.paidAmountList.filter((x: any) => x.paymentName == res);
@@ -116,7 +130,7 @@ export class PaymentsComponent {
       this.actualFeeAmount = Number(row.amount);
     });
 
-    this.paymentForm.controls.paymentType.valueChanges.subscribe(res => {
+    this.paymentForm.controls['paymentType'].valueChanges.subscribe(res => {
       this.setValidationOfCardCheque(res ?? '');
     });
   }
@@ -148,6 +162,12 @@ export class PaymentsComponent {
       this.chequeDetails.controls.branch.updateValueAndValidity();
       this.chequeDetails.controls.chequeNo.removeValidators(Validators.required);
       this.chequeDetails.controls.chequeNo.updateValueAndValidity();
+      this.onlineDetails.controls.transactionDate.removeValidators(Validators.required);
+      this.onlineDetails.controls.transactionDate.updateValueAndValidity();
+      this.onlineDetails.controls.transactionNumber.removeValidators(Validators.required);
+      this.onlineDetails.controls.transactionNumber.updateValueAndValidity();
+      this.onlineDetails.controls.transactionType.removeValidators(Validators.required);
+      this.onlineDetails.controls.transactionType.updateValueAndValidity();
     }
     else if (paymentType == 'Cheque') {
       this.cardDetails.controls.cardHolderName.removeValidators(Validators.required);
@@ -164,6 +184,34 @@ export class PaymentsComponent {
       this.chequeDetails.controls.branch.updateValueAndValidity();
       this.chequeDetails.controls.chequeNo.setValidators(Validators.required);
       this.chequeDetails.controls.chequeNo.updateValueAndValidity();
+      this.onlineDetails.controls.transactionDate.removeValidators(Validators.required);
+      this.onlineDetails.controls.transactionDate.updateValueAndValidity();
+      this.onlineDetails.controls.transactionNumber.removeValidators(Validators.required);
+      this.onlineDetails.controls.transactionNumber.updateValueAndValidity();
+      this.onlineDetails.controls.transactionType.removeValidators(Validators.required);
+      this.onlineDetails.controls.transactionType.updateValueAndValidity();
+    }
+    else if (paymentType == 'Online') {
+      this.cardDetails.controls.cardHolderName.removeValidators(Validators.required);
+      this.cardDetails.controls.cardHolderName.updateValueAndValidity();
+      this.cardDetails.controls.cardNumber.removeValidators(Validators.required);
+      this.cardDetails.controls.cardNumber.updateValueAndValidity();
+      this.cardDetails.controls.cvv.removeValidators(Validators.required);
+      this.cardDetails.controls.cvv.updateValueAndValidity();
+      this.cardDetails.controls.expirationDate.removeValidators(Validators.required);
+      this.cardDetails.controls.expirationDate.updateValueAndValidity();
+      this.chequeDetails.controls.bankName.removeValidators(Validators.required);
+      this.chequeDetails.controls.bankName.updateValueAndValidity();
+      this.chequeDetails.controls.branch.removeValidators(Validators.required);
+      this.chequeDetails.controls.branch.updateValueAndValidity();
+      this.chequeDetails.controls.chequeNo.removeValidators(Validators.required);
+      this.chequeDetails.controls.chequeNo.updateValueAndValidity();
+      this.onlineDetails.controls.transactionDate.setValidators(Validators.required);
+      this.onlineDetails.controls.transactionDate.updateValueAndValidity();
+      this.onlineDetails.controls.transactionNumber.setValidators(Validators.required);
+      this.onlineDetails.controls.transactionNumber.updateValueAndValidity();
+      this.onlineDetails.controls.transactionType.setValidators(Validators.required);
+      this.onlineDetails.controls.transactionType.updateValueAndValidity();
     }
     else {
       this.cardDetails.controls.cardHolderName.removeValidators(Validators.required);
@@ -180,6 +228,12 @@ export class PaymentsComponent {
       this.chequeDetails.controls.branch.updateValueAndValidity();
       this.chequeDetails.controls.chequeNo.removeValidators(Validators.required);
       this.chequeDetails.controls.chequeNo.updateValueAndValidity();
+      this.onlineDetails.controls.transactionDate.removeValidators(Validators.required);
+      this.onlineDetails.controls.transactionDate.updateValueAndValidity();
+      this.onlineDetails.controls.transactionNumber.removeValidators(Validators.required);
+      this.onlineDetails.controls.transactionNumber.updateValueAndValidity();
+      this.onlineDetails.controls.transactionType.removeValidators(Validators.required);
+      this.onlineDetails.controls.transactionType.updateValueAndValidity();
     }
   }
 
@@ -219,13 +273,31 @@ export class PaymentsComponent {
 
   savePayments(): void {
     this.paymentForm.markAllAsTouched();
-    if(this.paymentForm.invalid || this.cardDetails.invalid || this.chequeDetails.invalid){
+    if(this.paymentForm.invalid || this.cardDetails.invalid || this.chequeDetails.invalid || this.onlineDetails.invalid){
       return;
     }
+    const payload: IPaymentTransaction = {
+      payments: this.paymentForm.value!,
+      paymentTransactionDetails: {
+        id: 0,
+        invoiceId: 0,
+        transactionDetail: ''
+      }
+    }
+    if (this.paymentForm.value.paymentType == 'Cheque') {
+      payload.paymentTransactionDetails.transactionDetail = JSON.stringify(this.chequeDetails.value);
+    }
+    else if (this.paymentForm.value.paymentType == 'Card') {
+      payload.paymentTransactionDetails.transactionDetail = JSON.stringify(this.cardDetails.value);
+    }
+    else if (this.paymentForm.value.paymentType == 'Online') {
+      payload.paymentTransactionDetails.transactionDetail = JSON.stringify(this.onlineDetails.value);
+    }
     this.spinnerService.show();
-    this.service.create(this.paymentForm.value).subscribe({next: res => {
+    this.service.create(payload).subscribe({next: res => {
       this.spinnerService.dispose();
-      this.snackbarService.openSuccessSnackbar("Saved Successfully.")
+      this.snackbarService.openSuccessSnackbar("Saved Successfully.");
+      this.openReceipt();
     },
     error: () => {
       this.spinnerService.dispose();
@@ -241,6 +313,40 @@ export class PaymentsComponent {
       this.PaymentsFeeList = res.result ?? res
     },()=>{
       this.spinnerService.dispose();
+    })
+  }
+
+  openReceipt(): void {
+    const receiptFor = [this.paymentForm.value];
+    let transactionType = null;
+    if (this.paymentForm.value.paymentType == 'Cheque') {
+      transactionType = {
+        "Bank Name": this.chequeDetails.value.bankName,
+        "Cheque No": this.chequeDetails.value.chequeNo
+      }
+    }
+    if (this.paymentForm.value.paymentType == 'Online') {
+      transactionType = {
+        "Transaction Type": this.onlineDetails.value.transactionType,
+        "Transaction Number": this.onlineDetails.value.transactionNumber
+      }
+    }
+    if (this.paymentForm.value.paymentType == 'Card') {
+      transactionType = {
+        "Transaction Type": this.cardDetails.value.cardHolderName,
+        "Transaction Number": (this.cardDetails.value.cardNumber! as unknown as string).slice(-4)
+      }
+    }
+    const stdInfo = {
+      ...this.stdInfo.students,
+      father: this.stdInfo.guardians.find((x: {relationship: string})=>x.relationship === 'Father')
+    }
+    this.dialog.open(InvoiceReceiptComponent, {
+      data: {
+        stdInfo,
+        receiptList: receiptFor,
+        transactionType
+      },
     })
   }
   

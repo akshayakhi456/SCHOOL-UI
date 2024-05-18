@@ -151,7 +151,7 @@ export class MarkAttendanceComponent {
         const attendance = this.studentAttendanceList.find(x => x.sId == this.studentList[student].sId);
         studentObj[`D${date}`] = attendance && (attendance as any)[`d${date}`] ? (attendance as any)[`d${date}`] : 'P';
         studentObj['month'] = month.toString();
-        studentObj['Year'] = year.toString();
+        studentObj['year'] = year.toString();
         if (student == 0) {
           this.displayedColumns = ['rollNo', 'sName'];
           this.displayedColumns.push(`D${date}`);
@@ -187,14 +187,14 @@ export class MarkAttendanceComponent {
   }
 
   getStudentAttendanceByMonthYear(): void {
-    const payload: IstudentAttendance = {
+    const payload: IStudentAttendanceRequest = {
       className: this.className.value!,
       section: this.section.value!,
       month: (new Date(this.selectedDM.value!).getMonth() + 1).toString(),
-      Year: (new Date(this.selectedDM.value!).getFullYear()).toString()
+      year: (new Date(this.selectedDM.value!).getFullYear()).toString()
     }
     this.spinnerService.show();
-    this.studentMapClass.getStudentAttendanceByMonthYear(payload)
+    this.studentMapClass.getStudentAttendance(payload)
     .subscribe({
       next: (res: IHttpResponse<Array<IstudentAttendance>>) => {
         this.spinnerService.dispose();
@@ -236,7 +236,7 @@ export class MarkAttendanceComponent {
         className: a.className,
         section: a.section,
         month: a.month,
-        year: a.Year,
+        year: a.year,
         date: date,
         attendanceStatus: (a as any)[`D${date}`]
         }

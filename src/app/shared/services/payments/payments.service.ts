@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URLs } from '../../api-constants';
+import { IPaymentTransaction } from '../../models/payment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class PaymentsService {
 
   constructor(private http: HttpClient) { }
 
-  create(body: any): Observable<boolean> {
+  create(body: IPaymentTransaction): Observable<boolean> {
     return this.http.post<boolean>(`${URLs.createPayments}`, body);
   }
 

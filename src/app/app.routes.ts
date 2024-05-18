@@ -24,14 +24,15 @@ import { ApplyLeaveComponent } from './components/academics/apply-leave/apply-le
 import { MarkAttendanceComponent } from './components/class/mark-attendance/mark-attendance.component';
 import { StudentSectionAssignmentComponent } from './components/class/student-section-assignment/student-section-assignment.component';
 import { StudentProfileComponent } from './components/student-profile/student-profile.component';
+import { ROLES } from './shared/models/common.models';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
     {path: 'login', component: LoginFormComponent, canActivate: [unauthGuard]},
-    {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
+    {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER]}},
     {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
-    {path: 'admission', component: AdmissionFormComponent, canActivate: [authGuard]},
-    {path: 'student/:id', component: AdmissionFormComponent, canActivate: [authGuard]},
+    {path: 'admission', component: AdmissionFormComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER]}},
+    {path: 'student/:id', component: AdmissionFormComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER]}},
     {path: 'student-list', component: StudentsListComponent, canActivate: [authGuard]},
     {path: 'create-enquiry', component: CreateEnquiryComponent, canActivate: [authGuard]},
     {path: 'enquiry/:id', component: CreateEnquiryComponent, canActivate: [authGuard]},

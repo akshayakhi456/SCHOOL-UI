@@ -10,7 +10,8 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   tokenService.isAuthentication.subscribe({
     next: (value) => {
-      if (!value) {
+      const roles = router.routerState.snapshot.root.children[0]?.data['Roles'];
+      if (!value || (roles && roles.length && !roles.includes(authService.role()))) {
         router.navigate(['/login']);
       }
     },

@@ -54,3 +54,41 @@ export const ACADEMIC_YEAR = [{
     year: 2034
 },
 ]
+
+
+export interface IPaymentTransaction {
+    payments: Payment;
+    paymentTransactionDetails: IPaymentDetails;
+}
+
+export interface Payment {
+    invoiceId?: number; // Assuming invoiceId is optional, as it might be generated automatically
+    paymentName: string;
+    paymentType: string;
+    amount: number;
+    remarks: string;
+    dateOfPayment: Date;
+    studentId: number;
+    academicYearId: number;
+    PaymentAllotmentId: number;
+    dueDateOfPayment?: Date; // Optional dueDateOfPayment
+  }
+
+export interface IPayment {
+    // invoiceId: number;
+    paymentName?: string | null; // Ensure paymentName is a non-nullable string
+    paymentType: string | null;
+    amount: number | null;
+    remarks: string | null;
+    dateOfPayment: Date | null;
+    studentId: number | null;
+    acedamicYearId: number; // Fixed typo in 'academicYearId'
+    dueDateOfPayment: Date | null;
+    PaymentAllotmentId: number | null;
+}
+
+export interface  IPaymentDetails {
+    id: number;
+    invoiceId: number;
+    transactionDetail: string;
+}

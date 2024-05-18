@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { StudentService } from '../../shared/services/student/student.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
-import { IStudent, IStudentGuardianResponse } from '../../shared/models/student.models';
+import { IStudentGuardianResponse } from '../../shared/models/student.models';
 import { HTTP_CODES } from '../../shared/constants/common.constants';
 import { StudentDetailComponent } from '../student-detail/student-detail.component';
 import { DomSanitizer } from '@angular/platform-browser';

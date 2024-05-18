@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URLs } from '../../api-constants';
 import { IHttpResponse } from '../../models/auth.models';
-import { IStudentAttendanceRequest, IstudentAttendance, IstudentMapSection } from '../../models/class.models';
+import { IStudentAttendanceMonthYearRequest, IStudentAttendanceRequest, IstudentAttendance, IstudentMapSection } from '../../models/class.models';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,11 @@ export class StudentMapClassService {
       return this.http.post<IHttpResponse<string>>(`${URLs.updateStudentAttendance}`, payload);
   }
 
-    getStudentAttendanceByMonthYear(payload: IstudentAttendance): Observable<IHttpResponse<Array<IstudentAttendance>>>{
+  getStudentAttendance(payload: IStudentAttendanceRequest): Observable<IHttpResponse<Array<IstudentAttendance>>>{
+    return this.http.post<IHttpResponse<Array<IstudentAttendance>>>(`${URLs.GetStudentAttendance}`, payload);
+  }
+
+    getStudentAttendanceByMonthYear(payload: IStudentAttendanceMonthYearRequest): Observable<IHttpResponse<Array<IstudentAttendance>>>{
       return this.http.post<IHttpResponse<Array<IstudentAttendance>>>(`${URLs.GetStudentAttendanceByMonthYear}`, payload);
     }
 

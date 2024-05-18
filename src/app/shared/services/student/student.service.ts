@@ -28,6 +28,10 @@ export class StudentService {
     return this.http.get(`${URLs.getStudentById}${id}`);
   }
 
+  getByKey(key: string): Observable<any> {
+    return this.http.get(`${URLs.studentByKey}?q=${key}`);
+  }
+
   getStudentByClassName(className: string): Observable<any> {
     return this.http.get(`${URLs.getStudentByClassName}${className}`);
   }

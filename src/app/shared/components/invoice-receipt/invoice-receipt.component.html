@@ -46,6 +46,13 @@
             </tbody>
           </table>
         </div>
+        @if (data.transactionType) {
+          @for(item of data.transactionType | keyvalue; track item; let i=$index){
+            <div class="mt-2">
+              <span>{{ item.key }}: {{ item.value }}</span>
+            </div>
+          }
+        }
         <div class="parent-signature">
           <div>Parent's Signature</div>
           <div>Received By</div>
@@ -102,6 +109,13 @@
             </tbody>
           </table>
         </div>
+        @if (data.transactionType) {
+          @for(item of data.transactionType | keyvalue; track item; let i=$index){
+            <div class="mt-2">
+              <span>{{ item.key }}: {{ item.value }}</span>
+            </div>
+          }
+        }
         <div class="parent-signature">
           <div>Parent's Signature</div>
           <div>Received By</div>

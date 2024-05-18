@@ -1,6 +1,9 @@
 <div class="enquiry-list">
     <div class="body">
         <form [formGroup]="searchForm">
+            <div class="float-end mt-2 me-2">
+                <button type="button" class="btn btn-primary" routerLink="/create-enquiry">Add Enquiry</button>
+            </div>
             <div class="row mt-4 mx-3">
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline">
@@ -32,7 +35,6 @@
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <button type="button" class="btn btn-primary" (click)="filterChanges()">Search</button>
-                    <button type="button" class="btn btn-primary ms-1" routerLink="/create-enquiry">Add Enquiry</button>
                 </div>
             </div>
         </form>

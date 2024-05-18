@@ -20,6 +20,7 @@ export class InvoiceReceiptComponent {
   @Input() receiptList: any;
   @ViewChild('receipt') receipt!: ElementRef;
   @ViewChild('exampleModal') modal!: ElementRef;
+
   today = new Date();
   invoiceId = 0;
 

@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between flex-wrap mt-3 mx-2">
-    <div >
+    <div>
         <mat-form-field appearance="outline">
-            <mat-label>Admission Number</mat-label>
+            <mat-label>Search Student</mat-label>
             <input matInput [formControl]="stdId" />
         </mat-form-field>
         <button class="btn btn-primary ms-2" type="button" (click)="getStdInfo()">Search</button>
@@ -21,7 +21,8 @@
         </div>
         <div class="">
             <button type="button" class="btn btn-primary" (click)="redirectToPayment()">Payment</button>
-            <button type="button" class="btn btn-primary ms-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  (click)="openReceipt()">Receipt</button>
+            <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                (click)="openReceipt()">Receipt</button>
         </div>
     </div>
     }
@@ -101,4 +102,50 @@
 <div class="no-record">Use Search option to show details</div>
 }
 
-<!-- <app-invoice-receipt></app-invoice-receipt> -->
+<ng-template #studentSearchList>
+    <h1 mat-dialog-title>Students</h1>
+    <mat-dialog-content>
+        <table mat-table [dataSource]="studentDataSource">
+            <!-- Student Name Column -->
+            <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef>
+                    Student Name
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>{{element.firstName}} {{element.lastName}}</div>
+                    <div>AD.No: {{element.id}}</div>
+                </td>
+            </ng-container>
+
+            <!-- Class Column -->
+            <ng-container matColumnDef="class">
+                <th mat-header-cell *matHeaderCellDef>
+                    Class
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element.className}} </td>
+            </ng-container>
+
+            <!-- Section Column -->
+            <ng-container matColumnDef="section">
+                <th mat-header-cell *matHeaderCellDef>
+                    Section
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element.section}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button class="btn btn-primary" mat-dialog-close (click)="studentData(element)">Select</button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="studentDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: studentDisplayedColumns;"></tr>
+        </table>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button class="btn btn-light" mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+</ng-template>

@@ -32,7 +32,7 @@
 			}
 
 			@for (item of menuList; track item; let i=$index) {
-				@if (!item.isSubMenu){
+				@if (!item.isSubMenu && item.isDisplay){
 				<li [ngClass]="{'active': item.isActive}">
 					<a  [routerLink]="item.routerLink">
 						<i [class]="item.icon"></i>
@@ -42,7 +42,7 @@
 					</a>
 				</li>
 				}
-				@else {
+				@else if(item.isDisplay){
 					<li class="menu-item" [ngClass]="{'d-flex': openMenu, 'active': item.isActive}">
 						<a class="sidebar-menu-dropdown">
 							<i [class]="item.icon"></i>

@@ -163,7 +163,7 @@ export class CreateEnquiryComponent {
     this.settingService.getEnquiryQuestionsSettings().subscribe((res) => {
       this.spinnerService.dispose();
       this.questionList = res.result.map((x: any) => {
-        if(x.type == 'dropdown' && x.isMultiple) {
+        if(x.type == 'dropdown') {
           return {...x, options: JSON.parse(x.options).map((opt: any) => opt.option)}
         }
         return x

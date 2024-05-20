@@ -33,7 +33,7 @@ export class InvoiceReceiptComponent {
       this.receiptList = data.receiptList;
     }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.getInvoiceId();
   }
 
@@ -44,28 +44,29 @@ export class InvoiceReceiptComponent {
         this.spinnerService.dispose();
         if(res.statusCode == 200) {
           this.invoiceId = Number(res.result) + 1;
+          this.downloadReceipt(true);
         }
       },
       error: () => {this.spinnerService.dispose();}
     })
   }
 
-  downloadReceipt(): void {
+  downloadReceipt(saveDB = false): void {
     let data: any = this.receipt.nativeElement;
     if(this.isMobile() && data){
       const viewportMetaTag = document.querySelector('meta[name="viewport"]') as any;
       viewportMetaTag.setAttribute('content', '');
       setTimeout(() => {
         // this.ngxService.start();
-        this.downloadPDF(true, viewportMetaTag, data);
+        this.downloadPDF(true, viewportMetaTag, data, saveDB);
       }, 0);
     }else{
-      this.downloadPDF(false,null, data);
+      this.downloadPDF(false,null, data, saveDB);
     }
   }
 
   // this code for creating PDF START
-  downloadPDF(isMobile = false, viewportMetaTag: any = null, canvasData: any =null): void {
+  downloadPDF(isMobile = false, viewportMetaTag: any = null, canvasData: any =null, saveDB: boolean): void {
     html2canvas(canvasData).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'px', 'a4', true);
@@ -73,7 +74,12 @@ export class InvoiceReceiptComponent {
       const pdfWidth = 410//pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
       pdf.addImage(imgData, 'PNG', 20, 0, pdfWidth, pdfHeight);
-      this.generateReceipt(imgData, pdf, viewportMetaTag, isMobile);
+      if (saveDB) {
+        this.generateReceipt(imgData, viewportMetaTag, isMobile);
+      }
+      else {
+        this.download(pdf, viewportMetaTag);
+      }
     });
   }
   // this code for creating PDF ENDS
@@ -82,7 +88,7 @@ export class InvoiceReceiptComponent {
     return window.innerWidth < 768;
   }
 
-  generateReceipt(base64Data: string,pdf: any, viewportMetaTag: any, isMobile: any) {
+  generateReceipt(base64Data: string, viewportMetaTag: any, isMobile: any) {
     const formData = new FormData();
     formData.append('file', base64Data.split(',')[1]);
     formData.append('invoice', JSON.stringify({
@@ -95,7 +101,6 @@ export class InvoiceReceiptComponent {
         this.spinnerService.dispose();
         if (res.statusCode === 200) {
           this.snackbar.openSuccessSnackbar(res.message);
-          pdf.save(`${this.stdInfo!.firstName}_${this.stdInfo!.lastName}.pdf`);
           if(isMobile){
             setTimeout(() => {
               viewportMetaTag.setAttribute('content', 'width=device-width, initial-scale=1');
@@ -114,5 +119,10 @@ export class InvoiceReceiptComponent {
         }
       }
     })
+  }
+
+  download(pdf: any, viewportMetaTag: any) {
+    pdf.save(`${this.stdInfo!.firstName}_${this.stdInfo!.lastName}.pdf`);
+    viewportMetaTag.setAttribute('content', 'width=device-width, initial-scale=1');
   }
 }

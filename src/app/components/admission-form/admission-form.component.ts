@@ -288,6 +288,9 @@ export class AdmissionFormComponent {
     fileSelected = document.getElementById('filepaths');
     fileSelected = fileSelected.files;
     const id = this.activatedRoute.snapshot.params['id'];
+    if (!id && !fileSelected) {
+      this.snackbarService.openWarningSnackbar("Photo is required.")
+    }
     if (fileSelected.length > 0) {
       const fileToLoad = fileSelected[0];
       let fileReader = new FileReader();
@@ -301,7 +304,7 @@ export class AdmissionFormComponent {
         let fileTosaveName: any;
         fileTosaveName = (fileReader.result as string).split(',')[1];
         this.save(fileTosaveName);
-      }, 5000)
+      }, 500)
     }
     else {
       let fileTosaveName: any;

@@ -1,0 +1,83 @@
+<h2 mat-dialog-title>Downlaod PDF</h2>
+<mat-dialog-content>
+  <div #receipt class="parent-receipt">
+    <div>
+          <h1 class="receipt-title">Receipt</h1>
+        <div class="school-header">
+          <div>
+            <h2 class="school-name">SchoolUI Demo School</h2>
+          </div>
+          <div>
+            <h4 class="school-subtitle">Charminar Hyderabad</h4>
+          </div>
+        </div>
+        <div class="std-info">
+          <div>
+            <div> <strong>Student :</strong> {{stdInfo!.firstName}} {{stdInfo!.lastName}} </div>
+            <div> <strong>FatherName :</strong> {{stdInfo!.father ? stdInfo!.father.firstName : 'NA'}}</div>
+          </div>
+          <div>
+            <div> <strong>Class :</strong> {{stdInfo!.className}} <strong>Section :</strong> {{stdInfo!.section}}</div>
+            <div> <strong>Student Reg No:</strong> {{stdInfo!.id}} </div>
+          </div>
+        </div>
+        <div>
+          <table class="std-fee">
+            <thead class="text-center">
+              <tr>
+                <th class="tbl-header">Date Of Payment</th>
+                <th class="tbl-header">Receipt No.</th>
+                <th class="tbl-header">Title</th>
+                <th class="tbl-header">Actual Amount</th>
+                <th class="tl-header">Amount</th>
+                <th class="tbl-header">Payment Mode</th>
+                <th class="tbl-header">Remarks</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              @for(item of receiptList; track item; let i=$index){
+                <tr>
+                  <td class="tbl-body">{{item.dateOfPayment | date:"d/M/YYYY"}}</td>
+                  <td class="tbl-body">{{item.invoiceId}}</td>
+                  <td class="tbl-body">{{item.paymentName}}</td>
+                  <td class="tbl-body">Rs. {{item.paymentAllotmentAmount}}</td>
+                  <td class="tbl-body">Rs. {{item.amount}}</td>
+                  <td class="tbl-body">{{item.paymentType}}</td>
+                  <td class="tbl-body">{{item.remarks}}</td>
+                </tr>
+              }             
+            </tbody>
+          </table>
+        </div>
+        @if (receiptList) {
+            <hr/>
+            @for(receipt of receiptList; track receipt; let i=$index){
+                <div class="row">
+            @for(item of receipt.transactionDetail.transactionDetail| keyvalue; track item) {
+                  <span class="col-sm-4">
+                    <strong class="w-100">{{ capitalizeBeforeSpace(item.key) }}: </strong>
+                    {{ item.value }}
+                  </span>
+                }
+                @empty {
+                    <span class="text-center">Cash Payment</span>
+                }
+            </div>
+            <hr/>
+          }
+        }
+        <div class="parent-signature">
+          <div>Parent's Signature</div>
+          <div>Received By</div>
+        </div>
+        <div class="cashier-signature">
+          <small>Date: {{today | date: 'd/M/YYYY'}}</small>
+          <div>Cashier's Signature</div>
+        </div>
+      </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button type="button" class="btn btn-primary ml-2" (click)="downloadReceipt()">Download</button>
+  <button type="button" class="btn btn-secondary" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

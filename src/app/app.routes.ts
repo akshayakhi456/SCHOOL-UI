@@ -25,6 +25,7 @@ import { MarkAttendanceComponent } from './components/class/mark-attendance/mark
 import { StudentSectionAssignmentComponent } from './components/class/student-section-assignment/student-section-assignment.component';
 import { StudentProfileComponent } from './components/student-profile/student-profile.component';
 import { ROLES } from './shared/models/common.models';
+import { AddMarksComponent } from './components/class/add-marks/add-marks.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -52,5 +53,6 @@ export const routes: Routes = [
     {path: 'applyLeave', component: ApplyLeaveComponent, canActivate: [authGuard]},
     {path: 'mark-attendance', component: MarkAttendanceComponent, canActivate: [authGuard]},
     {path: 'section-assignment', component: StudentSectionAssignmentComponent, canActivate: [authGuard]},
+    {path: 'add-marks', component: AddMarksComponent, canActivate: [authGuard]},
     {path: 'newPassword', component: NewPasswordComponent},
 ];

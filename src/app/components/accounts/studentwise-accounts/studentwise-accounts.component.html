@@ -1,106 +1,121 @@
-<div class="d-flex justify-content-between flex-wrap mt-3 mx-2">
-    <div>
-        <mat-form-field appearance="outline">
-            <mat-label>Search Student</mat-label>
-            <input matInput [formControl]="stdId" />
-        </mat-form-field>
-        <button class="btn btn-primary ms-2" type="button" (click)="getStdInfo()">Search</button>
-    </div>
-    @if (stdInfo?.students) {
-    <div>
+<div class="box">
+    <div class="box-body">
         <div>
-            <div>
-                <span>Name:</span> <span>{{stdInfo?.students.firstName}} {{stdInfo?.students.lastName}}</span>
+            <mat-form-field appearance="outline">
+                <mat-label>Search Student</mat-label>
+                <input matInput [formControl]="stdId" />
+            </mat-form-field>
+            <button class="btn btn-primary ms-2" type="button" (click)="getStdInfo()">Search</button>
+        </div>
+    @if (stdInfo?.students) {
+        <div class="row">
+            <div class="col-sm-12 col-lg-4 col-md-4">
+                <div>
+                    <span>Name:</span> <span>{{stdInfo?.students.firstName}} {{stdInfo?.students.lastName}}</span>
+                </div>
+                <div>
+                    <span>Class:</span> <span>{{stdInfo?.students.className}}</span>
+                </div>
+                <div>
+                    <span>Section:</span> <span>{{stdInfo?.students.section}}</span>
+                </div>
             </div>
-            <div>
-                <span>Class:</span> <span>{{stdInfo?.students.className}}</span>
+            <div class="col-sm-12 col-lg-4 col-md-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Academic Year</mat-label>
+                    <mat-select [formControl]="academicYearId">
+                        @for (academic of academicList; track academic) {
+                        <mat-option [value]="academic.value">{{academic.label}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
             </div>
-            <div>
-                <span>Section:</span> <span>{{stdInfo?.students.section}}</span>
+            <div class="col-sm-12 col-lg-4 col-md-4">
+                <button type="button" class="btn btn-primary" (click)="redirectToPayment()">Payment</button>
+                <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    (click)="openReceipt()">Receipt</button>
             </div>
         </div>
-        <div class="">
-            <button type="button" class="btn btn-primary" (click)="redirectToPayment()">Payment</button>
-            <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                (click)="openReceipt()">Receipt</button>
-        </div>
-    </div>
+        }
+    @if (dataSource.data.length != 0) {
+    <table mat-table [dataSource]="dataSource">
+    
+        <!--- Note that these columns can be defined in any order.
+                            The actual rendered columns are set as a property on the row definition" -->
+        <ng-container matColumnDef="checkbox">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox [formControl]="selectAllReceipts" (change)="generateAllReceipt()"></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox [(ngModel)]="element.checkbox"></mat-checkbox>
+            </td>
+        </ng-container>
+        <!-- invoiceId Column -->
+        <ng-container matColumnDef="invoiceId">
+            <th mat-header-cell *matHeaderCellDef> Receipt No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.invoiceId}} </td>
+        </ng-container>
+    
+        <!-- purpose Column paymentName-->
+        <ng-container matColumnDef="paymentName">
+            <th mat-header-cell *matHeaderCellDef> Title </th>
+            <td mat-cell *matCellDef="let element"> {{element.paymentName}} </td>
+        </ng-container>
+    
+        <!-- DOP Column feeName-->
+        <ng-container matColumnDef="dateOfPayment">
+            <th mat-header-cell *matHeaderCellDef> Date Of Payment </th>
+            <td mat-cell *matCellDef="let element"> {{element.dateOfPayment | date:"d/M/YYYY"}} </td>
+        </ng-container>
+    
+        <!-- Amount Column -->
+        <ng-container matColumnDef="paymentAllotmentAmount">
+            <th mat-header-cell *matHeaderCellDef> Actual Amount </th>
+            <td mat-cell *matCellDef="let element"> {{element.paymentAllotmentAmount}} </td>
+        </ng-container>
+    
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef> Amount </th>
+            <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+        </ng-container>
+    
+    
+        <!-- Payment Column -->
+        <ng-container matColumnDef="paymentType">
+            <th mat-header-cell *matHeaderCellDef> Payment Mode </th>
+            <td mat-cell *matCellDef="let element"> {{element.paymentType}} </td>
+        </ng-container>
+    
+        <!-- Remarks Column -->
+        <ng-container matColumnDef="remarks">
+            <th mat-header-cell *matHeaderCellDef> Remarks </th>
+            <td mat-cell *matCellDef="let element"> {{element.remarks}} </td>
+        </ng-container>
+    
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <span>
+                    <i class="bi bi-three-dots-vertical"  matTooltipPosition="above" [matTooltip]="tooltipInfo(element)"></i>
+                </span>
+            </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
     }
+    @if(dataSource.data.length == 0 && stdInfo?.students){
+    <div class="no-record">No Records Found</div>
+    }
+    @if (!stdInfo?.students) {
+    <div class="no-record">Use Search option to show details</div>
+    }
+    </div>
 </div>
-@if (dataSource.data.length != 0) {
-<table mat-table [dataSource]="dataSource">
 
-    <!--- Note that these columns can be defined in any order.
-                        The actual rendered columns are set as a property on the row definition" -->
-    <ng-container matColumnDef="checkbox">
-        <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox [formControl]="selectAllReceipts" (change)="generateAllReceipt()"></mat-checkbox>
-        </th>
-        <td mat-cell *matCellDef="let element">
-            <mat-checkbox [(ngModel)]="element.checkbox"></mat-checkbox>
-        </td>
-    </ng-container>
-    <!-- invoiceId Column -->
-    <ng-container matColumnDef="invoiceId">
-        <th mat-header-cell *matHeaderCellDef> Receipt No. </th>
-        <td mat-cell *matCellDef="let element"> {{element.invoiceId}} </td>
-    </ng-container>
-
-    <!-- purpose Column paymentName-->
-    <ng-container matColumnDef="paymentName">
-        <th mat-header-cell *matHeaderCellDef> Title </th>
-        <td mat-cell *matCellDef="let element"> {{element.paymentName}} </td>
-    </ng-container>
-
-    <!-- DOP Column feeName-->
-    <ng-container matColumnDef="dateOfPayment">
-        <th mat-header-cell *matHeaderCellDef> Date Of Payment </th>
-        <td mat-cell *matCellDef="let element"> {{element.dateOfPayment | date:"d/M/YYYY"}} </td>
-    </ng-container>
-
-    <!-- Amount Column -->
-    <ng-container matColumnDef="paymentAllotmentAmount">
-        <th mat-header-cell *matHeaderCellDef> Actual Amount </th>
-        <td mat-cell *matCellDef="let element"> {{element.paymentAllotmentAmount}} </td>
-    </ng-container>
-
-    <!-- Amount Column -->
-    <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef> Amount </th>
-        <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
-    </ng-container>
-
-
-    <!-- Payment Column -->
-    <ng-container matColumnDef="paymentType">
-        <th mat-header-cell *matHeaderCellDef> Payment Mode </th>
-        <td mat-cell *matCellDef="let element"> {{element.paymentType}} </td>
-    </ng-container>
-
-    <!-- Remarks Column -->
-    <ng-container matColumnDef="remarks">
-        <th mat-header-cell *matHeaderCellDef> Remarks </th>
-        <td mat-cell *matCellDef="let element"> {{element.remarks}} </td>
-    </ng-container>
-
-    <!-- Action Column -->
-    <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef> Action </th>
-        <td mat-cell *matCellDef="let element">
-            <mat-icon>print</mat-icon>
-        </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-}
-@if(dataSource.data.length == 0 && stdInfo?.students){
-<div class="no-record">No Records Found</div>
-}
-@if (!stdInfo?.students) {
-<div class="no-record">Use Search option to show details</div>
-}
 
 <ng-template #studentSearchList>
     <h1 mat-dialog-title>Students</h1>

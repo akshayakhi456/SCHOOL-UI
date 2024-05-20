@@ -66,4 +66,7 @@ export const URLs = {
     StudentAssignSection: `${environment.apiUrl}StudentMapTeacher/StudentAssignSection`,
     GetStudentAttendance: `${environment.apiUrl}StudentMapTeacher/GetStudentAttendance`,
     GetStudentAttendanceByMonthYear: `${environment.apiUrl}StudentMapTeacher/GetStudentAttendanceByMonthYear`,
+
+    addMarks: `${environment.apiUrl}subject/addMarks`,
+    getMarksByClass: `${environment.apiUrl}subject/getMarksByClass`,
 }

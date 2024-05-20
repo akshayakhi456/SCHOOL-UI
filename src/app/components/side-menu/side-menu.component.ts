@@ -130,6 +130,10 @@ export class SideMenuComponent {
         {
           title: 'Section Assignment',
           routerLink: '/section-assignment',
+        },
+        {
+          title: 'Add Marks',
+          routerLink: '/add-marks',
         }
       ]
     }

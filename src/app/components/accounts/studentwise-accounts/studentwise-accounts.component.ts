@@ -12,11 +12,14 @@ import { InvoiceReceiptComponent } from '../../../shared/components/invoice-rece
 import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
 import { GlobalService } from '../../../shared/signal-service/global.service';
+import { JsonTooltipDirective } from '../../../shared/directive/jsonTooltip.directive';
+import { ACADEMIC_YEAR } from '../../../shared/models/payment.model';
+import { BulkReceiptComponent } from '../bulk-receipt/bulk-receipt.component';
 
 @Component({
   selector: 'app-studentwise-accounts',
   standalone: true,
-  imports: [SharedModule, CommonModule, InvoiceReceiptComponent],
+  imports: [SharedModule, CommonModule, InvoiceReceiptComponent, JsonTooltipDirective, BulkReceiptComponent],
   templateUrl: './studentwise-accounts.component.html',
   styleUrl: './studentwise-accounts.component.scss'
 })
@@ -26,11 +29,13 @@ export class StudentwiseAccountsComponent {
   studentDataSource = new MatTableDataSource();
   stdId = new FormControl();
   selectAllReceipts = new FormControl();
+  academicYearId = new FormControl('');
+  academicList = ACADEMIC_YEAR;
   pageSizes = [10, 50, 100];
   receiptRecord = true;
   stdInfo: any;
   selectedReceipt: any;
-  displayedColumns: string[] = ['checkbox', 'invoiceId', 'paymentName', 'paymentAllotmentAmount', 'amount', 'paymentType', 'dateOfPayment', 'remarks'];
+  displayedColumns: string[] = ['checkbox', 'invoiceId', 'paymentName', 'paymentAllotmentAmount', 'amount', 'paymentType', 'dateOfPayment', 'remarks', 'action'];
   studentDisplayedColumns: string[] = ['firstName', 'class', 'section', 'action'];
   completeStudentList = [];
   dataSource = new MatTableDataSource();
@@ -54,12 +59,20 @@ export class StudentwiseAccountsComponent {
   }
 
   ngOnInit(): void {
-
+    this.academicYearId.valueChanges.subscribe({
+      next: (res) => {
+        if (res) {
+          this.dataSource.data = this.originalReceipt.filter((x: any) => x.academicYears == res);
+        }
+      },
+    })
   }
 
   getStdInfo() {
     if (this.stdId.value) {
       this.getStudentById();
+      this.stdInfo = undefined;
+      this.dataSource.data = [];
     }
   }
 
@@ -133,12 +146,26 @@ export class StudentwiseAccountsComponent {
       ...this.stdInfo.students,
       father: this.stdInfo.guardians.find((x: {relationship: string})=>x.relationship === 'Father')
     }
-    this.dialog.open(InvoiceReceiptComponent, {
+    this.dialog.open(BulkReceiptComponent, {
       data: {
         stdInfo,
-        receiptList: receiptFor
+        receiptList: receiptFor.map((x: any) => {
+          if(x.paymentType == 'Cash') {
+            return x;
+          }
+          return {
+            ...x,
+            transactionDetail: {
+              ...x.transactionDetail,
+              transactionDetail: JSON.parse(x.transactionDetail.transactionDetail)
+            }
+          }
+        })
       },
     })
   }
 
+  tooltipInfo(element: any): string {
+    return element.transactionDetail?.transactionDetail?.replace('{', '').replace('}', '').replaceAll(",","\n");
+  }
 }

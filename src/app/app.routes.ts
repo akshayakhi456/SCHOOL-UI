@@ -26,6 +26,7 @@ import { StudentSectionAssignmentComponent } from './components/class/student-se
 import { StudentProfileComponent } from './components/student-profile/student-profile.component';
 import { ROLES } from './shared/models/common.models';
 import { AddMarksComponent } from './components/class/add-marks/add-marks.component';
+import { ExamSubjectComponent } from './components/class/exam-subject/exam-subject.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -54,5 +55,6 @@ export const routes: Routes = [
     {path: 'mark-attendance', component: MarkAttendanceComponent, canActivate: [authGuard]},
     {path: 'section-assignment', component: StudentSectionAssignmentComponent, canActivate: [authGuard]},
     {path: 'add-marks', component: AddMarksComponent, canActivate: [authGuard]},
+    {path: 'exam-subject', component: ExamSubjectComponent, canActivate: [authGuard]},
     {path: 'newPassword', component: NewPasswordComponent},
 ];

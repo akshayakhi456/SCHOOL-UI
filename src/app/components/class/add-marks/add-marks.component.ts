@@ -15,6 +15,7 @@ import { SubjectService } from '../../../shared/services/subject/subject.service
 import { IAddMarks } from '../../../shared/models/subject.models';
 import { ACADEMIC_YEAR } from '../../../shared/models/payment.model';
 import { take } from 'rxjs';
+import { IExamModel } from '../../../shared/models/setting.models';
 
 @Component({
   selector: 'app-add-marks',
@@ -28,6 +29,7 @@ export class AddMarksComponent {
   section = new FormControl('', Validators.required);
   subject = new FormControl('', Validators.required);
   acedemicYearId = new FormControl(null, Validators.required);
+  exam = new FormControl('', Validators.required);
   classList: Array<{label: string; value: string}> = [];
   orgSectionList: Array<{label: string; value: string}> = [];
   sectionList: Array<{label: string; value: string}> = [];
@@ -37,6 +39,7 @@ export class AddMarksComponent {
   displayedColumns: string[] = ['rollNo', 'sName', 'marks'];
   studentList: Array<IstudentMapSection> = [];
   studentMarks: Array<IAddMarks> = [];
+  examList: Array<IExamModel> = [];
   columnsToDisplay: string[] = this.displayedColumns.slice();
   isShowData = false;
   breadcrumbData: IBreadcrumb = {
@@ -81,6 +84,21 @@ export class AddMarksComponent {
       })
     },()=>{
       this.spinnerService.dispose();
+    })
+  }
+
+  getExam(): void {
+    this.spinnerService.show();
+    this.settingService.getExam().subscribe({
+      next: (res) => {
+        this.spinnerService.dispose();
+        if (res.statusCode == HTTP_CODES.SUCCESS) {
+          this.examList = res.result!;
+        }
+      },
+      error: () => {
+        this.spinnerService.dispose();
+      }
     })
   }
 

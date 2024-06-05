@@ -35,6 +35,7 @@
                 @else {
                     <button type="button" class="btn btn-primary" (click)="element.isEditMode = !element.isEditMode">Edit Class</button>
                     <button type="button" class="btn btn-primary ms-1" (click)="openSectionModal(element)">Section</button>
+                    <button type="button" class="btn btn-primary ms-1" (click)="openSubjectModal(element)">Subject</button>
                 }
             </td>
         </ng-container>
@@ -119,6 +120,61 @@
             
                     <tr mat-header-row *matHeaderRowDef="displayedSectionColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedSectionColumns;"></tr>
+                </table>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button class="btn btn-light" mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+</ng-template>
+
+<ng-template #openSubjectPopup>
+    @if (openedClass && openedClass['className']) {
+        <h1 mat-dialog-title>Subject - Class: {{openedClass['className']}}</h1>
+    }
+    @else {
+        <h1 mat-dialog-title>Subject</h1>
+    }
+        <mat-dialog-content>
+            <div class="section-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Subject Name</mat-label>
+                    <mat-select [formControl]="subjectName">
+                        @for (subject of subjectList; track subject) {
+                            <mat-option [value]="subject.id">{{subject.subjectName}}</mat-option>
+                        }
+                    </mat-select>
+                    @if (subjectName.invalid && subjectName.touched) {
+                        <mat-error>Subject Name is Required.</mat-error>
+                    }
+                </mat-form-field>
+                <button class="btn btn-primary" (click)="saveSubject()">Save</button>
+            </div>
+            <div>
+                <table mat-table [dataSource]="subjectDataSource" matSort #subjectSort (matSortChange)="announceSortChange($event)">
+            
+                    Class Column
+                    <ng-container matColumnDef="subject">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                            Subject
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.subject}}                            
+                        </td>
+                    </ng-container>
+            
+                    Action Column
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>
+                           Action
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                           <button class="btn btn-primary" (click)="removeClassSubject(element.id)">Remove</button>
+                        </td>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="displayedSubjectColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedSubjectColumns;"></tr>
                 </table>
             </div>
         </mat-dialog-content>

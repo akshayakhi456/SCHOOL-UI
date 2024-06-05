@@ -19,24 +19,6 @@
                     </mat-form-field>
                      }
             </div>
-            @if (sectionList.length) {
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Section</mat-label>
-                    <mat-select [formControl]="section">
-                        <mat-option [value]="''">[Any]</mat-option>
-                            @for (sec of sectionList; track sec) {
-                            <mat-option [value]="sec.value">{{sec.label}}</mat-option>
-                            }
-                        </mat-select>
-                        @if (section.errors &&
-                        section.errors['required'] &&
-                        section.touched) {
-                        <mat-error>Section is required.</mat-error>
-                        }
-                    </mat-form-field>
-                </div>
-            }
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <mat-form-field appearance="outline">
                     <mat-label>Academic Year</mat-label>
@@ -62,30 +44,15 @@
                     }
                 </mat-form-field>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Subject</mat-label>
-                    <mat-select [formControl]="subject">
-                        @for (subject of subjectList; track subject) {
-                        <mat-option [value]="subject.value">{{subject.label}}</mat-option>
-                        }
-                    </mat-select>
-                    @if (subject.errors &&
-                    subject.errors['required'] &&
-                    subject.touched) {
-                    <mat-error>Subject is required.</mat-error>
-                    }
-                </mat-form-field>
-            </div>
         </div>
         <div class="d-flex justify-content-center gap-1">
-            <button class="btn btn-primary" (click)="getStudentAssignSectionByYear()">Filter</button>
+            <button class="btn btn-primary" (click)="getExamsDetails()">Filter</button>
             <button class="btn btn-light" (click)="resetFilter()">Reset</button>
         </div>
 
         @if (isShowData){
             <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary" (click)="submitMarks()">Save Changes</button>
+                    <button class="btn btn-primary" (click)="saveExamDetails()">Save Changes</button>
             </div>
             <div class="row">
                 <table mat-table [dataSource]="dataSource" class="table-responsive">
@@ -95,13 +62,16 @@
                            {{column}}
                         </th>
                         <td mat-cell *matCellDef="let element;let j = index">
-                            @if (column == 'rollNo' || column == 'sName'){
-                            {{ element[column] }}
+                            @if (apiColumns[i] == 'subject'){
+                            {{ element[apiColumns[i]] }}
                             }
-                            @else {
+                            @else if (apiColumns[i] == 'minMarks' || apiColumns[i] == 'maxMarks'){
                                 <mat-form-field appearance="outline" class="marks">
-                                    <input matInput type="number" [(ngModel)]="element[column]"/>
+                                    <input matInput type="text" [(ngModel)]="element[apiColumns[i]]"/>
                                 </mat-form-field>
+                            }
+                            @else if (apiColumns[i] == 'isAddInTotal' || apiColumns[i] == 'willExamConduct') {
+                                <mat-slide-toggle [(ngModel)]="element[apiColumns[i]]"></mat-slide-toggle>
                             }
                         </td>
                     </ng-container>

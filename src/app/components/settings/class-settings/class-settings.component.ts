@@ -10,6 +10,10 @@ import { SettingsService } from '../../../shared/services/settings/settings.serv
 import { Router } from '@angular/router';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
+import { SubjectService } from '../../../shared/services/subject/subject.service';
+import { IClassWiseSubject } from '../../../shared/models/subject.models';
+import { HTTP_CODES } from '../../../shared/constants/common.constants';
+import { ISubjectModel } from '../../../shared/models/setting.models';
 
 @Component({
   selector: 'app-class-settings',
@@ -21,20 +25,26 @@ import { SnackbarService } from '../../../shared/signal-service/snackbar.service
 export class ClassSettingsComponent {
   @ViewChild('openClassPopup') openClassPopup!: TemplateRef<any>;
   @ViewChild('openSectionPopup') openSectionPopup!: TemplateRef<any>;
+  @ViewChild('openSubjectPopup') openSubjectPopup!: TemplateRef<any>;
   @ViewChild('paginator') paginator!: MatPaginator | null;
   className = new FormControl('', Validators.required);
   sectionName = new FormControl('', Validators.required);
+  subjectName = new FormControl('', [Validators.required]);
   isEditSectionMode = false;
-  openedClass = null;
+  openedClass: {id: number; className: string} | null = null;
   pageSizes = [10, 25, 50, 100];
   displayedColumns: string[] = ['className', 'action'];
   displayedSectionColumns: string[] = ['section', 'action'];
+  displayedSubjectColumns: string[] = ['subject', 'action'];
   classDataSource = new MatTableDataSource([]);
   sectionDataSource = new MatTableDataSource([]);
+  subjectDataSource = new MatTableDataSource<IClassWiseSubject>([]);
   questionForm = new FormGroup({});
   isEditMode= false;
+  subjectList: Array<ISubjectModel> = [];
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: SettingsService,
+    private subject: SubjectService,
     private router: Router,
     private snackbar:SnackbarService,
     private spinnerService: SpinnerService,
@@ -47,6 +57,7 @@ export class ClassSettingsComponent {
     this.classDataSource.sort = this.sort;
     this.sectionDataSource.sort = this.sort;
     this.getClassList();
+    this.getSubjectList();
   }
 
   getClassList() {
@@ -63,6 +74,21 @@ export class ClassSettingsComponent {
       this.spinnerService.dispose();
     })
 
+  }
+
+  getSubjectList(): void {
+    this.spinnerService.show();
+    this.service.subjectList().subscribe({
+      next: (res) => {
+        this.spinnerService.dispose();
+        if (res.statusCode == HTTP_CODES.SUCCESS) {
+          this.subjectList = res.result!;
+        }
+      },
+      error: () => {
+        this.spinnerService.dispose();
+      }
+    })
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -107,6 +133,21 @@ export class ClassSettingsComponent {
     this.openedClass = element
     this.getSectionList();
     const dialog = this.dialog.open(this.openSectionPopup, {
+      width: '40vw',
+      height: '40vw'
+    })
+
+
+    dialog.afterClosed().subscribe(() => {
+      this.openedClass = null;
+    })
+  }
+
+  openSubjectModal(element: any) {
+    this.openedClass = element;
+    this.subjectName.reset();
+    this.getSubject();
+    const dialog = this.dialog.open(this.openSubjectPopup, {
       width: '40vw',
       height: '40vw'
     })
@@ -172,6 +213,57 @@ export class ClassSettingsComponent {
       this.getClassList();
     },()=>{
       this.spinnerService.dispose();
+    })
+  }
+
+  getSubject(): void {
+    this.spinnerService.show();
+    this.subject.getClassWiseSubjects(this.openedClass!['id'], 1).subscribe({
+      next: (res) =>{
+        this.spinnerService.dispose();
+        this.subjectDataSource.data = res.result!;
+      },
+      error: () =>{
+        this.spinnerService.dispose();
+      }
+    })
+  }
+
+  saveSubject() {
+    this.subjectName.markAsTouched();
+    if (this.subjectName.invalid) {
+      return
+    }
+    const payload = {
+      id: 0,
+      subjectId: Number(this.subjectName.value),
+      classId: this.openedClass!.id,
+      academicYearId: 1
+    }
+    this.spinnerService.show();
+    this.subject.postClassWiseSubject(payload).subscribe({
+      next: res=>{
+      this.spinnerService.dispose();
+      this.snackbar.openSuccessSnackbar(res.result!);
+      this.getClassList();
+      },
+      error: ()=>{
+        this.spinnerService.dispose();
+      }
+    })
+  }
+
+  removeClassSubject(id: number) {
+    this.spinnerService.show();
+    this.subject.deleteClassWiseSubject(id).subscribe({
+      next: res=>{
+      this.spinnerService.dispose();
+      this.snackbar.openSuccessSnackbar(res.result!);
+      this.getClassList();
+      },
+      error: ()=>{
+        this.spinnerService.dispose();
+      }
     })
   }
 }

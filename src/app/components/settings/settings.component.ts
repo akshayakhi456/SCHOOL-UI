@@ -8,6 +8,7 @@ import { PaymentSettingsComponent } from './payment-settings/payment-settings.co
 import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
 import { SubjectsComponent } from './subjects/subjects.component';
+import { ExamComponent } from './exam/exam.component';
 
 
 export interface ClassInfo {
@@ -22,7 +23,8 @@ export interface ClassInfo {
   imports: [SharedModule, CommonModule, MatFormFieldModule, 
     SubjectsComponent,
     PaymentSettingsComponent, 
-    ClassSettingsComponent, 
+    ClassSettingsComponent,
+    ExamComponent,
     EnquiryFormQuestionsComponent],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'

@@ -1,0 +1,50 @@
+<div class="section-form mt-2">
+    <mat-form-field appearance="outline">
+        <mat-label>Exam Name</mat-label>
+        <input matInput [formControl]="examName"/>
+        @if (examName.invalid && examName.touched) {
+            <mat-error>Exam Name is Required.</mat-error>
+        }
+    </mat-form-field>
+    <button class="btn btn-primary" (click)="saveExam()">Save</button>
+</div>
+<div>
+    <table mat-table [dataSource]="examDataSource" matSort #sectionSort (matSortChange)="announceSortChange($event)">
+
+        <!-- Class Column -->
+        <ng-container matColumnDef="examName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                Exam
+            </th>
+            <td mat-cell *matCellDef="let element">
+                @if (!element.isEditSubjectMode) {
+                    {{element.examName}}
+                }
+                @else {
+                    <mat-form-field appearance="outline">
+                        <input matInput [value]="element.examName" [(ngModel)]="element.examName"/>
+                    </mat-form-field>
+                }
+            </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>
+                Action
+            </th>
+            <td mat-cell *matCellDef="let element">
+                @if (element.isEditSubjectMode) {
+                    <button class="btn btn-primary" (click)="updateExam(element)">Save</button>
+                    <button class="btn btn-light ms-1" (click)="element.isEditSubjectMode = !element.isEditSubjectMode">Cancel</button>
+                }
+                @else {
+                    <button class="btn btn-primary" (click)="element.isEditSubjectMode = !element.isEditSubjectMode">Edit Exam</button>
+                }
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedExamColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedExamColumns;"></tr>
+    </table>
+</div>

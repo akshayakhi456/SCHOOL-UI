@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { URLs } from "../../api-constants";
 import { IHttpResponse } from "../../models/auth.models";
 import { Observable } from "rxjs";
-import { IAddMarks } from "../../models/subject.models";
+import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave } from "../../models/subject.models";
 
 @Injectable({
     providedIn: 'root'
@@ -26,4 +26,22 @@ import { IAddMarks } from "../../models/subject.models";
             params
         });
     }
+
+    getClassWiseSubjects(classId: number, academicYearId: number): Observable<IHttpResponse<Array<IClassWiseSubject>>> {
+        const params = new HttpParams()
+            .set('classId', classId)
+            .set('academicYearId', academicYearId);
+        return this.http.get<IHttpResponse<Array<IClassWiseSubject>>>(`${URLs.classSubject}`, {
+            params: params
+        });
+    }
+
+    postClassWiseSubject(payload: IClassWiseSubjectSave): Observable<IHttpResponse<string>> {
+        return this.http.post<IHttpResponse<string>>(`${URLs.classSubject}`, payload);
+    }
+
+    deleteClassWiseSubject(id: number): Observable<IHttpResponse<string>> {
+        return this.http.delete<IHttpResponse<string>>(`${URLs.classSubject}`);
+    }
+    
   }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { URLs } from '../../api-constants';
 import { Observable } from 'rxjs';
 import { IHttpResponse } from '../../models/auth.models';
-import { ISubjectModel } from '../../models/setting.models';
+import { IClassSubject, IExamModel, ISubjectModel } from '../../models/setting.models';
 
 @Injectable({
   providedIn: 'root'
@@ -90,5 +90,31 @@ export class SettingsService {
 
   subjectDelete(id: number): Observable<IHttpResponse<string>> {
     return this.http.delete<IHttpResponse<string>>(`${URLs.subjectDelete}/${id}`);
+  }
+
+  getExam(): Observable<IHttpResponse<Array<IExamModel>>> {
+    return this.http.get<IHttpResponse<Array<IExamModel>>>(`${URLs.exam}`);
+  }
+
+  postExam(payload: IExamModel): Observable<IHttpResponse<string>> {
+    return this.http.post<IHttpResponse<string>>(`${URLs.exam}`, payload);
+  }
+
+  putExam(payload: IExamModel): Observable<IHttpResponse<string>> {
+    return this.http.put<IHttpResponse<string>>(`${URLs.exam}`, payload);
+  }
+
+  getclassSubject(): Observable<IHttpResponse<Array<IClassSubject>>> {
+    return this.http.get<IHttpResponse<Array<IClassSubject>>>(`${URLs.classSubject}`);
+  }
+
+  postclassSubject(payload: IClassSubject): Observable<IHttpResponse<string>> {
+    return this.http.post<IHttpResponse<string>>(`${URLs.classSubject}`, payload);
+  }
+
+ deleteclassSubject(id: number): Observable<IHttpResponse<string>> {
+    return this.http.delete<IHttpResponse<string>>(`${URLs.classSubject}`, {
+      body: {id}
+    });
   }
 }

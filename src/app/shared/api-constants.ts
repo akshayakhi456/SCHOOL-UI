@@ -45,6 +45,7 @@ export const URLs = {
     subjectList: `${environment.apiUrl}settings/subjectList`,
     subjectUpdate: `${environment.apiUrl}settings/subjectUpdate`,
     subjectDelete: `${environment.apiUrl}settings/subjectDelete`,
+    exam: `${environment.apiUrl}settings/exams`,
     
     registerUser: `${environment.apiUrl}Auth/register`,
     loginUser: `${environment.apiUrl}Auth/login`,
@@ -69,4 +70,18 @@ export const URLs = {
 
     addMarks: `${environment.apiUrl}subject/addMarks`,
     getMarksByClass: `${environment.apiUrl}subject/getMarksByClass`,
+
+    addExamsDetails: `${environment.apiUrl}exam/addExamsDetails`,
+    updateExamsDetails: `${environment.apiUrl}exam/updateExamsDetails`,
+    getExamsDetails: `${environment.apiUrl}exam/getExamsDetails`,
+
+    addTeacher: `${environment.apiUrl}teacher/create`,
+    updateTeacher: `${environment.apiUrl}teacher/update`,
+    teacher: `${environment.apiUrl}teacher`,
+    employeeApproval: `${environment.apiUrl}teacher/employeeApproval`,
+    getEmployeeById: `${environment.apiUrl}teacher/getEmployeeById`,
+    deleteTeacher: `${environment.apiUrl}teacher/delete`,
+    teacherById: `${environment.apiUrl}teacher/getEmployeeById/`,
+
+    classSubject: `${environment.apiUrl}subject/classSubject`,
 }

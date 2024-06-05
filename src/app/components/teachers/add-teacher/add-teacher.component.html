@@ -5,49 +5,61 @@
                 <div class="col-sm-12 col-md-3">
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
-                        <input matInput />
+                        <input matInput formControlName="firstName"/>
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
-                        <input matInput />
+                        <input matInput formControlName="lastName"/>
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Father Name</mat-label>
-                        <input matInput />
+                        <input matInput formControlName="fatherName"/>
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Date Of Birth</mat-label>
-                        <input matInput />
+                        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        @if (teacherFormControl['dateOfBirth'].errors &&
+                        teacherFormControl['dateOfBirth'].errors['required'] &&
+                        teacherFormControl['dateOfBirth'].touched) {
+                        <mat-error>Date of Birth is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Phone Number</mat-label>
-                        <input matInput />
+                        <input matInput formControlName="phoneNumber" mask="0000000000"/>
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Email</mat-label>
-                        <input matInput />
+                        <input matInput email="true" formControlName="email" type="email"/>
+                        @if (teacherFormControl['email'].errors &&
+                        teacherFormControl['email'].errors['required'] &&
+                        teacherFormControl['email'].touched) {
+                        <mat-error>Date of Birth is required.</mat-error>
+                        }
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Education Qualification</mat-label>
-                        <input matInput />
+                        <input matInput formControlName="qualification"/>
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Pass out year</mat-label>
-                        <input matInput />
+                        <input matInput formControlName="passOutYear" mask="0000"/>
                     </mat-form-field>
                 </div>
         </div>
@@ -96,6 +108,6 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button class="btn btn-primary">Save</button>
+    <button class="btn btn-primary" (click)="saveTeacherInfo()">Save</button>
     <button class="btn btn-light ms-2" mat-dialog-close>Cancel</button>
 </mat-dialog-actions>

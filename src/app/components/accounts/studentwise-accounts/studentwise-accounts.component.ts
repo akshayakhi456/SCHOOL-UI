@@ -59,7 +59,7 @@ export class StudentwiseAccountsComponent {
   }
 
   ngOnInit(): void {
-    this.academicYearId.valueChanges.subscribe({
+    this.globalService.academicYearData.subscribe({
       next: (res) => {
         if (res) {
           this.dataSource.data = this.originalReceipt.filter((x: any) => x.academicYears == res);

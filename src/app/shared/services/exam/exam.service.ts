@@ -26,7 +26,7 @@ export class ExamService {
       .set('classId', classId)
       .set('examId', examId);
     return this.http.get<IHttpResponse<Array<IExamDetails>>>(`${URLs.getExamsDetails}`, {
-        params
+      params: params
     });
   }
 }

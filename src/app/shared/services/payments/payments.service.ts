@@ -19,12 +19,12 @@ export class PaymentsService {
     return this.http.get(`${URLs.getPaymentsById}${id}`);
   }
 
-  getclassWiseReport(): Observable<any> {
-    return this.http.get(`${URLs.getclassWiseReport}/1`);
+  getclassWiseReport(yearID: number): Observable<any> {
+    return this.http.get(`${URLs.getclassWiseReport}/${yearID}`);
   }
 
-  getyearWiseReport(): Observable<any> {
-    return this.http.get(`${URLs.getyearWiseReport}/1`);
+  getyearWiseReport(yearID: number): Observable<any> {
+    return this.http.get(`${URLs.getyearWiseReport}/${yearID}`);
   }
 
   postRecordsOfPayment(payload: any): Observable<any> {

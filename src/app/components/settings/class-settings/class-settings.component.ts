@@ -245,7 +245,8 @@ export class ClassSettingsComponent {
       next: res=>{
       this.spinnerService.dispose();
       this.snackbar.openSuccessSnackbar(res.result!);
-      this.getClassList();
+      this.getSubject();
+      this.subjectName.reset();
       },
       error: ()=>{
         this.spinnerService.dispose();
@@ -259,7 +260,7 @@ export class ClassSettingsComponent {
       next: res=>{
       this.spinnerService.dispose();
       this.snackbar.openSuccessSnackbar(res.result!);
-      this.getClassList();
+      this.getSubject();
       },
       error: ()=>{
         this.spinnerService.dispose();

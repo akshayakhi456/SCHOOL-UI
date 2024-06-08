@@ -27,13 +27,13 @@ import { IExamModel } from '../../../shared/models/setting.models';
 export class AddMarksComponent {
   className = new FormControl('', Validators.required);
   section = new FormControl('', Validators.required);
-  subject = new FormControl('', Validators.required);
+  subject = new FormControl(null, Validators.required);
   acedemicYearId = new FormControl(null, Validators.required);
-  exam = new FormControl('', Validators.required);
+  exam = new FormControl(null, Validators.required);
   classList: Array<{label: string; value: string}> = [];
   orgSectionList: Array<{label: string; value: string}> = [];
   sectionList: Array<{label: string; value: string}> = [];
-  subjectList: Array<{label: string; value: string}> = [];
+  subjectList: Array<{label: string; value: number}> = [];
   dataSource = new MatTableDataSource<IAddMarks>();
   academicList = ACADEMIC_YEAR;
   displayedColumns: string[] = ['rollNo', 'sName', 'marks'];
@@ -64,6 +64,7 @@ export class AddMarksComponent {
     this.getClassList();
     this.getSectionList();
     this.getSubjects();
+    this.getExam();
    
     this.columnsToDisplay = this.displayedColumns.slice();
 
@@ -142,7 +143,9 @@ export class AddMarksComponent {
     this.subjectService.getMarksByClass(this.className.value!,
        this.section.value!,
        this.acedemicYearId.value!,
-       this.subject.value!)
+       this.subject.value!,
+       this.exam.value!
+      )
     .subscribe({
       next: (res: IHttpResponse<Array<IAddMarks>>) => {
         this.spinnerService.dispose();
@@ -157,8 +160,8 @@ export class AddMarksComponent {
                 rollNo: student.rollNo,
                 sName: student.sName,
                 acedamicYearId: student.acedamicYearId,
-                subject: student.subject,
-                examName: student.examName,
+                subjectId: student.subjectId,
+                examId: student.examId,
                 marks: student.marks
               }
             }
@@ -169,8 +172,8 @@ export class AddMarksComponent {
                 rollNo: std.rollNo,
                 sName: std.firstName+' '+std.lastName,
                 acedamicYearId: std.academicYear,
-                subject: '',
-                examName: '',
+                subjectId: Number(this.subject.value),
+                examId: Number(this.exam.value),
                 marks: ''
               }
             }
@@ -195,7 +198,7 @@ export class AddMarksComponent {
           this.subjectList = res.result!.map((res) => {
             return {
               label: res.subjectName,
-              value: res.subjectName
+              value: res.id
             }
           });
         }

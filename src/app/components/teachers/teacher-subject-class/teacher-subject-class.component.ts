@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SharedModule } from '../../../shared/shared.module';
 import { FormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { take } from 'rxjs';
@@ -7,41 +6,45 @@ import { HTTP_CODES } from '../../../shared/constants/common.constants';
 import { IBreadcrumb } from '../../../shared/interfaces/global.model';
 import { IHttpResponse } from '../../../shared/models/auth.models';
 import { IstudentMapSection } from '../../../shared/models/class.models';
+import { IExamDetails } from '../../../shared/models/exam.models';
 import { ACADEMIC_YEAR } from '../../../shared/models/payment.model';
 import { IExamModel } from '../../../shared/models/setting.models';
-import { IAddMarks } from '../../../shared/models/subject.models';
+import { IAddMarks, ISubjectResponseModel } from '../../../shared/models/subject.models';
+import { ExamService } from '../../../shared/services/exam/exam.service';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
 import { SubjectService } from '../../../shared/services/subject/subject.service';
 import { BreadCrumbService } from '../../../shared/signal-service/breadcrumb.service';
-import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
-import { ExamService } from '../../../shared/services/exam/exam.service';
-import { IExamDetails } from '../../../shared/models/exam.models';
 import { GlobalService } from '../../../shared/signal-service/global.service';
+import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
+import { TeacherService } from '../../../shared/services/teacher/teacher.service';
+import { ITeacherDetails } from '../../../shared/models/teacher.models';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
-  selector: 'app-exam-subject',
+  selector: 'app-teacher-subject-class',
   standalone: true,
   imports: [SharedModule],
-  templateUrl: './exam-subject.component.html',
-  styleUrl: './exam-subject.component.scss'
+  templateUrl: './teacher-subject-class.component.html',
+  styleUrl: './teacher-subject-class.component.scss'
 })
-export class ExamSubjectComponent {
+export class TeacherSubjectClassComponent {
   className = new FormControl(null, Validators.required);
   acedemicYearId = new FormControl<number | null>(null, Validators.required);
-  exam = new FormControl(null, Validators.required);
+  section = new FormControl(null, Validators.required);
   classList: Array<{label: string; value: string}> = [];
   orgSectionList: Array<{label: string; value: string}> = [];
   sectionList: Array<{label: string; value: string}> = [];
   subjectList: Array<{label: string; value: string}> = [];
-  dataSource = new MatTableDataSource<IExamDetails>();
+  teacherList: Array<ITeacherDetails> = [];
+  dataSource = new MatTableDataSource<ISubjectResponseModel>();
   academicList = ACADEMIC_YEAR;
-  displayedColumns: string[] = ['Subject', 'Min Marks', 'Max Marks', 'Is Consider In Total Marks', 'Exam Conducting', 'Exam Date'];
-  apiColumns: string[] = ['subjectName', 'minMarks', 'maxMarks', 'isAddInTotal', 'willExamConduct', 'examDate'] 
+  displayedColumns: string[] = ['Subject', 'Teacher', 'Is Class Teacher'];
+  apiColumns: string[] = ['subjectName', 'subjectTeacherId', 'isClassTeacher'] 
   studentList: Array<IstudentMapSection> = [];
   studentMarks: Array<IAddMarks> = [];
   examList: Array<IExamModel> = [];
-  savedExamDetails: Array<IExamDetails> = [];
+  savedSubjectTeacher: Array<ISubjectResponseModel> = [];
   columnsToDisplay: string[] = this.displayedColumns.slice();
   isShowData = false;
   breadcrumbData: IBreadcrumb = {
@@ -55,9 +58,9 @@ export class ExamSubjectComponent {
   constructor(private spinnerService: SpinnerService,
     private settingService: SettingsService,
     private subjectService: SubjectService,
-    private examService: ExamService,
     private globalService: GlobalService,
     private breadcrumb: BreadCrumbService,
+    private teacherService: TeacherService,
     private snackbar: SnackbarService
   ) {
     breadcrumb.setBreadcrumb(true, this.breadcrumbData);
@@ -68,12 +71,13 @@ export class ExamSubjectComponent {
 
   ngOnInit(): void {
     this.getClassList();
-    this.getExam();
+    this.getSectionList();
+    this.getTeacherList();
    
     this.columnsToDisplay = this.displayedColumns.slice();
 
     this.className.valueChanges.subscribe(res => {
-      this.sectionList = this.orgSectionList.filter((x: any) => x['className'] == res)
+      this.sectionList = this.orgSectionList.filter((x: any) => x['value'] == res)
     })
   }
 
@@ -84,7 +88,7 @@ export class ExamSubjectComponent {
       this.classList = res.map((r: any) => {
         return {
           label: r.className,
-          value: r.className
+          value: r.id
         }
       })
     },()=>{
@@ -92,31 +96,46 @@ export class ExamSubjectComponent {
     })
   }
 
-  getExam(): void {
+  getSectionList() {
     this.spinnerService.show();
-    this.settingService.getExam().subscribe({
-      next: (res) => {
-        this.spinnerService.dispose();
-        if (res.statusCode == HTTP_CODES.SUCCESS) {
-          this.examList = res.result!;
+    this.settingService.getSections().subscribe({next: res => {
+      this.spinnerService.dispose();
+      this.orgSectionList = res.res.map((x: any) => {
+        return {
+          label: x.section,
+          value: x.id
         }
-      },
-      error: () => {
-        this.spinnerService.dispose();
-      }
-    })
+      })
+    },error:() =>{
+      this.spinnerService.dispose();
+    }})
   }
 
-  getExamsDetails(): void {
+  getTeacherList(): void {
     this.spinnerService.show();
-    this.examService.getExamsDetails(this.acedemicYearId.value!, this.className.value!, this.exam.value!)
+    this.teacherService.getTeachers()
     .pipe(take(1))
     .subscribe({
-      next: (res: IHttpResponse<Array<IExamDetails>>) => {
+      next: (res: IHttpResponse<Array<ITeacherDetails>>) => {
+        this.spinnerService.dispose();
+        this.teacherList = res.result!;
+      },
+      error: () =>{
+        this.spinnerService.dispose();
+      }
+    });
+  }
+
+  getTeacherSubjects(): void {
+    this.spinnerService.show();
+    this.subjectService.getSubjectTeacher(this.acedemicYearId.value!, this.className.value!, this.section.value!)
+    .pipe(take(1))
+    .subscribe({
+      next: (res: IHttpResponse<Array<ISubjectResponseModel>>) => {
         this.spinnerService.dispose();
         if (res.statusCode === HTTP_CODES.SUCCESS) {
           if (res.result?.length) {
-            this.savedExamDetails = res.result!; 
+            this.savedSubjectTeacher = res.result!; 
           }
           this.getSubjects();
           this.isShowData = true;
@@ -137,20 +156,17 @@ export class ExamSubjectComponent {
           const list = res.result.map( x=> {
             return {
               id: 0,
-              subjectName: x.subject,
+              classId: this.className.value,
+              sectionId: this.section.value,
               subjectId: x.id,
-              classId: Number(this.className.value),
-              examId: Number(this.exam.value),
-              minMarks: null,
-              maxMarks: null,
-              isAddInTotal: false,
-              willExamConduct: false,
-              examDate: null,
+              subjectName: x.subject,
+              subjectTeacherId: 0,
+              isClassTeacher: false,
               academicYearId: this.acedemicYearId.value
             }
           });
-          const filteredList = list.filter(x => this.savedExamDetails.findIndex(s => s.subjectId == x.subjectId) == -1);
-          this.dataSource.data = [ ...this.savedExamDetails, ...filteredList] as any;
+          const filteredList = list.filter(x => this.savedSubjectTeacher.findIndex(s => s.subjectId == x.subjectId) == -1);
+          this.dataSource.data = [ ...this.savedSubjectTeacher, ...filteredList] as any;
         }
       },
       error: () => {
@@ -168,7 +184,7 @@ export class ExamSubjectComponent {
     }
     if (nonSavedRecord.length) {
       this.spinnerService.show();
-      this.examService.addExamsDetails(nonSavedRecord).subscribe({
+      this.subjectService.saveTeacherSubject(nonSavedRecord).subscribe({
         next: (res) => {
           this.spinnerService.dispose();
           this.snackbar.openSuccessSnackbar(res.result!);
@@ -180,9 +196,9 @@ export class ExamSubjectComponent {
     }
   }
 
-  updateSubjectInfo(isAlreadySavedRecord: Array<IExamDetails>): void {
+  updateSubjectInfo(isAlreadySavedRecord: Array<ISubjectResponseModel>): void {
     this.spinnerService.show();
-    this.examService.updateExamsDetails(isAlreadySavedRecord).subscribe({
+    this.subjectService.updateTeacherSubject(isAlreadySavedRecord).subscribe({
       next: (res) => {
         this.spinnerService.dispose();
         this.snackbar.openSuccessSnackbar(res.result!);
@@ -196,7 +212,7 @@ export class ExamSubjectComponent {
   resetFilter(): void {
     this.className.reset();
     this.acedemicYearId.reset();
-    this.exam.reset();
+    this.section.reset();
     this.dataSource.data = [];
     this.isShowData = false;
   }

@@ -4,8 +4,8 @@ export interface IAddMarks {
     rollNo: number;
     sName: string;
     acedamicYearId: number;
-    subject: string;
-    examName: string;
+    subjectId: number;
+    examId: number;
     marks: string;
 }
 
@@ -19,4 +19,21 @@ export interface IClassWiseSubjectSave {
     subjectId: number;
     classId: number;
     academicYearId: number;
+}
+
+export interface ISubjectRequestModel {
+    id: number;
+    classId: number;
+    sectionId: number;
+    subjectId: number;
+    subjectTeacherId: number;
+    isClassTeacher: boolean;
+    academicYearId: number;
+}
+
+export interface ISubjectResponseModel extends ISubjectRequestModel {
+    className: string;
+    subject: string;
+    section: string;
+    teacher: string;
 }

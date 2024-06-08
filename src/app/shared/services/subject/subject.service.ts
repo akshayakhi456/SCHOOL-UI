@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { URLs } from "../../api-constants";
 import { IHttpResponse } from "../../models/auth.models";
 import { Observable } from "rxjs";
-import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave } from "../../models/subject.models";
+import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave, ISubjectRequestModel, ISubjectResponseModel } from "../../models/subject.models";
 
 @Injectable({
     providedIn: 'root'
@@ -16,12 +16,13 @@ import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave } from "../../model
         return  this.http.post<IHttpResponse<string>>(`${URLs.addMarks}`, body);
     }
 
-    getMarksByClass(className:string, section: string, acedemicYearId: number, subject: string): Observable<IHttpResponse<Array<IAddMarks>>> {
+    getMarksByClass(className:string, section: string, acedemicYearId: number, subject: number, exam: number): Observable<IHttpResponse<Array<IAddMarks>>> {
         const params = new HttpParams()
             .set('className', className)
             .set('section', section)
             .set('acedemicYearId', acedemicYearId)
-            .set('subject', subject);
+            .set('subjectId', subject)
+            .set('examId', exam)
         return  this.http.get<IHttpResponse<Array<IAddMarks>>>(`${URLs.getMarksByClass}`, {
             params
         });
@@ -41,7 +42,25 @@ import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave } from "../../model
     }
 
     deleteClassWiseSubject(id: number): Observable<IHttpResponse<string>> {
-        return this.http.delete<IHttpResponse<string>>(`${URLs.classSubject}`);
+        return this.http.delete<IHttpResponse<string>>(`${URLs.classSubject}/${id}`);
+    }
+
+    getSubjectTeacher(classId: number, academicYearId: number, section: number): Observable<IHttpResponse<Array<ISubjectResponseModel>>> {
+        const params = new HttpParams()
+            .set('classId', classId)
+            .set('academicYearId', academicYearId)
+            .set('section', section);
+        return this.http.get<IHttpResponse<Array<ISubjectResponseModel>>>(`${URLs.subjectTeacher}`, {
+            params: params
+        });
+    }
+
+    saveTeacherSubject(payload: Array<ISubjectRequestModel>): Observable<IHttpResponse<string>> {
+        return this.http.post<IHttpResponse<string>>(`${URLs.subjectTeacher}`, payload);
+    }
+
+    updateTeacherSubject(payload: Array<ISubjectRequestModel>): Observable<IHttpResponse<string>> {
+        return this.http.put<IHttpResponse<string>>(`${URLs.subjectTeacher}`, payload);
     }
     
   }

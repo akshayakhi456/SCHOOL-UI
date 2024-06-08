@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URLs } from '../../api-constants';
@@ -36,6 +36,14 @@ export class StudentMapClassService {
     }
 
     getStudentAssignSectionYear(classsName: string, section: string, academicYear: number): Observable<IHttpResponse<Array<IstudentMapSection>>> {
-      return this.http.get<IHttpResponse<Array<IstudentMapSection>>>(`${URLs.StudentAssignSection}?className=${classsName}&section=${section ? section : null}&academicYearId=${academicYear}`);
+      const params = new HttpParams()
+      .set('className', classsName)
+      .set('section', section)
+      .set('academicYearId', academicYear)
+      // .set('subjectId', subjectId)
+      // .set('examId', examId)
+      return this.http.get<IHttpResponse<Array<IstudentMapSection>>>(`${URLs.StudentAssignSection}`, {
+        params: params
+      });
     }
 }

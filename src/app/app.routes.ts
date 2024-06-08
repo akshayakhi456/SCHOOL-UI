@@ -27,6 +27,8 @@ import { StudentProfileComponent } from './components/student-profile/student-pr
 import { ROLES } from './shared/models/common.models';
 import { AddMarksComponent } from './components/class/add-marks/add-marks.component';
 import { ExamSubjectComponent } from './components/class/exam-subject/exam-subject.component';
+import { ProgressCardComponent } from './components/class/progress-card/progress-card.component';
+import { TeacherSubjectClassComponent } from './components/teachers/teacher-subject-class/teacher-subject-class.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -56,5 +58,7 @@ export const routes: Routes = [
     {path: 'section-assignment', component: StudentSectionAssignmentComponent, canActivate: [authGuard]},
     {path: 'add-marks', component: AddMarksComponent, canActivate: [authGuard]},
     {path: 'exam-subject', component: ExamSubjectComponent, canActivate: [authGuard]},
+    {path: 'progress-report', component: ProgressCardComponent, canActivate: [authGuard]},
+    {path: 'class-subject', component: TeacherSubjectClassComponent, canActivate: [authGuard]},
     {path: 'newPassword', component: NewPasswordComponent},
 ];

@@ -1,6 +1,7 @@
 export interface IExamDetails {
     id: number;
-    subject: string;
+    subjectId: number;
+    subjectName: string;
     classId: number;
     examId: number;
     minMarks: string;

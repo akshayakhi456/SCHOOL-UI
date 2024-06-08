@@ -84,4 +84,5 @@ export const URLs = {
     teacherById: `${environment.apiUrl}teacher/getEmployeeById/`,
 
     classSubject: `${environment.apiUrl}subject/classSubject`,
+    subjectTeacher: `${environment.apiUrl}subject/SubjectTeacher`,
 }

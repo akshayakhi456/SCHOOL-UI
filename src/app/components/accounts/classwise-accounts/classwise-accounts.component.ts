@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, effect } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaymentsService } from '../../../shared/services/payments/payments.service';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
@@ -53,9 +53,13 @@ export class ClasswiseAccountsComponent implements OnInit {
     private spinnerService: SpinnerService,
     private globalService: GlobalService
   ) {
-    this.getClassWiseList();
-    // this.getClassList();
-    this.getSectionList();
+    globalService.academicYearData.subscribe((res) =>{
+      this.classWiseFormGroup.patchValue({
+        academicYearId: Number(res)
+      });
+      this.getClassWiseList();
+      this.getSectionList();
+    })
   }
 
   get classWiseForm(): {[key: string]: AbstractControl} {
@@ -71,7 +75,7 @@ export class ClasswiseAccountsComponent implements OnInit {
 
   getClassWiseList(): void{
     this.spinnerService.show();
-    this.paymentService.getclassWiseReport().subscribe({next: res => {
+    this.paymentService.getclassWiseReport(this.classWiseFormGroup.value.academicYearId!).subscribe({next: res => {
       this.spinnerService.dispose();
       let result = res.result ?? res;
       this.dataSource.data = result;

@@ -8,6 +8,8 @@ export interface ITeacherDetails {
     empId: string;
     firstName: string;
     lastName: string;
+    fatherName: string;
+    designation: string;
     dateOfBirth: Date;
     phoneNumber: number;
     email: string;

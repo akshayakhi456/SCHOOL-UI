@@ -5,6 +5,7 @@ import Chart from 'chart.js/auto'
 import { PaymentsService } from '../../shared/services/payments/payments.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { app } from '../../shared/global-constant.constants';
+import { GlobalService } from '../../shared/signal-service/global.service';
 
 @Component({
   selector: 'app-todays-collection',
@@ -22,16 +23,19 @@ export class TodaysCollectionComponent {
   ];
 
   constructor(private paymentService: PaymentsService,
+    private globalService: GlobalService,
     private spinnerService: SpinnerService) {
   }
 
   ngOnInit() {
-    this.getReceiptList();
+    this.globalService.academicYearData.subscribe((res) =>{
+      this.getReceiptList(res);
+    })
   }
 
-  getReceiptList(): void {
+  getReceiptList(yearId: number): void {
     this.spinnerService.show();
-    this.paymentService.getclassWiseReport().subscribe({
+    this.paymentService.getclassWiseReport(yearId).subscribe({
       next: res => {
         this.spinnerService.dispose();
         this.data = res.result ?? res;

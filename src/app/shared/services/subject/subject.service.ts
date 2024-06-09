@@ -45,7 +45,7 @@ import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave, ISubjectRequestMod
         return this.http.delete<IHttpResponse<string>>(`${URLs.classSubject}/${id}`);
     }
 
-    getSubjectTeacher(classId: number, academicYearId: number, section: number): Observable<IHttpResponse<Array<ISubjectResponseModel>>> {
+    getSubjectTeacher(academicYearId: number, classId: number, section: number): Observable<IHttpResponse<Array<ISubjectResponseModel>>> {
         const params = new HttpParams()
             .set('classId', classId)
             .set('academicYearId', academicYearId)

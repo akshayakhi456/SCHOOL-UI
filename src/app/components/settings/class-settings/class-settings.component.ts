@@ -174,7 +174,7 @@ export class ClassSettingsComponent {
   updateSection(element: any) {
     if (element.section) {
       this.spinnerService.show();
-      this.service.updateSection({id: element.id, section: element.section, className: element.className}).subscribe(res=>{
+      this.service.updateSection({id: element.id, section: element.section, classesId: element.className}).subscribe(res=>{
         this.spinnerService.dispose();
         this.snackbar.openSuccessSnackbar('Updated Successfully');
         element.isEditSectionMode = !element.isEditSectionMode;
@@ -191,7 +191,7 @@ export class ClassSettingsComponent {
       return
     }
     this.spinnerService.show();
-    this.service.createSection({id: 0, section: this.sectionName.value, className: this.openedClass!['className']}).subscribe({next: res=>{
+    this.service.createSection({id: 0, section: this.sectionName.value, classesId: this.openedClass!['id']}).subscribe({next: res=>{
       this.spinnerService.dispose();
       this.sectionName.setValue('');
       this.snackbar.openSuccessSnackbar('Created Successfully');

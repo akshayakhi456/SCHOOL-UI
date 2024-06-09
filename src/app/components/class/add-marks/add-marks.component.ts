@@ -16,6 +16,8 @@ import { IAddMarks } from '../../../shared/models/subject.models';
 import { ACADEMIC_YEAR } from '../../../shared/models/payment.model';
 import { take } from 'rxjs';
 import { IExamModel } from '../../../shared/models/setting.models';
+import { GlobalService } from '../../../shared/signal-service/global.service';
+import { ExamService } from '../../../shared/services/exam/exam.service';
 
 @Component({
   selector: 'app-add-marks',
@@ -28,7 +30,7 @@ export class AddMarksComponent {
   className = new FormControl('', Validators.required);
   section = new FormControl('', Validators.required);
   subject = new FormControl(null, Validators.required);
-  acedemicYearId = new FormControl(null, Validators.required);
+  acedemicYearId = new FormControl(0, Validators.required);
   exam = new FormControl(null, Validators.required);
   classList: Array<{label: string; value: string}> = [];
   orgSectionList: Array<{label: string; value: string}> = [];
@@ -52,24 +54,37 @@ export class AddMarksComponent {
   }
   constructor(private spinnerService: SpinnerService,
     private settingService: SettingsService,
+    private examService: ExamService,
     private studentMapClass: StudentMapClassService,
     private subjectService: SubjectService,
     private breadcrumb: BreadCrumbService,
+    private globalService: GlobalService,
     private snackbar: SnackbarService
   ) {
     breadcrumb.setBreadcrumb(true, this.breadcrumbData);
+    globalService.academicYearData.subscribe((res: number) =>{
+      this.acedemicYearId.setValue(res!);
+    })
   }
 
   ngOnInit(): void {
     this.getClassList();
     this.getSectionList();
-    this.getSubjects();
     this.getExam();
    
     this.columnsToDisplay = this.displayedColumns.slice();
 
     this.className.valueChanges.subscribe(res => {
-      this.sectionList = this.orgSectionList.filter((x: any) => x['className'] == res)
+      this.sectionList = this.orgSectionList.filter((x: any) => x['className'] == res);
+      if (res && this.exam.value) {
+        this.getSubjects();
+      }
+    })
+
+    this.exam.valueChanges.subscribe(res => {
+      if (res && this.className.value) {
+        this.getSubjects();
+      }
     })
   }
 
@@ -80,7 +95,7 @@ export class AddMarksComponent {
       this.classList = res.map((r: any) => {
         return {
           label: r.className,
-          value: r.className
+          value: r.id
         }
       })
     },()=>{
@@ -191,14 +206,14 @@ export class AddMarksComponent {
 
   getSubjects(): void {
     this.spinnerService.show();
-    this.settingService.subjectList().subscribe({
+    this.examService.getExamsDetails(this.acedemicYearId.value!, Number(this.className.value!), this.exam.value!).subscribe({
       next: (res) => {
         this.spinnerService.dispose();
         if (res.statusCode == HTTP_CODES.SUCCESS) {
-          this.subjectList = res.result!.map((res) => {
+          this.subjectList = res.result!.filter(x => x.willExamConduct).map((res) => {
             return {
               label: res.subjectName,
-              value: res.id
+              value: res.subjectId
             }
           });
         }
@@ -226,7 +241,6 @@ export class AddMarksComponent {
   resetFilter(): void {
     this.className.reset();
     this.section.reset();
-    this.acedemicYearId.reset();
     this.subject.reset();
     this.dataSource.data = [];
     this.isShowData = false;

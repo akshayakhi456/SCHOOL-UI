@@ -72,10 +72,10 @@ export class SideMenuComponent {
           title: 'Teacher List',
           routerLink: '/teacher-list',
         },
-        {
-          title: 'Teacher Detail',
-          routerLink: '/teacher-detail',
-        },
+        // {
+        //   title: 'Teacher Detail',
+        //   routerLink: '/teacher-detail',
+        // },
         {
           title: 'Class Subject',
           routerLink: '/class-subject',

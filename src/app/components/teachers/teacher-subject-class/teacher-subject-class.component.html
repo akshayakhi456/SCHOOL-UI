@@ -55,12 +55,12 @@
                            {{column}}
                         </th>
                         <td mat-cell *matCellDef="let element;let j = index">
-                            @if (apiColumns[i] == 'subjectName'){
+                            @if (apiColumns[i] == 'subject'){
                             {{ element[apiColumns[i]] }}
                             }
-                            @else if (apiColumns[i] == 'subjectTeacherId'){
+                            @else if (apiColumns[i] == 'teacherDetailsId'){
                                 <mat-form-field appearance="outline">
-                                    <mat-select [(ngModel)]="element.subjectTeacherId">
+                                    <mat-select [(ngModel)]="element.teacherDetailsId">
                                         @for (teacher of teacherList; track teacher) {
                                         <mat-option [value]="teacher.id">{{teacher.firstName}} {{teacher.lastName}}</mat-option>
                                         }

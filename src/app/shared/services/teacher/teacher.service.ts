@@ -29,7 +29,7 @@ import { IAddTeacherRequest, ITeacherDetails } from "../../models/teacher.models
     }
 
     getTeacherById(id: number): Observable<IHttpResponse<IAddTeacherRequest>> {
-        return this.http.get<IHttpResponse<IAddTeacherRequest>>(`${URLs.teacherById}/${id}`)
+        return this.http.get<IHttpResponse<IAddTeacherRequest>>(`${URLs.teacherById}${id}`)
     }
     
   }

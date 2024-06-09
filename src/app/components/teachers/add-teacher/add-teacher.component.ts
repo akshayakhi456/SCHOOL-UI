@@ -53,8 +53,8 @@ export class AddTeacherComponent {
     private snackbar: SnackbarService,
     @Inject(MAT_DIALOG_DATA) public data: {id: number}
   ) {
-    if (data.id) {
-      this.getEmplyeeById(data.id);
+    if (data?.id) {
+      this.getTeacherDetails(data.id);
     }
   }
 
@@ -68,33 +68,13 @@ export class AddTeacherComponent {
 
   createExperienceFormGroup(): FormGroup {
     return new FormGroup({
+      id: new FormControl(0),
       empId: new FormControl(''),
       schoolName: new FormControl(),
       startEndDate: new FormControl(),
       designation: new FormControl(),
       status: new FormControl(true)
     });
-  }
-
-  getEmplyeeById(id: number): void {
-    this.spinnerService.show();
-    this.teacherService.getTeacherById(id).subscribe({
-      next: (res) => {
-        this.spinnerService.dispose();
-        if(res.statusCode == HTTP_CODES.SUCCESS) {
-          const teacherInfo = res.result!;
-          this.teacherForm.patchValue({
-            ...teacherInfo.teacherDetails
-          })
-          // teacherInfo.teacherExperience.map(x => {
-            
-          // })
-        }
-      },
-      error: () =>{ 
-        this.spinnerService.dispose();
-      }
-    })
   }
 
   saveTeacherInfo(): void {
@@ -118,8 +98,10 @@ export class AddTeacherComponent {
     if (this.teacherForm.value.id) {
       this.teacherService.updateTeacher(payload).subscribe({
         next: (res) => {
-          this.spinnerService.dispose();
-          this.snackbar.openSuccessSnackbar(res.result!);
+          if (res.statusCode == HTTP_CODES.SUCCESS) {
+            this.spinnerService.dispose();
+            this.snackbar.openSuccessSnackbar(res.result!);
+          }
         },
         error: () => {
           this.spinnerService.dispose();
@@ -139,9 +121,9 @@ export class AddTeacherComponent {
     }
   }
 
-  getTeacherDetails(): void {
+  getTeacherDetails(id: number): void {
     this.spinnerService.show();
-    this.teacherService.getTeacherById(1).subscribe({
+    this.teacherService.getTeacherById(id).subscribe({
       next: (res) => {
         this.spinnerService.dispose();
         this.teacherForm.patchValue({
@@ -150,12 +132,16 @@ export class AddTeacherComponent {
         if (res.result?.teacherExperience?.length) {
           const experience = res.result?.teacherExperience;
           for(let i=0; i< experience.length; i++) {
-            this.addExperienceFormArray.push({
-              schoolName: experience[i].schoolName,
-              workingYear: experience[i].startEndDate,
-              designation: experience[i].designation,
-              status: experience[i].status
-            })
+            this.addExperienceFormArray.push(
+              new FormGroup({
+              id: new FormControl(experience[i].id),
+              empId: new FormControl(experience[i].empId),
+              schoolName: new FormControl(experience[i].schoolName),
+              startEndDate: new FormControl(experience[i].startEndDate),
+              designation: new FormControl(experience[i].designation),
+              status: new FormControl(experience[i].status)
+              })
+            )
           }
         }
       },

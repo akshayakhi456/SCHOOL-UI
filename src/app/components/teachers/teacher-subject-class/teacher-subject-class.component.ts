@@ -40,7 +40,7 @@ export class TeacherSubjectClassComponent {
   dataSource = new MatTableDataSource<ISubjectResponseModel>();
   academicList = ACADEMIC_YEAR;
   displayedColumns: string[] = ['Subject', 'Teacher', 'Is Class Teacher'];
-  apiColumns: string[] = ['subjectName', 'subjectTeacherId', 'isClassTeacher'] 
+  apiColumns: string[] = ['subject', 'teacherDetailsId', 'isClassTeacher'] 
   studentList: Array<IstudentMapSection> = [];
   studentMarks: Array<IAddMarks> = [];
   examList: Array<IExamModel> = [];
@@ -77,7 +77,9 @@ export class TeacherSubjectClassComponent {
     this.columnsToDisplay = this.displayedColumns.slice();
 
     this.className.valueChanges.subscribe(res => {
-      this.sectionList = this.orgSectionList.filter((x: any) => x['value'] == res)
+      this.sectionList = this.orgSectionList.filter((x: any) => x['value'] == res);
+      this.dataSource.data = [];
+      this.isShowData = false;
     })
   }
 
@@ -156,11 +158,11 @@ export class TeacherSubjectClassComponent {
           const list = res.result.map( x=> {
             return {
               id: 0,
-              classId: this.className.value,
+              classesId: this.className.value,
               sectionId: this.section.value,
               subjectId: x.id,
               subjectName: x.subject,
-              subjectTeacherId: 0,
+              teacherDetailsId: 0,
               isClassTeacher: false,
               academicYearId: this.acedemicYearId.value
             }
@@ -211,7 +213,6 @@ export class TeacherSubjectClassComponent {
 
   resetFilter(): void {
     this.className.reset();
-    this.acedemicYearId.reset();
     this.section.reset();
     this.dataSource.data = [];
     this.isShowData = false;

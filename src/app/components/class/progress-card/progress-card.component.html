@@ -1,64 +1,105 @@
+
 <div class="box">
-    <div class="text-center">
-        <h2>PROGRESS REPORT</h2>
-        <h5>Academic Session - 2023-2024</h5>
-    </div>
-    <div>
-        <table width="100%" cellpadding="6px" style="border: black solid 1px;background-color: azure;">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                @if (classList.length) {
+                    <mat-form-field appearance="outline">
+                        <mat-label>Class</mat-label>
+                        <mat-select [formControl]="className">
+                            <mat-option [value]="''">[Any]</mat-option>
+                            @for (class of classList; track class) {
+                            <mat-option [value]="class.value">{{class.label}}</mat-option>
+                            }
+                        </mat-select>
+                        @if (className.errors &&
+                        className.errors['required'] &&
+                        className.touched) {
+                        <mat-error>Class is required.</mat-error>
+                        }
+                    </mat-form-field>
+                     }
+            </div>
+            @if (sectionList.length) {
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Section</mat-label>
+                    <mat-select [formControl]="section">
+                        <mat-option [value]="''">[Any]</mat-option>
+                            @for (sec of sectionList; track sec) {
+                            <mat-option [value]="sec.value">{{sec.label}}</mat-option>
+                            }
+                        </mat-select>
+                        @if (section.errors &&
+                        section.errors['required'] &&
+                        section.touched) {
+                        <mat-error>Section is required.</mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+            }
+        </div>
+        <div class="text-center">
+            <h2>PROGRESS REPORT</h2>
+            <h5>Academic Session - 2023-2024</h5>
+        </div>
+        <div>
+            <table width="100%" cellpadding="6px" style="border: black solid 1px;background-color: azure;">
+                <tbody><tr>
+                    <td width="50%"><b>Adm No :</b> </td>
+                    <td width="50%" style="text-align: right;"><b>Roll No :</b> </td>
+                </tr>
+                <tr>
+                    <td width="50%"><b>Student Name :</b> KAMALESH CHOWDHURY</td>
+                    <td width="50%" style="text-align: right;"><b>Class :</b> 1ST CLASS</td>
+                </tr>
+                <tr>
+                    <td width="50%"><b>Father Name :</b> Suresh Kumar choudhary</td>
+                    <td width="50%" style="text-align: right;"><b>Section :</b> A</td>
+                </tr>
+                <tr>
+                    <td width="50%"><b>Mother Name :</b> </td>
+                    <td width="50%" style="text-align: right;"><b>DOB :</b> </td>
+                </tr>
+            </tbody></table>
+        </div>
+        <br>
+        <div class="subject">
+            <table width="100%" border="1" style="border-collapse: collapse;background-color: azure;" cellpadding="6px">
+    
+                <tbody>
+                    <tr>
+                        <th rowspan="2">Subjects</th>
+                        <th colspan="3" class="text-center">FA-1</th>
+    
+                    </tr>
+                    <tr>
+                        <th class="text-center">Marks<br>Max.Marks-50</th>
+                        <!-- <th class="text-center">Grade</th> -->
+                        <th class="text-center">Remarks</th>
+    
+                    </tr>
+                    <tr>
+                        <td>English</td>
+                        <td style="text-align: center;">45</td>
+                    </tr>
+                    <tr>
+                        <td>Maths</td>
+                        <td style="text-align: center;">35</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <table width="100%" style="text-align: center;">
             <tbody><tr>
-                <td width="50%"><b>Adm No :</b> </td>
-                <td width="50%" style="text-align: right;"><b>Roll No :</b> </td>
-            </tr>
-            <tr>
-                <td width="50%"><b>Student Name :</b> KAMALESH CHOWDHURY</td>
-                <td width="50%" style="text-align: right;"><b>Class :</b> 1ST CLASS</td>
-            </tr>
-            <tr>
-                <td width="50%"><b>Father Name :</b> Suresh Kumar choudhary</td>
-                <td width="50%" style="text-align: right;"><b>Section :</b> A</td>
-            </tr>
-            <tr>
-                <td width="50%"><b>Mother Name :</b> </td>
-                <td width="50%" style="text-align: right;"><b>DOB :</b> </td>
+                <td><b>Parent Signature</b></td>
+                <td><b>Teacher Signature</b></td>
+                <td><b>Principal Signature</b></td>
             </tr>
         </tbody></table>
     </div>
-    <br>
-    <div class="subject">
-        <table width="100%" border="1" style="border-collapse: collapse;background-color: azure;" cellpadding="6px">
-
-            <tbody>
-                <tr>
-                    <th rowspan="2">Subjects</th>
-                    <th colspan="3" class="text-center">FA-1</th>
-
-                </tr>
-                <tr>
-                    <th class="text-center">Marks<br>Max.Marks-50</th>
-                    <th class="text-center">Grade</th>
-                    <th class="text-center">Grade Point<br>Max.GP-10</th>
-
-                </tr>
-                <tr>
-                    <td>English</td>
-                    <td style="text-align: center;">45</td>
-                </tr>
-                <tr>
-                    <td>Maths</td>
-                    <td style="text-align: center;">35</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <table width="100%" style="text-align: center;">
-        <tbody><tr>
-            <td><b>Parent Signature</b></td>
-            <td><b>Teacher Signature</b></td>
-            <td><b>Principal Signature</b></td>
-        </tr>
-    </tbody></table>
 </div>

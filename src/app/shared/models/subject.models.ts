@@ -23,10 +23,10 @@ export interface IClassWiseSubjectSave {
 
 export interface ISubjectRequestModel {
     id: number;
-    classId: number;
+    classesId: number;
     sectionId: number;
     subjectId: number;
-    subjectTeacherId: number;
+    TeacherDetailsId: number;
     isClassTeacher: boolean;
     academicYearId: number;
 }

@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { StudentMapClassService } from '../../../shared/services/student-map-class/student-map-class.service';
 import { HTTP_CODES } from '../../../shared/constants/common.constants';
 import { IHttpResponse } from '../../../shared/models/auth.models';
-import { IstudentMapSection } from '../../../shared/models/class.models';
+import { IStudentAssignSectionResponseModel, IstudentMapSection } from '../../../shared/models/class.models';
 import { SubjectService } from '../../../shared/services/subject/subject.service';
 import { IAddMarks } from '../../../shared/models/subject.models';
 import { ACADEMIC_YEAR } from '../../../shared/models/payment.model';
@@ -27,19 +27,20 @@ import { ExamService } from '../../../shared/services/exam/exam.service';
   styleUrl: './add-marks.component.scss'
 })
 export class AddMarksComponent {
-  className = new FormControl('', Validators.required);
-  section = new FormControl('', Validators.required);
+  className = new FormControl(null, Validators.required);
+  section = new FormControl(null, Validators.required);
   subject = new FormControl(null, Validators.required);
   acedemicYearId = new FormControl(0, Validators.required);
   exam = new FormControl(null, Validators.required);
   classList: Array<{label: string; value: string}> = [];
-  orgSectionList: Array<{label: string; value: string}> = [];
-  sectionList: Array<{label: string; value: string}> = [];
+  orgSectionList: Array<{label: string; value: number}> = [];
+  sectionList: Array<{label: string; value: number}> = [];
   subjectList: Array<{label: string; value: number}> = [];
   dataSource = new MatTableDataSource<IAddMarks>();
   academicList = ACADEMIC_YEAR;
-  displayedColumns: string[] = ['rollNo', 'sName', 'marks'];
-  studentList: Array<IstudentMapSection> = [];
+  displayedColumns: string[] = ['rollNo', 'sName', 'marks', 'remarks'];
+  headerColumn: string[] = ['Roll No', 'student Name', 'Marks', 'Remarks'];
+  studentList: Array<IStudentAssignSectionResponseModel> = [];
   studentMarks: Array<IAddMarks> = [];
   examList: Array<IExamModel> = [];
   columnsToDisplay: string[] = this.displayedColumns.slice();
@@ -75,7 +76,7 @@ export class AddMarksComponent {
     this.columnsToDisplay = this.displayedColumns.slice();
 
     this.className.valueChanges.subscribe(res => {
-      this.sectionList = this.orgSectionList.filter((x: any) => x['className'] == res);
+      this.sectionList = this.orgSectionList.filter((x: any) => x['classesId'] == res);
       if (res && this.exam.value) {
         this.getSubjects();
       }
@@ -126,7 +127,7 @@ export class AddMarksComponent {
         return {
           ...x,
           label: x.section,
-          value: x.section
+          value: x.id
         }
       })
     },error:() =>{
@@ -139,7 +140,7 @@ export class AddMarksComponent {
     this.studentMapClass.getStudentAssignSectionYear(this.className.value!, this.section.value!, this.acedemicYearId.value!)
     .pipe(take(1))
     .subscribe({
-      next: (res: IHttpResponse<Array<IstudentMapSection>>) => {
+      next: (res: IHttpResponse<Array<IStudentAssignSectionResponseModel>>) => {
         this.spinnerService.dispose();
         if (res.statusCode === HTTP_CODES.SUCCESS) {
           this.studentList = res.result!; 
@@ -158,8 +159,8 @@ export class AddMarksComponent {
     this.subjectService.getMarksByClass(this.className.value!,
        this.section.value!,
        this.acedemicYearId.value!,
+       this.exam.value!,
        this.subject.value!,
-       this.exam.value!
       )
     .subscribe({
       next: (res: IHttpResponse<Array<IAddMarks>>) => {
@@ -167,7 +168,7 @@ export class AddMarksComponent {
         if (res.statusCode === HTTP_CODES.SUCCESS) {
           this.studentMarks = res.result!;
           const studentMarks = this.studentList.map((std) => {
-            const student = this.studentMarks.find(x=>x.sid === Number(std.sId));
+            const student = this.studentMarks.find(x=>x.sid === Number(std.studentsid));
             if (student) {
               return {
                 id: student.id,
@@ -177,19 +178,21 @@ export class AddMarksComponent {
                 acedamicYearId: student.acedamicYearId,
                 subjectId: student.subjectId,
                 examId: student.examId,
-                marks: student.marks
+                marks: student.marks,
+                remarks: student.remarks
               }
             }
             else {
               return {
                 id: 0,
-                sid: Number(std.sId),
+                sid: Number(std.studentsid),
                 rollNo: std.rollNo,
-                sName: std.firstName+' '+std.lastName,
-                acedamicYearId: std.academicYear,
+                sName: std.studentName,
+                acedamicYearId: std.academicYearId,
                 subjectId: Number(this.subject.value),
                 examId: Number(this.exam.value),
-                marks: ''
+                marks: '',
+                remarks: ''
               }
             }
           }) 

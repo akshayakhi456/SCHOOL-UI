@@ -14,7 +14,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { DomSanitizer } from '@angular/platform-browser';
 import { StudentService } from '../../../shared/services/student/student.service';
 import { StudentMapClassService } from '../../../shared/services/student-map-class/student-map-class.service';
-import { IstudentMapSection } from '../../../shared/models/class.models';
+import { IStudentAssignSectionRequestModel, IStudentAssignSectionResponseModel, IstudentMapSection } from '../../../shared/models/class.models';
 import { ACADEMIC_YEAR } from '../../../shared/models/payment.model';
 import { IStudent } from '../../../shared/models/student.models';
 
@@ -40,7 +40,7 @@ export class StudentSectionAssignmentComponent {
   orgSectionList = [];
   sectionList: any;
   isChangedData = false;
-  studentSection: Array<IstudentMapSection> = [];
+  studentSection: Array<IStudentAssignSectionResponseModel> = [];
   breadcrumbData: IBreadcrumb = {
     title: 'Student Section Assignment',
     list: [{
@@ -77,7 +77,7 @@ export class StudentSectionAssignmentComponent {
         return {
           ...x,
           label: x.section,
-          value: x.section
+          value: x.id
         }
       })
     },error:() =>{
@@ -124,8 +124,8 @@ export class StudentSectionAssignmentComponent {
           const x = std.students;
           return {
             ...x,
-            section: this.studentSection?.filter(sec => sec.sId == x.id?.toString())[0]?.section ?? x.section,
-            sectionId: this.studentSection?.filter(sec => sec.sId == x.id?.toString())[0]?.id ?? 0,
+            section: this.studentSection?.filter(sec => sec.studentsid == x.id)[0]?.section ?? x.section,
+            sectionId: this.studentSection?.filter(sec => sec.studentsid == x.id)[0]?.sectionId ?? 0,
             photoExist : x.photo ? true : false,
             photo: 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(x.photo) as any).changingThisBreaksApplicationSecurity,
             guardian: std.guardians
@@ -181,19 +181,16 @@ export class StudentSectionAssignmentComponent {
         return sorted;
       }, {} as { [key: string]: any });
       
-      const studentRanking: Array<IstudentMapSection> = [];
+      const studentRanking: Array<IStudentAssignSectionRequestModel> = [];
       Object.keys(sortedGroups).forEach((std: string) => {
         sortedGroups[std].forEach((x: any, i: number) =>{
           studentRanking.push({
             id : x.sectionId,
-            sId: x.id.toString(),
+            studentsid: x.id.toString(),
             rollNo: i + 1,
-            className: x.className,
-            section: x.section,
-            firstName: x.firstName,
-            lastName: x.lastName,
-            fatherName: x.guardian?.find((x: any)=>x?.relationship == 'Father')?.firstName ?? "NA",
-            academicYear: Number(this.academicYear.value)
+            classId: x.className,
+            sectionId: x.section,
+            academicYearId: Number(this.academicYear.value)
           })
         })
       })
@@ -202,7 +199,7 @@ export class StudentSectionAssignmentComponent {
       this.saveSubject(studentRanking);
   }
 
-  saveSubject(studentRanking: Array<IstudentMapSection>) {
+  saveSubject(studentRanking: Array<IStudentAssignSectionRequestModel>) {
     this.spinnerService.show();
     this.studentMapClass.studentAssignSection(studentRanking).subscribe({
       next: (res) => {

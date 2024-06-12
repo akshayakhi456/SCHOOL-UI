@@ -131,8 +131,8 @@ export class StudentAttendanceComponent {
 
 getStudentAttendanceByMonthYear(): void {
   const payload: IStudentAttendanceMonthYearRequest = {
-    className: this.selectedStudent.students.className!,
-    section: this.selectedStudent.students.section!,
+    className: Number(this.selectedStudent.students.className!),
+    section: Number(this.selectedStudent.students.section!) ?? null,
     sId: this.selectedStudent.students.id.toString(),
     startMonth: (new Date(this.range.value.start!).getMonth() + 1),
     startYear: (new Date(this.range.value.start!).getFullYear()).toString(),

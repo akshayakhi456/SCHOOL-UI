@@ -7,6 +7,7 @@ export interface IAddMarks {
     subjectId: number;
     examId: number;
     marks: string;
+    remarks: string;
 }
 
 export interface IClassWiseSubject {
@@ -36,4 +37,32 @@ export interface ISubjectResponseModel extends ISubjectRequestModel {
     subject: string;
     section: string;
     teacher: string;
+}
+
+export interface IProgressCardResponseModel
+{
+    studentInfo: IStudentInfo 
+    subjectInfos: Array<ISubjectInfo> 
+}
+
+export interface IStudentInfo
+{
+    id: number;
+    studentName: string;
+    fatherName: string;
+    motherName: string;
+    admNo: number;
+    rollNo: number;
+    className: string;
+    section: string;
+    dateOfBirth: string;
+}
+
+export interface ISubjectInfo
+{
+    id: number;
+    subjectName: string;
+    maxMarks: number;
+    marks: number;
+    remarks: string;
 }

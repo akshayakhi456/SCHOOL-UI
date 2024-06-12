@@ -38,68 +38,89 @@
                     </mat-form-field>
                 </div>
             }
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Exam</mat-label>
+                    <mat-select [formControl]="exam">
+                        @for (exam of examList; track exam) {
+                        <mat-option [value]="exam.id">{{exam.examName}}</mat-option>
+                        }
+                    </mat-select>
+                    @if (exam.errors &&
+                    exam.errors['required'] &&
+                    exam.touched) {
+                    <mat-error>Exam is required.</mat-error>
+                    }
+                </mat-form-field>
+            </div>
         </div>
-        <div class="text-center">
-            <h2>PROGRESS REPORT</h2>
-            <h5>Academic Session - 2023-2024</h5>
+        <div class="d-flex justify-content-center gap-1">
+            <button class="btn btn-primary" (click)="getStudentMarks()">Filter</button>
+            <button class="btn btn-light" (click)="resetFilter()">Reset</button>
         </div>
-        <div>
-            <table width="100%" cellpadding="6px" style="border: black solid 1px;background-color: azure;">
+        @for (std of studentMarks; track std) {
+            <div class="text-center">
+                <h2>PROGRESS REPORT</h2>
+                <h5>Academic Session - 2023-2024</h5>
+            </div>
+            <div>
+                <table width="100%" cellpadding="6px" style="border: black solid 1px;background-color: azure;">
+                    <tbody><tr>
+                        <td width="50%"><b>Adm No :</b> {{std.studentInfo.admNo}} </td>
+                        <td width="50%" style="text-align: right;"><b>Roll No :</b> {{std.studentInfo.rollNo}} </td>
+                    </tr>
+                    <tr>
+                        <td width="50%"><b>Student Name :</b> {{std.studentInfo.studentName}} </td>
+                        <td width="50%" style="text-align: right;"><b>Class :</b> {{std.studentInfo.className}}</td>
+                    </tr>
+                    <tr>
+                        <td width="50%"><b>Father Name :</b> {{std.studentInfo.fatherName}}</td>
+                        <td width="50%" style="text-align: right;"><b>Section :</b> {{std.studentInfo.section}}</td>
+                    </tr>
+                    <tr>
+                        <td width="50%"><b>Mother Name :</b> {{std.studentInfo.motherName}}</td>
+                        <td width="50%" style="text-align: right;"><b>DOB :</b> {{std.studentInfo.dateOfBirth | date: 'd/M/YYYY'}}</td>
+                    </tr>
+                </tbody></table>
+            </div>
+            <br>
+            <div class="subject">
+                <table width="100%" border="1" style="border-collapse: collapse;background-color: azure;" cellpadding="6px">
+        
+                    <tbody>
+                        <tr>
+                            <th rowspan="2">Subjects</th>
+                            <th colspan="3" class="text-center">FA-1</th>
+        
+                        </tr>
+                        <tr>
+                            <th class="text-center">Max.Marks</th>
+                            <th class="text-center">Marks</th>
+                            <th class="text-center">Remarks</th>
+        
+                        </tr>
+                        @for (subject of std.subjectInfos; track subject) {
+                            <tr>
+                                <td>{{subject.subjectName}}</td>
+                                <td style="text-align: center;">{{subject.maxMarks}}</td>
+                                <td style="text-align: center;">{{subject.marks}}</td>
+                                <td style="text-align: center;">{{subject.remarks}}</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <table width="100%" style="text-align: center;">
                 <tbody><tr>
-                    <td width="50%"><b>Adm No :</b> </td>
-                    <td width="50%" style="text-align: right;"><b>Roll No :</b> </td>
-                </tr>
-                <tr>
-                    <td width="50%"><b>Student Name :</b> KAMALESH CHOWDHURY</td>
-                    <td width="50%" style="text-align: right;"><b>Class :</b> 1ST CLASS</td>
-                </tr>
-                <tr>
-                    <td width="50%"><b>Father Name :</b> Suresh Kumar choudhary</td>
-                    <td width="50%" style="text-align: right;"><b>Section :</b> A</td>
-                </tr>
-                <tr>
-                    <td width="50%"><b>Mother Name :</b> </td>
-                    <td width="50%" style="text-align: right;"><b>DOB :</b> </td>
+                    <td><b>Parent Signature</b></td>
+                    <td><b>Teacher Signature</b></td>
+                    <td><b>Principal Signature</b></td>
                 </tr>
             </tbody></table>
-        </div>
-        <br>
-        <div class="subject">
-            <table width="100%" border="1" style="border-collapse: collapse;background-color: azure;" cellpadding="6px">
-    
-                <tbody>
-                    <tr>
-                        <th rowspan="2">Subjects</th>
-                        <th colspan="3" class="text-center">FA-1</th>
-    
-                    </tr>
-                    <tr>
-                        <th class="text-center">Marks<br>Max.Marks-50</th>
-                        <!-- <th class="text-center">Grade</th> -->
-                        <th class="text-center">Remarks</th>
-    
-                    </tr>
-                    <tr>
-                        <td>English</td>
-                        <td style="text-align: center;">45</td>
-                    </tr>
-                    <tr>
-                        <td>Maths</td>
-                        <td style="text-align: center;">35</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <table width="100%" style="text-align: center;">
-            <tbody><tr>
-                <td><b>Parent Signature</b></td>
-                <td><b>Teacher Signature</b></td>
-                <td><b>Principal Signature</b></td>
-            </tr>
-        </tbody></table>
+        }
     </div>
 </div>

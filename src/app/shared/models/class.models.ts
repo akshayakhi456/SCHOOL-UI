@@ -12,10 +12,10 @@ export interface IstudentMapSection {
 
 export interface IstudentAttendance {
     id?: number;
-    sId?: string;
+    sId?: number;
     rollNo?: number;
-    className: string;
-    section: string;
+    classId: number;
+    section: number | null;
     sName?: string;
     month: string;
     year: string;
@@ -54,9 +54,9 @@ export interface IstudentAttendance {
 
 export interface IStudentAttendanceRequest {
     id?: number;
-    sId?: string;
-    className: string;
-    section: string;
+    sId?: number;
+    classId: number;
+    section: number;
     month: string;
     year: string;
     date?: number;
@@ -69,8 +69,8 @@ export interface AttendanceRecord {
 }
 
 export interface IStudentAttendanceMonthYearRequest {
-    className: string;
-    section: string;
+    className: number;
+    section: number;
     sId: string;
     startMonth: number;
     startYear: string;
@@ -87,4 +87,18 @@ export interface IStudentAttendanceDisplay {
     halfDay: number;
     present: number;
     total: number
+}
+
+export interface IStudentAssignSectionRequestModel {
+    id: number;
+    studentsid: number;
+    sectionId: number;
+    rollNo: number;
+    classId: number;
+    academicYearId: number
+}
+
+export interface IStudentAssignSectionResponseModel extends IStudentAssignSectionRequestModel {
+    studentName: string;
+    section: string;
 }

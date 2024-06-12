@@ -84,16 +84,19 @@
                     @for(column of displayedColumns; track column; let i=$index) {
                     <ng-container [matColumnDef]="column">
                         <th mat-header-cell *matHeaderCellDef>
-                           {{column}}
+                           {{headerColumn[i]}}
                         </th>
                         <td mat-cell *matCellDef="let element;let j = index">
                             @if (column == 'rollNo' || column == 'sName'){
                             {{ element[column] }}
                             }
+                            @else if(column == 'marks') {
+                                <!-- <mat-form-field appearance="outline" class="marks"> -->
+                                    <input matInput type="number" class="form-control" [(ngModel)]="element[column]"/>
+                                <!-- </mat-form-field> -->
+                            }
                             @else {
-                                <mat-form-field appearance="outline" class="marks">
-                                    <input matInput type="number" [(ngModel)]="element[column]"/>
-                                </mat-form-field>
+                                <input matInput type="text" class="form-control" [(ngModel)]="element[column]"/>
                             }
                         </td>
                     </ng-container>

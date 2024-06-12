@@ -10,7 +10,7 @@ import { BreadCrumbService } from '../../../shared/signal-service/breadcrumb.ser
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { ACADEMIC_YEAR } from '../../../shared/models/payment.model';
 import { IHttpResponse } from '../../../shared/models/auth.models';
-import { IStudentAttendanceRequest, IstudentAttendance, IstudentMapSection } from '../../../shared/models/class.models';
+import { IStudentAssignSectionResponseModel, IStudentAttendanceRequest, IstudentAttendance, IstudentMapSection } from '../../../shared/models/class.models';
 import { HTTP_CODES } from '../../../shared/constants/common.constants';
 
 @Component({
@@ -21,8 +21,8 @@ import { HTTP_CODES } from '../../../shared/constants/common.constants';
   styleUrl: './mark-attendance.component.scss'
 })
 export class MarkAttendanceComponent {
-  className = new FormControl('', Validators.required);
-  section = new FormControl('', Validators.required);
+  className = new FormControl(null, Validators.required);
+  section = new FormControl(null, Validators.required);
   selectedDM = new FormControl(null, [Validators.required]);
   currentMonth = new Date().getMonth();
   currentYear = new Date().getFullYear();
@@ -34,9 +34,9 @@ export class MarkAttendanceComponent {
   displayedColumns: string[] = [];
   columnsToDisplay: string[] = this.displayedColumns.slice();
   daysAsperDates: Array<string> = [];
-  classList: Array<{label: string; value: string}> = [];
-  orgSectionList: Array<{label: string; value: string}> = [];
-  sectionList: Array<{label: string; value: string}> = [];
+  classList: Array<{label: string; value: number}> = [];
+  orgSectionList: Array<{label: string; value: number}> = [];
+  sectionList: Array<{label: string; value: number}> = [];
   studentAttendanceList: Array<IstudentAttendance> = [];
   isShowData = false;
   day: { [key: number]: string } = {
@@ -48,7 +48,7 @@ export class MarkAttendanceComponent {
     5: 'Friday',
     6: 'Saturday'
   }
-  studentList: Array<IstudentMapSection> = [];
+  studentList: Array<IStudentAssignSectionResponseModel> = [];
   breadcrumbData: IBreadcrumb = {
     title: 'Student Mark Attendance',
     list: [{
@@ -79,7 +79,7 @@ export class MarkAttendanceComponent {
     this.dataSource.data = this.studentData;
 
     this.className.valueChanges.subscribe(res => {
-      this.sectionList = this.orgSectionList.filter((x: any) => x['className'] == res)
+      this.sectionList = this.orgSectionList.filter((x: any) => x['classesId'] == res)
     })
   }
 
@@ -90,7 +90,7 @@ export class MarkAttendanceComponent {
       this.classList = res.map((r: any) => {
         return {
           label: r.className,
-          value: r.className
+          value: r.id
         }
       })
     },()=>{
@@ -106,7 +106,7 @@ export class MarkAttendanceComponent {
         return {
           ...x,
           label: x.section,
-          value: x.section
+          value: x.id
         }
       })
     },error:() =>{
@@ -148,7 +148,7 @@ export class MarkAttendanceComponent {
     this.displayedColumns = [];
     for (let student = 0; student < this.studentList.length; student++) {
       let studentObj: any = {};
-        const attendance = this.studentAttendanceList.find(x => x.sId == this.studentList[student].sId);
+        const attendance = this.studentAttendanceList.find(x => x.sId == this.studentList[student].studentsid);
         studentObj[`D${date}`] = attendance && (attendance as any)[`d${date}`] ? (attendance as any)[`d${date}`] : 'P';
         studentObj['month'] = month.toString();
         studentObj['year'] = year.toString();
@@ -156,12 +156,12 @@ export class MarkAttendanceComponent {
           this.displayedColumns = ['rollNo', 'sName'];
           this.displayedColumns.push(`D${date}`);
         }
-      studentObj['sName'] = this.studentList[student].firstName +''+ this.studentList[student].lastName;
+      studentObj['sName'] = this.studentList[student].studentName;
       studentObj['rollNo'] = this.studentList[student].rollNo;
-      studentObj['sId'] = this.studentList[student].sId;
-      studentObj['className'] = this.studentList[student].className;
-      studentObj['section'] = this.studentList[student].section;
-      studentObj['id'] = this.studentAttendanceList.find(x => x.sId == this.studentList[student].sId)?.id || 0;
+      studentObj['sId'] = this.studentList[student].studentsid;
+      studentObj['classId'] = this.studentList[student].classId;
+      studentObj['section'] = this.studentList[student].sectionId;
+      studentObj['id'] = this.studentAttendanceList.find(x => x.sId == this.studentList[student].studentsid)?.id || 0;
       this.studentData[student] = studentObj;
     }
     this.columnsToDisplay = this.displayedColumns.slice()
@@ -172,7 +172,7 @@ export class MarkAttendanceComponent {
     this.spinnerService.show();
     this.studentMapClass.getStudentAssignSectionYear(this.className.value!, this.section.value!, this.academicYear.value!)
     .subscribe({
-      next: (res: IHttpResponse<Array<IstudentMapSection>>) => {
+      next: (res: IHttpResponse<Array<IStudentAssignSectionResponseModel>>) => {
         this.spinnerService.dispose();
         if (res.statusCode === HTTP_CODES.SUCCESS) {
           this.studentList = res.result!; 
@@ -188,7 +188,7 @@ export class MarkAttendanceComponent {
 
   getStudentAttendanceByMonthYear(): void {
     const payload: IStudentAttendanceRequest = {
-      className: this.className.value!,
+      classId: this.className.value!,
       section: this.section.value!,
       month: (new Date(this.selectedDM.value!).getMonth() + 1).toString(),
       year: (new Date(this.selectedDM.value!).getFullYear()).toString()
@@ -231,10 +231,10 @@ export class MarkAttendanceComponent {
       const date = new Date(this.selectedDM.value!).getDate();
       const attendance: Array<IStudentAttendanceRequest> = attendanceExist.map(a => {
         return {
-        id: a.id,
+        id: a.id!,
         sId: a.sId!,
-        className: a.className,
-        section: a.section,
+        classId: Number(a.classId!),
+        section: a.section!,
         month: a.month,
         year: a.year,
         date: date,

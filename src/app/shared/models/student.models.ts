@@ -12,7 +12,7 @@ export interface IStudent {
     sibilings: string;
     certificateNames: string;
     dateOfJoining: Date;
-    CurrentClassName: string;
+    currentClassName: number;
 }
 
 export interface IGuardian {
@@ -44,4 +44,18 @@ export interface IStudentGuardianResponse {
     students: IStudent,
     guardians: Array<IGuardian>,
     address: IAddress
+}
+
+export interface IStudentApplyLeave {
+    id: number;
+    purposeOfLeave: string;
+    noOfDays: number;
+    startDate: Date;
+    endDate?: Date;
+    remarks: string;
+    approval: boolean;
+    studentId: number;
+    academicYearId: number;
+    classId: number;
+    sectionId: number;
 }

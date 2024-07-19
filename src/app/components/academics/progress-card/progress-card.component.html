@@ -1,0 +1,6 @@
+@if (allStudents){
+    <app-student-list-cards (buttonClick)="stdDetail($event)"></app-student-list-cards>
+}
+@else {
+    <app-progress-card [studentLogin]="true" [studentId]="studentId"></app-progress-card>
+}

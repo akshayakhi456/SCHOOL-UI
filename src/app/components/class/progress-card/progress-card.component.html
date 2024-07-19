@@ -2,41 +2,43 @@
 <div class="box">
     <div class="box-body">
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                @if (classList.length) {
-                    <mat-form-field appearance="outline">
-                        <mat-label>Class</mat-label>
-                        <mat-select [formControl]="className">
-                            <mat-option [value]="''">[Any]</mat-option>
-                            @for (class of classList; track class) {
-                            <mat-option [value]="class.value">{{class.label}}</mat-option>
+            @if(!studentLogin) {
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    @if (classList.length) {
+                        <mat-form-field appearance="outline">
+                            <mat-label>Class</mat-label>
+                            <mat-select [formControl]="className">
+                                <mat-option [value]="''">[Any]</mat-option>
+                                @for (class of classList; track class) {
+                                <mat-option [value]="class.value">{{class.label}}</mat-option>
+                                }
+                            </mat-select>
+                            @if (className.errors &&
+                            className.errors['required'] &&
+                            className.touched) {
+                            <mat-error>Class is required.</mat-error>
                             }
-                        </mat-select>
-                        @if (className.errors &&
-                        className.errors['required'] &&
-                        className.touched) {
-                        <mat-error>Class is required.</mat-error>
-                        }
-                    </mat-form-field>
-                     }
-            </div>
-            @if (sectionList.length) {
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Section</mat-label>
-                    <mat-select [formControl]="section">
-                        <mat-option [value]="''">[Any]</mat-option>
-                            @for (sec of sectionList; track sec) {
-                            <mat-option [value]="sec.value">{{sec.label}}</mat-option>
-                            }
-                        </mat-select>
-                        @if (section.errors &&
-                        section.errors['required'] &&
-                        section.touched) {
-                        <mat-error>Section is required.</mat-error>
-                        }
-                    </mat-form-field>
+                        </mat-form-field>
+                         }
                 </div>
+                @if (sectionList.length) {
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Section</mat-label>
+                        <mat-select [formControl]="section">
+                            <mat-option [value]="''">[Any]</mat-option>
+                                @for (sec of sectionList; track sec) {
+                                <mat-option [value]="sec.value">{{sec.label}}</mat-option>
+                                }
+                            </mat-select>
+                            @if (section.errors &&
+                            section.errors['required'] &&
+                            section.touched) {
+                            <mat-error>Section is required.</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                }
             }
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <mat-form-field appearance="outline">

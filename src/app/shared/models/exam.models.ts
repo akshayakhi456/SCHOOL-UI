@@ -9,5 +9,6 @@ export interface IExamDetails {
     isAddInTotal: boolean;
     willExamConduct: boolean;
     ExamDate: Date;
+    examTime: string;
     academicYearId: number;
 }

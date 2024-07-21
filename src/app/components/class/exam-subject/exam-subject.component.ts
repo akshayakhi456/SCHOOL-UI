@@ -36,8 +36,8 @@ export class ExamSubjectComponent {
   subjectList: Array<{label: string; value: string}> = [];
   dataSource = new MatTableDataSource<IExamDetails>();
   academicList = ACADEMIC_YEAR;
-  displayedColumns: string[] = ['Subject', 'Min Marks', 'Max Marks', 'Is Consider In Total Marks', 'Exam Conducting', 'Exam Date'];
-  apiColumns: string[] = ['subjectName', 'minMarks', 'maxMarks', 'isAddInTotal', 'willExamConduct', 'examDate'] 
+  displayedColumns: string[] = ['Subject', 'Min Marks', 'Max Marks', 'Is Consider In Total Marks', 'Exam Conducting', 'Exam Date', 'Exam Time'];
+  apiColumns: string[] = ['subjectName', 'minMarks', 'maxMarks', 'isAddInTotal', 'willExamConduct', 'examDate', 'examTime'] 
   studentList: Array<IstudentMapSection> = [];
   studentMarks: Array<IAddMarks> = [];
   examList: Array<IExamModel> = [];

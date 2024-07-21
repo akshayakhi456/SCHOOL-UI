@@ -159,7 +159,7 @@ export class StudentSectionAssignmentComponent {
   }
 
   groupAndAscStudent(): void {
-      const isMissingSectionAssign = this.studentDataSource.data.filter((x: any) => x.section == '').length > 0;
+      const isMissingSectionAssign = this.studentDataSource.data.filter((x: any) => !x.sectionId).length > 0;
       if (isMissingSectionAssign){
         this.snackbarService.openWarningSnackbar("Section Assigning is missing for some students")
         return;
@@ -167,11 +167,11 @@ export class StudentSectionAssignmentComponent {
 
       // Grouping the students by class name
       const groupedStudents = this.studentDataSource.data.reduce((groups, student) => {
-        const { section } = student;
-        if (!groups[section]) {
-            groups[section] = [];
+        const { sectionId } = student;
+        if (!groups[sectionId]) {
+            groups[sectionId] = [];
         }
-        groups[section].push(student);
+        groups[sectionId].push(student);
         return groups;
       }, {} as { [key: string]: any });
 
@@ -185,11 +185,10 @@ export class StudentSectionAssignmentComponent {
       Object.keys(sortedGroups).forEach((std: string) => {
         sortedGroups[std].forEach((x: any, i: number) =>{
           studentRanking.push({
-            id : x.sectionId,
             studentsid: x.id.toString(),
             rollNo: i + 1,
             classId: x.className,
-            sectionId: x.section,
+            sectionId: x.sectionId,
             academicYearId: Number(this.academicYear.value)
           })
         })
@@ -229,10 +228,10 @@ export class StudentSectionAssignmentComponent {
   }
 
   getCountOfSection(section: string): number {
-    return this.studentDataSource.data?.filter((x: any) => x.section == section).length;
+    return this.studentDataSource.data?.filter((x: any) => x.sectionId == section).length;
   }
 
   getCountOfNonSection(): number {
-    return this.studentDataSource.data?.filter((x: any) => x.section == '').length;
+    return this.studentDataSource.data?.filter((x: any) => x.sectionId).length;
   }
 }

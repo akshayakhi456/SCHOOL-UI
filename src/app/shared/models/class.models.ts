@@ -90,7 +90,7 @@ export interface IStudentAttendanceDisplay {
 }
 
 export interface IStudentAssignSectionRequestModel {
-    id: number;
+    id?: number;
     studentsid: number;
     sectionId: number;
     rollNo: number;

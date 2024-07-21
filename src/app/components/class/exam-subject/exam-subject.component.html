@@ -63,6 +63,9 @@
                             @else if (apiColumns[i] == 'isAddInTotal' || apiColumns[i] == 'willExamConduct') {
                                 <mat-slide-toggle [(ngModel)]="element[apiColumns[i]]"></mat-slide-toggle>
                             }
+                            @else if (apiColumns[i] == 'examTime') {
+                                <input class="form-control" type="time" id="appt" name="appt" min="09:00" max="18:00" [(ngModel)]="element[apiColumns[i]]"/>
+                            }
                             @else {
                                 <mat-form-field appearance="outline">
                                     <input matInput [matDatepicker]="picker" [(ngModel)]="element[apiColumns[i]]">

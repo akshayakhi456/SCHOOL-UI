@@ -161,7 +161,7 @@ export class TeacherSubjectClassComponent {
               classesId: this.className.value,
               sectionId: this.section.value,
               subjectId: x.id,
-              subjectName: x.subject,
+              subject: x.subject,
               teacherDetailsId: 0,
               isClassTeacher: false,
               academicYearId: this.acedemicYearId.value

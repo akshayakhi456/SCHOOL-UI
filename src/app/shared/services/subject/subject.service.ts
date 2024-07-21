@@ -63,12 +63,15 @@ import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave, IProgressCardRespo
         return this.http.put<IHttpResponse<string>>(`${URLs.subjectTeacher}`, payload);
     }
 
-    getMarksOfStudents(academicYearId: number, classId: number, section: number, examId: number): Observable<IHttpResponse<Array<IProgressCardResponseModel>>> {
-        const params = new HttpParams()
+    getMarksOfStudents(academicYearId: number, classId: number, section: number, examId: number, sid?: number): Observable<IHttpResponse<Array<IProgressCardResponseModel>>> {
+        let params = new HttpParams()
         .set('classId', classId)
         .set('acedemicYearId', academicYearId)
         .set('examId', examId)
         .set('sectionId', section);
+        if (sid) {
+            params = params.append('sid', sid)
+        }
         return this.http.get<IHttpResponse<Array<IProgressCardResponseModel>>>(`${URLs.getMarksOfStudent}`, {
             params: params
         });

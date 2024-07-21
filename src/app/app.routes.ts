@@ -28,6 +28,7 @@ import { ROLES } from './shared/models/common.models';
 import { AddMarksComponent } from './components/class/add-marks/add-marks.component';
 import { ExamSubjectComponent } from './components/class/exam-subject/exam-subject.component';
 import { ProgressCardComponent } from './components/class/progress-card/progress-card.component';
+import { ProgressCardComponent as StudentProgressCard } from './components/academics/progress-card/progress-card.component';
 import { TeacherSubjectClassComponent } from './components/teachers/teacher-subject-class/teacher-subject-class.component';
 
 export const routes: Routes = [
@@ -53,6 +54,7 @@ export const routes: Routes = [
     {path: 'teacher-detail', component: TeacherDetailsComponent, canActivate: [authGuard]},
     {path: 'student-profile', component: StudentProfileComponent, canActivate: [authGuard]},
     {path: 'viewAttendance', component: StudentAttendanceComponent, canActivate: [authGuard]},
+    {path: 'viewProgress', component: StudentProgressCard, canActivate: [authGuard]},
     {path: 'applyLeave', component: ApplyLeaveComponent, canActivate: [authGuard]},
     {path: 'mark-attendance', component: MarkAttendanceComponent, canActivate: [authGuard]},
     {path: 'section-assignment', component: StudentSectionAssignmentComponent, canActivate: [authGuard]},

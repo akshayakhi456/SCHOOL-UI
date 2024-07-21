@@ -8,6 +8,10 @@ export const URLs = {
     studentByKey: `${environment.apiUrl}student/studentByKey`,
     getStudentByClassName: `${environment.apiUrl}student/getStudentByClassName/`,
     getStudentsByRoles: `${environment.apiUrl}student/getStudentsByRoles`,
+    postLeaveApply: `${environment.apiUrl}student/ApplyLeave`,
+    leaveApproval: `${environment.apiUrl}student/LeaveApproval/`,
+    getStudentLeave: `${environment.apiUrl}student/GetStudentLeave`,
+    getStudentLeaveForTeacher: `${environment.apiUrl}student/GetStudentLeaveForTeacher`,
 
     createEnquiry: `${environment.apiUrl}enquiry/create`,
     updateEnquiry: `${environment.apiUrl}enquiry/update`,

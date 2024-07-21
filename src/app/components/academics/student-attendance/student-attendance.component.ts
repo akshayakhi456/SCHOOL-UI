@@ -7,14 +7,14 @@ import { SpinnerService } from '../../../shared/services/spinner/spinner.service
 import { IHttpResponse } from '../../../shared/models/auth.models';
 import { HTTP_CODES } from '../../../shared/constants/common.constants';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
 import { IStudentGuardianResponse } from '../../../shared/models/student.models';
 import { StudentService } from '../../../shared/services/student/student.service';
+import { StudentListCardsComponent } from '../student-list-cards/student-list-cards.component';
 
 @Component({
   selector: 'app-student-attendance',
   standalone: true,
-  imports: [SharedModule, CommonModule],
+  imports: [SharedModule, CommonModule, StudentListCardsComponent],
   templateUrl: './student-attendance.component.html',
   styleUrl: './student-attendance.component.scss'
 })
@@ -28,8 +28,6 @@ export class StudentAttendanceComponent {
   }
   allStudents = true;
   selectedStudent!: IStudentGuardianResponse;
-  studentListData: Array<IStudentGuardianResponse> = [];
-  sanitizer = inject(DomSanitizer);
 
   range = new FormGroup({
     start: new FormControl<Date | null>(null, [Validators.required]),
@@ -38,29 +36,14 @@ export class StudentAttendanceComponent {
   studentAttendanceList: Array<IstudentAttendance> = [];
 
   constructor(private studentMapClass: StudentMapClassService,
-    private studentService: StudentService,
     private spinnerService: SpinnerService
   ) {}
 
   ngOnInit(): void {
-    this.studentListApi();
     this.range.valueChanges.subscribe(() => {
        if(this.range.valid) {
         this.getStudentAttendanceByMonthYear();
        }
-    })
-  }
-
-  studentListApi(): void {
-    this.spinnerService.show();
-    this.studentService.getStudentsByRoles().subscribe({
-      next: (res) => {
-        this.spinnerService.dispose();
-        if (res.statusCode == HTTP_CODES.SUCCESS) {
-          this.studentListData = res.result!;
-        }
-      },
-      error: () => {this.spinnerService.dispose();}
     })
   }
 
@@ -69,14 +52,6 @@ export class StudentAttendanceComponent {
       this.allStudents = false;
       this.selectedStudent = item;
     }
-  }
-
-  photo(studentPhoto: string | undefined): string {
-      if (studentPhoto) {
-        const studentBase64Photo = 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(studentPhoto) as any).changingThisBreaksApplicationSecurity;
-        return studentBase64Photo;
-      }
-      return '';
   }
 
   createAttendanceArrayInRange(studentAttendance: IstudentAttendance[], startDate: Date, endDate: Date) {

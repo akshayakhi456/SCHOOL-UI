@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { FormControl, Validators } from '@angular/forms';
@@ -19,6 +19,8 @@ import { IProgressCardResponseModel } from '../../../shared/models/subject.model
   styleUrl: './progress-card.component.scss'
 })
 export class ProgressCardComponent {
+  @Input()  studentLogin: boolean = false;
+  @Input() studentId: number | null = null;
   className = new FormControl(0, Validators.required);
   section = new FormControl(0, Validators.required);
   acedemicYearId = new FormControl(0, Validators.required);
@@ -99,14 +101,14 @@ export class ProgressCardComponent {
        this.acedemicYearId.value!,
        this.className.value!,
        this.section.value!,
-       this.exam.value!
+       this.exam.value!,
+       this.studentId!
       )
     .subscribe({
       next: (res: IHttpResponse<Array<IProgressCardResponseModel>>) => {
         this.spinnerService.dispose();
         if (res.statusCode === HTTP_CODES.SUCCESS) {
           this.studentMarks = res.result!;
-          console.log(res.result);
         }
       },
       error: () => {

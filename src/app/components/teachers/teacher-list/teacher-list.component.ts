@@ -64,7 +64,7 @@ export class TeacherListComponent {
   }
 
   viewTeacherDetails(id: number): void {
-    this.dialog.open(AddTeacherComponent, {
+    const dialog = this.dialog.open(AddTeacherComponent, {
       data: {
         id
       },
@@ -72,6 +72,11 @@ export class TeacherListComponent {
       height: 'auto',
       maxHeight: '100vh',
       maxWidth:'80vw'
+    });
+    dialog.afterClosed().subscribe(res => {
+      if(res.success) {
+        this.getTeacherList();
+      }
     })
   }
 }

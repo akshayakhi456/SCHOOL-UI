@@ -8,6 +8,8 @@ import { SpinnerService } from '../../../shared/services/spinner/spinner.service
 import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { TitleHeadingService } from '../../../shared/services/title-heading/title-heading.service';
 
 @Component({
   selector: 'app-bulk-receipt',
@@ -24,18 +26,22 @@ export class BulkReceiptComponent {
 
   today = new Date();
   invoiceId = 0;
-
+  htmlContent!: SafeHtml;
+  img!: string;
   constructor(private service: InvoiceService,
     private spinnerService: SpinnerService,
     private snackbar: SnackbarService,
     public dialogRef: MatDialogRef<InvoiceReceiptComponent>,
+    private titleHeadingService: TitleHeadingService,
+    private sanitizer: DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.stdInfo = data.stdInfo;
       this.receiptList = data.receiptList;
     }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.getInvoiceId();
+    this.getTitle();
   }
 
   getInvoiceId() {
@@ -99,4 +105,24 @@ export class BulkReceiptComponent {
     return '';
   }
   
+  getTitle(): void {
+    this.spinnerService.show();
+    this.titleHeadingService.getByQueryTitleHeader('receipt').subscribe({
+      next: (res) => {
+        this.spinnerService.dispose();
+        this.img = this.returnBase64(res.result?.photo!);
+        this.htmlContent = this.returnHTML(res.result?.description!);
+      },
+      error: () => {
+        this.spinnerService.dispose();
+      }
+    })
+  }
+  returnBase64(photo: string): string{
+    return 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(photo) as any).changingThisBreaksApplicationSecurity
+  }
+  returnHTML(value: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  }
+
 }

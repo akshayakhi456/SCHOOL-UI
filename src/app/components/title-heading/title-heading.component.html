@@ -1,0 +1,93 @@
+<div class="box">
+    <div class="box-body">
+        <div class="float-end mt-2 me-2">
+            <button type="button" class="btn btn-primary" (click)="addEditTitleHeader()">Add Header Title</button>
+        </div>
+        <table mat-table [dataSource]="dataSource">
+        
+            <!--- Note that these columns can be defined in any order.
+                                The actual rendered columns are set as a property on the row definition" -->
+        
+            <!-- purpose Column paymentName-->
+            <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef> Title </th>
+                <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+            </ng-container>
+        
+            <!-- Amount Column -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> description </th>
+                <td mat-cell *matCellDef="let element">
+                    <div [innerHTML]="element.description"></div>    
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <i class="bi bi-pencil" matTooltipPosition="above" matTooltip="Edit" (click)="addEditTitleHeader(element)"></i>
+                    <i class="bi bi-eye ms-3" matTooltipPosition="above" matTooltip="View" (click)="viewTitleHeader(element)"></i>    
+                </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+</div>
+
+
+<ng-template #openHeaderTitle>
+    <h1 mat-dialog-title>Header Title</h1>
+    <mat-dialog-content>
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <button mat-flat-button color="accent" type="button" (click)="imageClickable()">Upload
+                    Image</button>
+                <input id="filepaths" (change)="imageUpload($event)" accept=".jpg, .png, .jpeg"
+                    class="visibility-hidden" type="file" value="upload File" style="width: 100%;" />
+            </div>
+            <div class="col-md-8 col-sm-12">
+                @if (imgViewer) {
+                    <div class="img-viewer">
+                        <img id="imgviewer" [src]="imgViewer" width="100" height="100" />
+                    </div>
+                }
+                @else {
+                    <div class="empty-img"></div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-md-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Header</mat-label>
+                    <mat-select [(ngModel)]="headerType">
+                      @for (item of headerList; track item) {
+                        <mat-option [value]="item.value">{{item.label}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button class="btn btn-primary" (click)="saveHeaderTitle()">Save</button>
+        <button class="btn btn-light ms-1" mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #previewHeaderTitle>
+    <h1 mat-dialog-title>Header Title</h1>
+    <mat-dialog-content>
+        <div [innerHtml]="htmlContent"></div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button class="btn btn-light ms-1" mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</ng-template>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { PaymentsService } from '../../shared/services/payments/payments.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { SettingsService } from '../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
@@ -242,7 +242,13 @@ export class PaymentsComponent {
     this.studentService.getById(this.id).subscribe({
       next: res => {
         this.spinnerService.dispose();
-        this.stdInfo = res.result ?? res;
+        this.stdInfo = {
+          ...res,
+          students: {
+            ...res.students,
+            className: res.students.classes.className
+          }
+        };
         this.getReceiptList();
         this.getPaymentAllotment();
       },

@@ -30,6 +30,9 @@ export class StudentListCardsComponent {
         this.spinnerService.dispose();
         if (res.statusCode == HTTP_CODES.SUCCESS) {
           this.studentListData = res.result!;
+          this.studentListData.forEach(g => {
+            g.students.className = g.students.classes?.className!;
+          })
         }
       },
       error: () => {this.spinnerService.dispose();}

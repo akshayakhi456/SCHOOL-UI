@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URLs } from '../../api-constants';
-import { IStudentApplyLeave, IStudentGuardianResponse } from '../../models/student.models';
+import { IStudentApplyLeave, IStudentGuardianResponse, ITeacherLeaveApprove } from '../../models/student.models';
 import { IHttpResponse } from '../../models/auth.models';
 
 @Injectable({
@@ -45,24 +45,28 @@ export class StudentService {
   }
 
   leaveApprove(id: number): Observable<IHttpResponse<string>> {
-    return this.http.get<IHttpResponse<string>>(`${URLs.leaveApproval}${id}`)
+    return this.http.post<IHttpResponse<string>>(`${URLs.leaveApproval}${id}`, null)
   }
 
-  getStudentLeave(academicYearId: number, id: number): Observable<IHttpResponse<IStudentApplyLeave>> {
-    const params = new HttpParams()
-      .set('academicYearId', academicYearId)
-      .set('id', id);
-    return this.http.get<IHttpResponse<IStudentApplyLeave>>(`${URLs.getStudentLeave}`,{
+  postBulkUpload(payload: Array<IStudentGuardianResponse>): Observable<IHttpResponse<string>> {
+    return this.http.post<IHttpResponse<string>>(`${URLs.studentBulkUpload}`, payload)
+  }
+
+  getStudentLeave(academicYearId: number, id: number): Observable<IHttpResponse<Array<IStudentApplyLeave>>> {
+      const params = new HttpParams()
+        .set('academicYearId', academicYearId)
+        .set('id', id);
+    return this.http.get<IHttpResponse<Array<IStudentApplyLeave>>>(`${URLs.getStudentLeave}`,{
       params:params
     })
   }
 
-  getStudentLeaveForTeacher(academicYearId: number, classId: number, sectionId: number): Observable<IHttpResponse<IStudentApplyLeave>> {
+  getStudentLeaveForTeacher(academicYearId: number, classId: number, sectionId: number): Observable<IHttpResponse<Array<ITeacherLeaveApprove>>> {
     const params = new HttpParams()
     .set('academicYearId', academicYearId)
     .set('classId', classId)
     .set('sectionId', sectionId);
-    return this.http.get<IHttpResponse<IStudentApplyLeave>>(`${URLs.getStudentLeaveForTeacher}`,{
+    return this.http.get<IHttpResponse<Array<ITeacherLeaveApprove>>>(`${URLs.getStudentLeaveForTeacher}`,{
       params:params
     })
   }

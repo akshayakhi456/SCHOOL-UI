@@ -72,7 +72,7 @@ export class SettingsService {
     return this.http.put(`${URLs.paymentAllotmentsSettings}`, payload);
   }
 
-  getPaymentAllotment(className: string): Observable<any> {
+  getPaymentAllotment(className: number): Observable<any> {
     return this.http.get(`${URLs.paymentAllotmentsSettings}/${className}`);
   }
 

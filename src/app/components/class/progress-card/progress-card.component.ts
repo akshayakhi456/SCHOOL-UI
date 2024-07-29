@@ -21,6 +21,7 @@ import { IProgressCardResponseModel } from '../../../shared/models/subject.model
 export class ProgressCardComponent {
   @Input()  studentLogin: boolean = false;
   @Input() studentId: number | null = null;
+  @Input() classId: number | null = null;
   className = new FormControl(0, Validators.required);
   section = new FormControl(0, Validators.required);
   acedemicYearId = new FormControl(0, Validators.required);
@@ -41,6 +42,7 @@ export class ProgressCardComponent {
   }
 
   ngOnInit(): void {
+    this.className.setValue(this.classId);
     this.getClassList();
     this.getSectionList();
     this.getExam();

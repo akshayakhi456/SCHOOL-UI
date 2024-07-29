@@ -14,11 +14,13 @@ export class ProgressCardComponent {
   allStudents = true;
   selectedStudent!: IStudentGuardianResponse;
   studentId: number | null = null;
+  classId: number | null = null;
   stdDetail(item: IStudentGuardianResponse): void {
     if(item) {
       this.allStudents = false;
       this.selectedStudent = item;
       this.studentId = item.students.id;
+      this.classId = item.students.classes?.id!;
     }
   }
 }

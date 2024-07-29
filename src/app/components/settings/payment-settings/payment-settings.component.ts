@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
+import { GlobalService } from '../../../shared/signal-service/global.service';
 
 @Component({
   selector: 'app-payment-settings',
@@ -24,13 +25,19 @@ export class PaymentSettingsComponent {
   paymentDataSource = new MatTableDataSource([]);
   paymentName = new FormControl('', Validators.required);
   amount = new FormControl('', Validators.required);
-  selectedClass = '';
+  selectedClass: {id: number; className: string} = {id: 0, className: ''};
   isEditMode= false;
+  academicYearId=0;
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: SettingsService,
     private spinnerService: SpinnerService,
     private snackbar:SnackbarService,
-    public dialog: MatDialog) {}
+    private globalService: GlobalService,
+    public dialog: MatDialog) {
+      globalService.academicYearData.subscribe((res) =>{
+        this.academicYearId = Number(res);
+      })
+    }
 
   @ViewChild('feeNameSort') sort: MatSort = new MatSort();
 
@@ -61,14 +68,14 @@ export class PaymentSettingsComponent {
     }
   }
 
-  allotment(element: any){
-    this.selectedClass = element.className;
+  allotment(element: {id: number; className: string}){
+    this.selectedClass = element;
     this.getPaymentAllotment();
     const dialog = this.dialog.open(this.openPaymentAllotment, {
       width: '60vw'
     })
     dialog.afterClosed().subscribe(res => {
-      this.selectedClass = '';
+      this.selectedClass = {id: 0, className: ''};
       this.paymentName.setValue('');
       this.amount.setValue('');
     })
@@ -76,7 +83,7 @@ export class PaymentSettingsComponent {
 
   getPaymentAllotment(){
     this.spinnerService.show();
-    this.service.getPaymentAllotment(this.selectedClass).subscribe({next: res => {
+    this.service.getPaymentAllotment(this.selectedClass.id!).subscribe({next: res => {
       this.spinnerService.dispose();
       this.paymentDataSource.data = res.result.map((x: any) => {
         return {
@@ -96,8 +103,8 @@ export class PaymentSettingsComponent {
       const payload = {
         paymentName: this.paymentName.value,
         amount: this.amount.value,
-        className: this.selectedClass,
-        acedamicYearId: 1
+        classId: this.selectedClass.id,
+        acedamicYearId: this.academicYearId
       }
       this.service.createPaymentAllotment(payload).subscribe(res => {
         this.snackbar.openSuccessSnackbar(res.message);
@@ -114,7 +121,7 @@ export class PaymentSettingsComponent {
         id: element.id,
         paymentName: element.paymentName,
         amount: element.amount,
-        className: this.selectedClass
+        classId: this.selectedClass.id
       }
       this.spinnerService.show();
       this.service.updatePaymentAllotment(payload).subscribe(res => {

@@ -31,6 +31,11 @@ export class RightSideNavComponent {
       routerLink: 'userAccounts',
       iconClass: 'bi bi-people fs-36',
       title: 'User Account'
+    },
+    {
+      routerLink: 'titleHeader',
+      iconClass: 'bi bi-card-heading fs-36',
+      title: 'Title Heading'
     }
   ]
 

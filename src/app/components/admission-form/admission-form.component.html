@@ -47,14 +47,14 @@
                         <div class="col-sm-12 col-md-6 col-lg-3">
                             <mat-form-field appearance="outline">
                                 <mat-label>Grade/Class</mat-label>
-                                <mat-select formControlName="className">
+                                <mat-select formControlName="classesId">
                                     @for (class of classList; track class) {
                                     <mat-option [value]="class.value">{{class.label}}</mat-option>
                                     }
                                 </mat-select>
-                                @if (studentForm['className'].errors &&
-                                studentForm['className'].errors['required'] &&
-                                studentForm['className'].touched) {
+                                @if (studentForm['classesId'].errors &&
+                                studentForm['classesId'].errors['required'] &&
+                                studentForm['classesId'].touched) {
                                 <mat-error>Class is required.</mat-error>
                                 }
                             </mat-form-field>

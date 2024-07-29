@@ -6,7 +6,7 @@ import { TeacherService } from '../../../shared/services/teacher/teacher.service
 import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HTTP_CODES } from '../../../shared/constants/common.constants';
 
 @Component({
@@ -51,6 +51,7 @@ export class AddTeacherComponent {
     private spinnerService: SpinnerService,
     private teacherService: TeacherService,
     private snackbar: SnackbarService,
+    private dialogRef: MatDialogRef<AddTeacherComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {id: number}
   ) {
     if (data?.id) {
@@ -112,7 +113,8 @@ export class AddTeacherComponent {
       this.teacherService.addTeacher(payload).subscribe({
         next: (res) => {
           this.spinnerService.dispose();
-          this.snackbar.openSuccessSnackbar(res.result!)
+          this.snackbar.openSuccessSnackbar(res.result!);
+          this.dialogRef.close({success: true});
         },
         error: () => {
           this.spinnerService.dispose();

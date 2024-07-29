@@ -16,6 +16,9 @@ import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.servic
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ViewPrintReceiptComponent } from '../../shared/components/view-print-receipt/view-print-receipt.component';
+import * as xlsx from 'xlsx';
+import { SnackbarService } from '../../shared/signal-service/snackbar.service';
+import { IStudentGuardianResponse } from '../../shared/models/student.models';
 
 export interface PeriodicElement {
   sname: string;
@@ -63,6 +66,7 @@ export class StudentsListComponent {
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: StudentService,
+    private snackbarService: SnackbarService,
     private spinnerService: SpinnerService,
     private settingService: SettingsService,
     private breadcrumbService: BreadCrumbService,
@@ -120,6 +124,7 @@ export class StudentsListComponent {
       this.students = res.map((x: any)=>{
         return {
           ...x,
+          className: x.classes.className,
           photoExist : x.photo ? true : false,
           photo: 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(x.photo) as any).changingThisBreaksApplicationSecurity
         }
@@ -191,5 +196,93 @@ export class StudentsListComponent {
         id: stdId
       }
     });
+  }
+
+  selectFile(e: any): void {
+    const file = e.target.files[0];
+    let fr = new FileReader();
+    fr.readAsArrayBuffer(file);
+    fr.onload = () => {
+      let data = fr.result;
+      let workbook = xlsx.read(data, {type: 'array'});
+      const sheetName = workbook.SheetNames[0];
+      const sheet1 = workbook.Sheets[sheetName];
+      const json: any = xlsx.utils.sheet_to_json(sheet1, {raw: false});
+      e.target.value = '';
+      const studentguardian: Array<IStudentGuardianResponse> = [];
+      for (let i = 0; i < json.length; i++) {
+        const students = {
+          id: 0,
+          className: this.classList.find((x: any)=> x.label == json[i]?.Class).label ?? '',
+          photo: '',
+          currentClassName: 0,
+          firstName: json[i].FirstName,
+          lastName: json[i]?.LastName,
+          dob: json[i]?.DateOfBirth.toString(),
+          classesId: this.classList.find((x: any)=> x.label == json[i]?.Class).value ?? '',
+          section: '',
+          gender: json[i]?.Gender,
+          status: true,
+          adharNumber: json[i]?.AadharNumber.toString(),
+          sibilings: '',
+          certificateNames: json[i]?.CertificateName ? JSON.stringify(json[i]?.CertificateName?.split(',')) : '',
+          dateOfJoining: new Date(json[i]?.DateOfJoining).toISOString(),
+        };
+        const fatherInfo = {
+          id: 0,
+          firstName: json[i]?.FirstName_1,
+          lastName: json[i]?.LastName_1,
+          occupation: json[i]?.Occupation,
+          qualification: json[i]?.Qualification,
+          contactNumber: json[i]?.ContactNumber,
+          email: json[i]?.Email,
+          adharNumber: json[i]?.AadharNumber_1.toString(),
+          studentId: null,
+          relationship: 'Father'
+        }
+        const motherInfo = {
+          id: 0,
+          firstName: json[i]?.FirstName_2,
+          lastName: json[i]?.LastName_2,
+          occupation: json[i]?.Occupation_1,
+          qualification: json[i]?.Qualification_1,
+          contactNumber: json[i]?.ContactNumber_1,
+          email: json[i]?.Email_1,
+          adharNumber: json[i]?.AadharNumber_2.toString(),
+          studentId: null,
+          relationship: 'Mother'
+        }
+        const addressInfo = {
+          id: 0,
+          HouseNo: json[i]?.HouseNo.toString(),
+          streetName: json[i]?.Street,
+          city: json[i]?.City,
+          district: json[i]?.District,
+          state: json[i]?.State,
+          zipCode: json[i]?.PinCode.toString(),
+          country: json[i]?.Country,
+          studentId: 0
+        }
+        studentguardian.push({
+          students,
+        guardians: [
+          fatherInfo,
+          motherInfo
+        ],
+        address: addressInfo
+        })
+      }
+      this.spinnerService.show();
+      this.service.postBulkUpload(studentguardian).subscribe({
+        next: (res) => {
+          this.spinnerService.dispose();
+          this.snackbarService.openSuccessSnackbar(res.result!);
+          this.getStudentList();
+        },
+        error:() => {
+          this.spinnerService.dispose();
+        }
+      })
+    }
   }
 }

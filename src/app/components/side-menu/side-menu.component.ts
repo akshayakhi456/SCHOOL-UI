@@ -90,7 +90,7 @@ export class SideMenuComponent {
       isExpanded: false,
       isActive: true,
       routerLink: 'student-profile',
-      role: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER, ROLES.PARENT],
+      role: [ROLES.ADMIN, ROLES.OWNER],
       isDisplay: false,
     },
     {
@@ -100,7 +100,7 @@ export class SideMenuComponent {
       title: 'Student Academics',
       isExpanded: false,
       isActive: true,
-      role: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER, ROLES.PARENT],
+      role: [ROLES.PARENT],
       isDisplay: false,
       subList: [
         {
@@ -146,6 +146,10 @@ export class SideMenuComponent {
         {
           title: 'Progress Report',
           routerLink: '/progress-report',
+        },
+        {
+          title: 'Teacher Leave Approval',
+          routerLink: '/teacher-leave-approval',
         }
       ]
     }

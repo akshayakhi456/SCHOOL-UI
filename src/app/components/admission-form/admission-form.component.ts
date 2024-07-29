@@ -58,7 +58,7 @@ export class AdmissionFormComponent {
     firstName: new FormControl<string>('', Validators.required),
     lastName: new FormControl<string>('', Validators.required),
     dob: new FormControl<string>('', Validators.required),
-    className: new FormControl<string>('', Validators.required),
+    classesId: new FormControl<null | number>(null, Validators.required),
     section: new FormControl<string>(''),
     gender: new FormControl<string>('', Validators.required),
     status: new FormControl<boolean>(true),
@@ -145,7 +145,7 @@ export class AdmissionFormComponent {
     if (id) {
       this.getStudentById(Number(id));
     }
-    this.studentInfoForm.controls.className.valueChanges.subscribe(res => {
+    this.studentInfoForm.controls.classesId.valueChanges.subscribe(res => {
       this.sectionList = this.orgSectionList.filter(x => x['className'] == res)
     })
     this.fatherInfoForm.controls.adharNumber.valueChanges.subscribe(res => {
@@ -226,7 +226,7 @@ export class AdmissionFormComponent {
       this.classList = res.map((r: any) => {
         return {
           label: r.className,
-          value: r.className
+          value: r.id
         }
       })
     },error:()=>{

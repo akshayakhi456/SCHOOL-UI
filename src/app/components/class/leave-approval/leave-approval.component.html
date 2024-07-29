@@ -1,0 +1,98 @@
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                @if (classList.length) {
+                    <mat-form-field appearance="outline">
+                        <mat-label>Class</mat-label>
+                        <mat-select [formControl]="className">
+                            <mat-option [value]="''">[Any]</mat-option>
+                            @for (class of classList; track class) {
+                            <mat-option [value]="class.value">{{class.label}}</mat-option>
+                            }
+                        </mat-select>
+                        @if (className.errors &&
+                        className.errors['required'] &&
+                        className.touched) {
+                        <mat-error>Class is required.</mat-error>
+                        }
+                    </mat-form-field>
+                     }
+            </div>
+            @if (sectionList.length) {
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Section</mat-label>
+                    <mat-select [formControl]="section">
+                        <mat-option [value]="''">[Any]</mat-option>
+                            @for (sec of sectionList; track sec) {
+                            <mat-option [value]="sec.value">{{sec.label}}</mat-option>
+                            }
+                        </mat-select>
+                        @if (section.errors &&
+                        section.errors['required'] &&
+                        section.touched) {
+                        <mat-error>Section is required.</mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+            }
+        </div>
+        <div class="d-flex justify-content-center gap-1">
+            <button class="btn btn-primary" (click)="getStudentLeaveApproval()">Filter</button>
+            <button class="btn btn-light" (click)="resetFilter()">Reset</button>
+        </div>
+        <div>
+            <table mat-table [dataSource]="dataSource">
+    
+                <!--- Note that these columns can be defined in any order.
+                                    The actual rendered columns are set as a property on the row definition" -->
+            
+                <!-- purpose Column paymentName-->
+                <ng-container matColumnDef="rollNo">
+                    <th mat-header-cell *matHeaderCellDef> Roll No </th>
+                    <td mat-cell *matCellDef="let element"> {{element.rollNo}} </td>
+                </ng-container>
+
+                <!-- purpose Column paymentName-->
+                <ng-container matColumnDef="studentName">
+                    <th mat-header-cell *matHeaderCellDef> Student Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.studentName}} </td>
+                </ng-container>
+            
+                <!-- Amount Column -->
+                <ng-container matColumnDef="purposeOfLeave">
+                    <th mat-header-cell *matHeaderCellDef> Purpose Of Leave </th>
+                    <td mat-cell *matCellDef="let element"> {{element.purposeOfLeave}} </td>
+                </ng-container>
+            
+                <!-- Amount Column -->
+                <ng-container matColumnDef="dateRangeOfLeave">
+                    <th mat-header-cell *matHeaderCellDef> Date Range Of Leave </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        {{element.startDate | date: 'mediumDate'}} 
+                        @if (element.endDate) {
+                            - {{element.endDate | date: 'mediumDate'}}
+                        }
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="approval">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <!-- <span class="p-1" [ngClass]="element.status ?'theme-primary badge-success-light' : 'theme-primary badge-danger-light'">{{element.status ? 'Active' : 'InActive'}}</span>     -->
+                        <mat-slide-toggle [(ngModel)]="element.approval" (change)="openDialog(element)"></mat-slide-toggle>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="remarks">
+                    <th mat-header-cell *matHeaderCellDef> Remarks </th>
+                    <td mat-cell *matCellDef="let element"> {{element.remarks}} </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</div>

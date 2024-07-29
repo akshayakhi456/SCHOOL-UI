@@ -13,10 +13,9 @@
     }
 
     .school-header {
-        text-align: center; 
-        text-align: center; 
         padding: 20px 0px; 
-        border: 1px solid;
+        display: flex;
+        justify-content: center;
     }
 
     .school-name{

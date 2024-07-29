@@ -5,12 +5,13 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { SpinnerService } from '../../services/spinner/spinner.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { SettingsService } from '../../services/settings/settings.service';
 import { StudentService } from '../../services/student/student.service';
 import { BreadCrumbService } from '../../signal-service/breadcrumb.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TitleHeadingService } from '../../services/title-heading/title-heading.service';
 
 @Component({
   selector: 'app-view-print-receipt',
@@ -31,6 +32,9 @@ export class ViewPrintReceiptComponent {
   sanitizer = inject(DomSanitizer);
   spinner = inject(SpinnerService);
   breadcrumbService = inject(BreadCrumbService);
+  titleHeadingService = inject(TitleHeadingService);
+  htmlContent!: SafeHtml;
+  img!: string;
   imgViewer = '';
   selectedStudents: any;
   certificateList: any;
@@ -44,9 +48,32 @@ export class ViewPrintReceiptComponent {
   }
 
   ngOnInit() {
+    this.getTitle();
     if(this.stdId > 0){
       this.getStudentById(this.stdId);
     }
+  }
+
+  getTitle(): void {
+    this.spinnerService.show();
+    this.titleHeadingService.getByQueryTitleHeader('admission').subscribe({
+      next: (res) => {
+        this.spinnerService.dispose();
+        this.img = this.returnBase64(res.result?.photo!);
+        this.htmlContent = this.returnHTML(res.result?.description!);
+      },
+      error: () => {
+        this.spinnerService.dispose();
+      }
+    })
+  }
+
+  returnBase64(photo: string): string{
+    return 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(photo) as any).changingThisBreaksApplicationSecurity
+  }
+
+  returnHTML(value: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(value);
   }
 
   getStudentById(id: number) {

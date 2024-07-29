@@ -17,6 +17,7 @@ import { StudentMapClassService } from '../../../shared/services/student-map-cla
 import { IStudentAssignSectionRequestModel, IStudentAssignSectionResponseModel, IstudentMapSection } from '../../../shared/models/class.models';
 import { ACADEMIC_YEAR } from '../../../shared/models/payment.model';
 import { IStudent } from '../../../shared/models/student.models';
+import { GlobalService } from '../../../shared/signal-service/global.service';
 
 @Component({
   selector: 'app-student-section-assignment',
@@ -29,17 +30,19 @@ export class StudentSectionAssignmentComponent {
   @ViewChild('paginator') paginator!: MatPaginator | null;
   @ViewChild(MatSort) sort!: MatSort;
   sanitizer = inject(DomSanitizer);
-  className = new FormControl('', Validators.required)
+  globalService = inject(GlobalService);
+  className = new FormControl(null, Validators.required)
   studentDataSource = new MatTableDataSource([]);
   displayedColumns: string[] = ['photo', 'firstName', 'class', 'gender', 'section'];
   selectedYear = new Date().getMonth() + 2 <= 5 ? new Date().getFullYear() - 1 : new Date().getFullYear();
   academicYearList = ACADEMIC_YEAR;
   academicYear = new FormControl(this.academicYearList.filter(x => x.year == this.selectedYear)[0].value);
-  classList: Array<{label: string; value: string}> = [];
+  classList: Array<{label: string; value: number}> = [];
   pageSizes = [10,25,50,100];
   orgSectionList = [];
   sectionList: any;
   isChangedData = false;
+  academicYearId: number = 0;
   studentSection: Array<IStudentAssignSectionResponseModel> = [];
   breadcrumbData: IBreadcrumb = {
     title: 'Student Section Assignment',
@@ -66,6 +69,10 @@ export class StudentSectionAssignmentComponent {
     this.className.valueChanges.subscribe(res => {
       this.sectionList = this.orgSectionList.filter(x => x['className'] == res);
       this.isChangedData = false;
+    })
+
+    this.globalService.academicYearData.subscribe((res) =>{
+      this.academicYearId = Number(res);
     })
   }
 
@@ -105,7 +112,7 @@ export class StudentSectionAssignmentComponent {
       this.classList = res.map((r: any) => {
         return {
           label: r.className,
-          value: r.className
+          value: r.id
         }
       })
     },error: ()=>{
@@ -124,6 +131,7 @@ export class StudentSectionAssignmentComponent {
           const x = std.students;
           return {
             ...x,
+            className: std.students.classes.className,
             section: this.studentSection?.filter(sec => sec.studentsid == x.id)[0]?.section ?? x.section,
             sectionId: this.studentSection?.filter(sec => sec.studentsid == x.id)[0]?.sectionId ?? 0,
             photoExist : x.photo ? true : false,
@@ -144,7 +152,7 @@ export class StudentSectionAssignmentComponent {
 
   getStudentSectionByClass() {
     this.spinnerService.show();
-    this.studentMapClass.getStudentAssignSection(this.className.value!, 1).subscribe({
+    this.studentMapClass.getStudentAssignSection(this.className.value!, this.academicYearId).subscribe({
       next: (res) => {
         if (res.statusCode == HTTP_CODES.SUCCESS) {
           this.spinnerService.dispose();
@@ -187,7 +195,7 @@ export class StudentSectionAssignmentComponent {
           studentRanking.push({
             studentsid: x.id.toString(),
             rollNo: i + 1,
-            classId: x.className,
+            classId: this.className.value!,
             sectionId: x.sectionId,
             academicYearId: Number(this.academicYear.value)
           })
@@ -232,6 +240,6 @@ export class StudentSectionAssignmentComponent {
   }
 
   getCountOfNonSection(): number {
-    return this.studentDataSource.data?.filter((x: any) => x.sectionId).length;
+    return this.studentDataSource.data?.filter((x: any) => !x.sectionId).length;
   }
 }

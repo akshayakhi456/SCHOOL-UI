@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { SpinnerService } from '../../services/spinner/spinner.service';
 import { InvoiceService } from '../../services/invoice/invoice.service';
 import { SnackbarService } from '../../signal-service/snackbar.service';
+import { TitleHeadingService } from '../../services/title-heading/title-heading.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-invoice-receipt',
@@ -20,7 +22,8 @@ export class InvoiceReceiptComponent {
   @Input() receiptList: any;
   @ViewChild('receipt') receipt!: ElementRef;
   @ViewChild('exampleModal') modal!: ElementRef;
-
+  htmlContent!: SafeHtml;
+  img!: string;
   today = new Date();
   invoiceId = 0;
 
@@ -28,6 +31,8 @@ export class InvoiceReceiptComponent {
     private spinnerService: SpinnerService,
     private snackbar: SnackbarService,
     public dialogRef: MatDialogRef<InvoiceReceiptComponent>,
+    private titleHeadingService: TitleHeadingService,
+    private sanitizer: DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.stdInfo = data.stdInfo;
       this.receiptList = data.receiptList;
@@ -35,6 +40,27 @@ export class InvoiceReceiptComponent {
 
   ngAfterViewInit() {
     this.getInvoiceId();
+    this.getTitle();
+  }
+
+  getTitle(): void {
+    this.spinnerService.show();
+    this.titleHeadingService.getByQueryTitleHeader('receipt').subscribe({
+      next: (res) => {
+        this.spinnerService.dispose();
+        this.img = this.returnBase64(res.result?.photo!);
+        this.htmlContent = this.returnHTML(res.result?.description!);
+      },
+      error: () => {
+        this.spinnerService.dispose();
+      }
+    })
+  }
+  returnBase64(photo: string): string{
+    return 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(photo) as any).changingThisBreaksApplicationSecurity
+  }
+  returnHTML(value: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(value);
   }
 
   getInvoiceId() {

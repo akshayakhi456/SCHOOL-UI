@@ -44,10 +44,15 @@ export class LoginFormComponent implements OnInit{
     }
     this.spinnerService.show();
     this.authService.loginUser(this.loginForm.value).subscribe({
-      next: res => {
+      next: async res => {
         this.spinnerService.dispose();
-        if (this.authService.role().includes(ROLES.PARENT)) {
+        const loggedInRole = await this.authService.role();
+        if (loggedInRole.includes(ROLES.PARENT)) {
           this.router.navigate(['/student-profile']);
+          return;
+        }
+        else if(loggedInRole.includes(ROLES.TEACHER)) {
+          this.router.navigate(['/mark-attendance']);
           return;
         }
         this.router.navigate(['/dashboard']);

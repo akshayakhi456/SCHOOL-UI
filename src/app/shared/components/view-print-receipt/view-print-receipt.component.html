@@ -2,12 +2,15 @@
 <mat-dialog-content>
   <div #receipt class="receipts">
     <div class="row">
-      <div class="col-2"></div>
+      <div class="col-2">
+        <img id="imgviewer" [src]="img" width="100" height="100" />
+      </div>
       <div class="col-9 text-center">
-        <h1 class="mb-0">FATIMAH ZAHARA (R.A.) SCHOOL</h1>
+        <!-- <h1 class="mb-0">FATIMAH ZAHARA (R.A.) SCHOOL</h1>
         <p class="mb-0">English Medium School For Girls</p>
         <p class="mb-0">B/h. Royal Appartment, Junighadi, Vadodara, Gujarat-390006.</p>
-        <p class="mb-0">Phone No.: 0205-2518677</p>
+        <p class="mb-0">Phone No.: 0205-2518677</p> -->
+        <div [innerHTML]="htmlContent"></div>
       </div>
       <div class="col-1"></div>
     </div>
@@ -57,7 +60,7 @@
           </div>
           }
           @else {
-          <div class="empty-img">Photo</div>
+          <div class="empty-img"></div>
           }
       </div>
     </div>

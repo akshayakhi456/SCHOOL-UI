@@ -10,6 +10,7 @@ export const URLs = {
     getStudentsByRoles: `${environment.apiUrl}student/getStudentsByRoles`,
     postLeaveApply: `${environment.apiUrl}student/ApplyLeave`,
     leaveApproval: `${environment.apiUrl}student/LeaveApproval/`,
+    studentBulkUpload: `${environment.apiUrl}student/StudentBulkUpload`,
     getStudentLeave: `${environment.apiUrl}student/GetStudentLeave`,
     getStudentLeaveForTeacher: `${environment.apiUrl}student/GetStudentLeaveForTeacher`,
 
@@ -90,4 +91,8 @@ export const URLs = {
     classSubject: `${environment.apiUrl}subject/classSubject`,
     subjectTeacher: `${environment.apiUrl}subject/SubjectTeacher`,
     getMarksOfStudent: `${environment.apiUrl}subject/getMarksOfStudent`,
+
+    saveTitleHeader: `${environment.apiUrl}titleHeader/save`,
+    listTitleHeader: `${environment.apiUrl}titleHeader/list`,
+    listByQueryTitleHeader: `${environment.apiUrl}titleHeader/listByQuery`
 }

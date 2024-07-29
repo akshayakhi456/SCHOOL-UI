@@ -11,8 +11,14 @@ export interface IStudent {
     adharNumber: string;
     sibilings: string;
     certificateNames: string;
-    dateOfJoining: Date;
+    dateOfJoining: Date | string;
     currentClassName: number;
+    classes?: IClass;
+}
+
+export interface IClass {
+    id: number;
+    className: string;
 }
 
 export interface IGuardian {
@@ -24,7 +30,7 @@ export interface IGuardian {
     contactNumber: string;
     email: string;
     adharNumber: string;
-    studentId: string;
+    studentId: string | null | number;
     relationship: string;
 }
 
@@ -58,4 +64,9 @@ export interface IStudentApplyLeave {
     academicYearId: number;
     classId: number;
     sectionId: number;
+}
+
+export interface ITeacherLeaveApprove extends IStudentApplyLeave {
+    rollNo: number;
+    studentName: string;
 }

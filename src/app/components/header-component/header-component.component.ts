@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { GlobalService } from '../../shared/signal-service/global.service';
 import { ACADEMIC_YEAR } from '../../shared/models/payment.model';
 import { FormControl } from '@angular/forms';
+import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
+import { ROLES } from '../../shared/models/common.models';
 
 @Component({
   selector: 'app-header-component',
@@ -17,11 +19,17 @@ export class HeaderComponentComponent {
   menuStatus = true;
   academicList = ACADEMIC_YEAR;
   globalservice = inject(GlobalService);
-
-  constructor(private globalService: GlobalService) {
+  isAdminOwner = false;
+  constructor(private globalService: GlobalService,
+    public authentication: AuthenticationService,) {
     this.academicYearId.valueChanges.subscribe((res: any) => {
       this.globalService.setAcademicYear(res);
     })
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+    const role = await this.authentication.role();
+    this.isAdminOwner = role === ROLES.OWNER || role === ROLES.ADMIN;
   }
 
   opencloseSideNav() {

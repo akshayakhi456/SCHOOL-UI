@@ -18,9 +18,11 @@
                     </mat-select>
                 </mat-form-field>
             </li>
-            <li class="menu-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                <i class="bi bi-columns-gap"></i>
-            </li>
+            @if (isAdminOwner) {
+                <li class="menu-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <i class="bi bi-columns-gap"></i>
+                </li>
+            }
         </ul>
     </div>
 </nav>

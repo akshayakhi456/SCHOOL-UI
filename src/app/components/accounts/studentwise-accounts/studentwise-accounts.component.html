@@ -14,7 +14,7 @@
                     <span>Name:</span> <span>{{stdInfo?.students.firstName}} {{stdInfo?.students.lastName}}</span>
                 </div>
                 <div>
-                    <span>Class:</span> <span>{{stdInfo?.students.className}}</span>
+                    <span>Class:</span> <span>{{stdInfo?.students.currentClassName}}</span>
                 </div>
                 <div>
                     <span>Section:</span> <span>{{stdInfo?.students.section}}</span>
@@ -97,9 +97,11 @@
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-                <span>
-                    <i class="bi bi-three-dots-vertical"  matTooltipPosition="above" [matTooltip]="tooltipInfo(element)"></i>
-                </span>
+                @if (element.paymentType != 'Cash') {
+                    <span>
+                        <i class="bi bi-info-circle"  matTooltipPosition="above" [matTooltip]="tooltipInfo(element)"></i>
+                    </span>
+                }
             </td>
         </ng-container>
     

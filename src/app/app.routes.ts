@@ -64,7 +64,7 @@ export const routes: Routes = [
     {path: 'exam-subject', component: ExamSubjectComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER]}},
     {path: 'progress-report', component: ProgressCardComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER]}},
     {path: 'class-subject', component: TeacherSubjectClassComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER]}},
-    {path: 'teacher-leave-approval', component: LeaveApprovalComponent, canActivate: [authGuard], data: {Roles: [ROLES.TEACHER, ROLES.OWNER, ROLES.TEACHER]}},
+    {path: 'teacher-leave-approval', component: LeaveApprovalComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER]}},
     {path: 'titleHeader', component: TitleHeadingComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER]}},
     {path: 'newPassword', component: NewPasswordComponent},
 ];

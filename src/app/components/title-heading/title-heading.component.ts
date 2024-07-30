@@ -3,18 +3,18 @@ import { IBreadcrumb } from '../../shared/interfaces/global.model';
 import { MatDialog } from '@angular/material/dialog';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { BreadCrumbService } from '../../shared/signal-service/breadcrumb.service';
-import { AngularEditorConfig, AngularEditorModule } from '@kolkov/angular-editor';
 import { SharedModule } from '../../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { TitleHeadingService } from '../../shared/services/title-heading/title-heading.service';
 import { SnackbarService } from '../../shared/signal-service/snackbar.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { EditorConfig, NgxSimpleTextEditorModule, ST_BUTTONS } from 'ngx-simple-text-editor';
 
 @Component({
   selector: 'app-title-heading',
   standalone: true,
-  imports: [SharedModule, CommonModule, AngularEditorModule],
+  imports: [SharedModule, CommonModule, NgxSimpleTextEditorModule],
   templateUrl: './title-heading.component.html',
   styleUrl: './title-heading.component.scss'
 })
@@ -46,34 +46,9 @@ export class TitleHeadingComponent {
       value: 'receipt'
     }
   ];
-  config: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    placeholder: 'Enter text here...',
-    translate: 'no',
-    defaultParagraphSeparator: 'p',
-    defaultFontName: 'Arial',
-    sanitize: false,
-    toolbarHiddenButtons: [
-      ['bold']
-    ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
-    ]
+  config: EditorConfig = {
+    placeholder: 'Type something...',
+    buttons: ST_BUTTONS,
   };
   constructor(private dialog: MatDialog,
     private titleHeadingService: TitleHeadingService,

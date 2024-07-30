@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { URLs } from "../../api-constants";
 import { IHttpResponse } from "../../models/auth.models";
 import { Observable } from "rxjs";
-import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave, IProgressCardResponseModel, ISubjectRequestModel, ISubjectResponseModel } from "../../models/subject.models";
+import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave, IProgressCardResponseModel, IStudentHallTicket, ISubjectRequestModel, ISubjectResponseModel } from "../../models/subject.models";
 
 @Injectable({
     providedIn: 'root'
@@ -73,6 +73,20 @@ import { IAddMarks, IClassWiseSubject, IClassWiseSubjectSave, IProgressCardRespo
             params = params.append('sid', sid)
         }
         return this.http.get<IHttpResponse<Array<IProgressCardResponseModel>>>(`${URLs.getMarksOfStudent}`, {
+            params: params
+        });
+    }
+
+    getStudentHallTicket(academicYearId: number, classId: number, section: number, examId: number, sid?: number): Observable<IHttpResponse<Array<IStudentHallTicket>>> {
+        let params = new HttpParams()
+        .set('classId', classId)
+        .set('acedemicYearId', academicYearId)
+        .set('examId', examId)
+        .set('sectionId', section);
+        if (sid) {
+            params = params.append('sid', sid)
+        }
+        return this.http.get<IHttpResponse<Array<IStudentHallTicket>>>(`${URLs.studentHallTicket}`, {
             params: params
         });
     }

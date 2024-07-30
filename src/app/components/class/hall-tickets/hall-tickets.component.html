@@ -1,0 +1,142 @@
+
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            @if(!studentLogin) {
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    @if (classList.length) {
+                        <mat-form-field appearance="outline">
+                            <mat-label>Class</mat-label>
+                            <mat-select [formControl]="className">
+                                <mat-option [value]="''">[Any]</mat-option>
+                                @for (class of classList; track class) {
+                                <mat-option [value]="class.value">{{class.label}}</mat-option>
+                                }
+                            </mat-select>
+                            @if (className.errors &&
+                            className.errors['required'] &&
+                            className.touched) {
+                            <mat-error>Class is required.</mat-error>
+                            }
+                        </mat-form-field>
+                         }
+                </div>
+                @if (sectionList.length) {
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Section</mat-label>
+                        <mat-select [formControl]="section">
+                            <mat-option [value]="''">[Any]</mat-option>
+                                @for (sec of sectionList; track sec) {
+                                <mat-option [value]="sec.value">{{sec.label}}</mat-option>
+                                }
+                            </mat-select>
+                            @if (section.errors &&
+                            section.errors['required'] &&
+                            section.touched) {
+                            <mat-error>Section is required.</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                }
+            }
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Exam</mat-label>
+                    <mat-select [formControl]="exam">
+                        @for (exam of examList; track exam) {
+                        <mat-option [value]="exam.id">{{exam.examName}}</mat-option>
+                        }
+                    </mat-select>
+                    @if (exam.errors &&
+                    exam.errors['required'] &&
+                    exam.touched) {
+                    <mat-error>Exam is required.</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center gap-1">
+            <button class="btn btn-primary" (click)="getstudentHallTicket()">Filter</button>
+            <button class="btn btn-light" (click)="resetFilter()">Reset</button>
+            @if (studentHallTicket.length) {
+                <button class="btn btn-primary" printSectionId="printHallTicket" ngxPrint>Print HallTicket</button>
+            }
+        </div>
+        <div id="printHallTicket">
+            @for (std of studentHallTicket; track std) {
+                <div style="display: flex; justify-content: center;">
+                    <img id="imgviewer" [src]="img" width="100" height="100" />
+                    <div [innerHTML]="htmlContent">
+                    </div>
+                </div>
+                <hr/>
+                <div style="text-align: center;">
+                    <h2 style="margin-bottom: 0px;">Hall Ticket</h2>
+                    <h5>Academic Session - {{academicYear}}</h5>
+                </div>
+                <div>
+                    <table width="100%" cellpadding="6px" style="border: black solid 1px;background-color: azure;">
+                        <tbody><tr>
+                            <td width="50%"><b>Adm No :</b> {{std.studentInfo.admNo}} </td>
+                            <td width="50%" style="text-align: right;"><b>Roll No :</b> {{std.studentInfo.rollNo}} </td>
+                        </tr>
+                        <tr>
+                            <td width="50%"><b>Student Name :</b> {{std.studentInfo.studentName}} </td>
+                            <td width="50%" style="text-align: right;"><b>Class :</b> {{std.studentInfo.className}}</td>
+                        </tr>
+                        <tr>
+                            <td width="50%"><b>Father Name :</b> {{std.studentInfo.fatherName}}</td>
+                            <td width="50%" style="text-align: right;"><b>Section :</b> {{std.studentInfo.section}}</td>
+                        </tr>
+                        <tr>
+                            <td width="50%"><b>Mother Name :</b> {{std.studentInfo.motherName}}</td>
+                            <td width="50%" style="text-align: right;"><b>DOB :</b> {{std.studentInfo.dateOfBirth | date: 'd/M/YYYY'}}</td>
+                        </tr>
+                    </tbody></table>
+                </div>
+                <br>
+                <div class="subject">
+                    <table width="100%" border="1" style="border-collapse: collapse;background-color: azure;" cellpadding="6px">
+            
+                        <tbody>
+                            <!-- <tr>
+                                <th rowspan="2">Subjects</th>
+                                <th colspan="3" class="text-center">FA-1</th>
+            
+                            </tr>
+                            <tr>
+                                <th class="text-center">Max.Marks</th>
+                                <th class="text-center">Marks</th>
+                                <th class="text-center">Remarks</th>
+            
+                            </tr> -->
+                            <tr>
+                                <td width="10%">Subject</td>
+                                @for (subject of std.subjectInfos; track subject) {
+                                    <td style="text-align: center;">{{subject.subjectName}}</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td width="10%">Date Of Exam</td>
+                                @for (subject of std.subjectInfos; track subject) {
+                                    <td style="text-align: center;">{{subject.examDate}}</td>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <table width="100%" style="text-align: center;">
+                    <tbody><tr>
+                        <td><b>Teacher Signature</b></td>
+                        <td><b>Principal Signature</b></td>
+                    </tr>
+                </tbody></table>
+            }
+        </div>
+    </div>
+</div>

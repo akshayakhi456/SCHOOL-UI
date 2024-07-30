@@ -39,6 +39,16 @@ export interface ISubjectResponseModel extends ISubjectRequestModel {
     teacher: string;
 }
 
+export interface IStudentHallTicket {
+    studentInfo: IStudentInfo 
+    subjectInfos: Array<IHallTicket> 
+}
+
+export interface IHallTicket {
+    subjectName: string;
+    examDate: string;
+}
+
 export interface IProgressCardResponseModel
 {
     studentInfo: IStudentInfo 

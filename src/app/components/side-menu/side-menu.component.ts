@@ -150,6 +150,10 @@ export class SideMenuComponent {
         {
           title: 'Teacher Leave Approval',
           routerLink: '/teacher-leave-approval',
+        },
+        {
+          title: 'Hall Ticket',
+          routerLink: '/hallticket',
         }
       ]
     }

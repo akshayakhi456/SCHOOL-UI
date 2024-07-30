@@ -32,6 +32,7 @@ import { ProgressCardComponent as StudentProgressCard } from './components/acade
 import { TeacherSubjectClassComponent } from './components/teachers/teacher-subject-class/teacher-subject-class.component';
 import { LeaveApprovalComponent } from './components/class/leave-approval/leave-approval.component';
 import { TitleHeadingComponent } from './components/title-heading/title-heading.component';
+import { HallTicketsComponent } from './components/class/hall-tickets/hall-tickets.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -65,6 +66,7 @@ export const routes: Routes = [
     {path: 'progress-report', component: ProgressCardComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER]}},
     {path: 'class-subject', component: TeacherSubjectClassComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER]}},
     {path: 'teacher-leave-approval', component: LeaveApprovalComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER, ROLES.TEACHER]}},
+    {path: 'hallticket', component: HallTicketsComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER]}},
     {path: 'titleHeader', component: TitleHeadingComponent, canActivate: [authGuard], data: {Roles: [ROLES.ADMIN, ROLES.OWNER]}},
     {path: 'newPassword', component: NewPasswordComponent},
 ];

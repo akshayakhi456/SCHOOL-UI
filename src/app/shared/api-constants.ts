@@ -91,6 +91,7 @@ export const URLs = {
     classSubject: `${environment.apiUrl}subject/classSubject`,
     subjectTeacher: `${environment.apiUrl}subject/SubjectTeacher`,
     getMarksOfStudent: `${environment.apiUrl}subject/getMarksOfStudent`,
+    studentHallTicket: `${environment.apiUrl}subject/studentHallTicket`,
 
     saveTitleHeader: `${environment.apiUrl}titleHeader/save`,
     listTitleHeader: `${environment.apiUrl}titleHeader/list`,

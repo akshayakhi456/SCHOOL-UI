@@ -1,0 +1,33 @@
+{
+  "routes": [
+    "/accounts",
+    "/add-marks",
+    "/admission",
+    "/applyLeave",
+    "/attendance",
+    "/changePassword",
+    "/class-subject",
+    "/create-enquiry",
+    "/dashboard",
+    "/enquiry-list",
+    "/exam-subject",
+    "/hallticket",
+    "/login",
+    "/mark-attendance",
+    "/newPassword",
+    "/profile",
+    "/progress-report",
+    "/school-expenses",
+    "/section-assignment",
+    "/settings",
+    "/student-list",
+    "/student-profile",
+    "/teacher-detail",
+    "/teacher-leave-approval",
+    "/teacher-list",
+    "/titleHeader",
+    "/userAccounts",
+    "/viewAttendance",
+    "/viewProgress"
+  ]
+}

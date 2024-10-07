@@ -64,6 +64,10 @@ export class SettingsService {
     return this.http.get(`${URLs.getEnquiryQuestionsSettings}`);
   }
 
+  deleteEnquiryQuestionSettings(id: number): Observable<any> {
+    return this.http.delete(`${URLs.deleteEnquiryQuestionSettings}${id}`);
+  }
+
   createPaymentAllotment(payload: any):Observable<any> {
     return this.http.post(`${URLs.paymentAllotmentsSettings}`, payload);
   }

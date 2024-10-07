@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
+import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-enquiry-form-questions',
@@ -22,14 +24,14 @@ import { SnackbarService } from '../../../shared/signal-service/snackbar.service
 export class EnquiryFormQuestionsComponent {
   @ViewChild('callAPIDialog') callAPIDialog!: TemplateRef<any>;
   @ViewChild('paginator') paginator!: MatPaginator | null;
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
   dataTypeList = ['text', 'dropdown'];
   pageSizes = [10, 25, 50, 100];
-  displayedColumns: string[] = ['formControlName', 'question', 'status', 'action'];
+  displayedColumns: string[] = ['question', 'action'];
   dataSource = new MatTableDataSource();
   questionForm = new FormGroup({
     id: new FormControl<number | null>(0),
     question: new FormControl<string>('', Validators.required),
-    formControlName: new FormControl<string>('', Validators.required),
     type: new FormControl<string>('', Validators.required),
     options: new FormArray([]),
     isRequired: new FormControl<boolean>(false),
@@ -43,7 +45,6 @@ export class EnquiryFormQuestionsComponent {
     private snackbar: SnackbarService,
     public dialog: MatDialog) { }
 
-  @ViewChild(MatSort) sort: MatSort = new MatSort();
 
   get f(): { [key: string]: AbstractControl } {
     return this.questionForm.controls;
@@ -80,6 +81,11 @@ export class EnquiryFormQuestionsComponent {
   }
 
   addQuestion() {
+    this.formReset();
+    this.dialog.open(this.callAPIDialog);
+  }
+
+  formReset(): void {
     this.questionForm.reset();
     this.questionForm.patchValue({
       id: 0,
@@ -87,7 +93,6 @@ export class EnquiryFormQuestionsComponent {
       isMultiple: false,
       status: false
     });
-    this.dialog.open(this.callAPIDialog);
   }
 
   get options(): FormArray {
@@ -132,7 +137,7 @@ export class EnquiryFormQuestionsComponent {
     }
     else {
       this.spinnerService.show();
-      this.service.createQuestion(payload).subscribe(res => {
+      this.service.createQuestion(payload).pipe(take(1)).subscribe(res => {
         this.spinnerService.dispose();
         const result = res.message;
         this.snackbar.openSuccessSnackbar(result);
@@ -143,7 +148,9 @@ export class EnquiryFormQuestionsComponent {
     }
   }
 
-  editQuestion(element: any) {
+  editQuestion(element: any): void {
+    this.formReset();
+    this.options.clear();
     const filterResult: any = this.dataSource.data.find(e => e == element);
     const result = filterResult;
     result.options = typeof (filterResult as any).options == 'string' ? JSON.parse((filterResult as any).options) : filterResult['options'];
@@ -162,5 +169,35 @@ export class EnquiryFormQuestionsComponent {
         this.options.removeAt(0)
       }
     })
+  }
+
+  deleteQuestion(element: any): void {
+    const dialogRef = this.dialog.open(ConfirmationModalComponent,{
+      data:{
+        message: `Are you sure want to delete this ${element.question} Question`,
+        buttonText: {
+          ok: 'Yes',
+          cancel: 'No'
+        }
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+       this.spinnerService.show();
+       this.service.deleteEnquiryQuestionSettings(element.id).pipe(take(1)).subscribe({next: res => {
+         this.spinnerService.dispose();
+        if (res) {
+        const result = res.message;
+        this.snackbar.openSuccessSnackbar(result);
+        this.getEnquiryQuestionList();
+        }
+       },
+       error: () => {
+        this.spinnerService.dispose();
+       }
+      })
+      }
+    });
   }
 }

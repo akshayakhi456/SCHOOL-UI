@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EnquiryService } from '../../shared/services/enquiry/enquiry.service';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { MatStepper } from '@angular/material/stepper';
@@ -15,11 +15,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { InvoiceReceiptComponent } from '../../shared/components/invoice-receipt/invoice-receipt.component';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerIntl } from '@angular/material/datepicker';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create-enquiry',
   standalone: true,
-  imports: [SharedModule, NgxMaskDirective, NgxMaskPipe, StarRatingComponent],
+  imports: [SharedModule, NgxMaskDirective, NgxMaskPipe, StarRatingComponent, CommonModule],
   templateUrl: './create-enquiry.component.html',
   styleUrl: './create-enquiry.component.scss',
   providers: [provideNgxMask()]
@@ -37,33 +38,10 @@ export class CreateEnquiryComponent {
   rating = new FormControl();
   review = new FormControl();
   questionList: Array<any> = [];
-  abc = [{
-      question: "How well you know hindi?",
-      type: "dropdown",
-      isRequired: true,
-      options: ["Speak","Write","Read"],
-      isMultiple: true,
-      formControlName: "hindiQuestion"
-    },
-    {
-      question: "How well you know English?",
-      type: "dropdown",
-      isRequired: true,
-      options: ["Speak","Write","Read"],
-      isMultiple: false,
-      formControlName: "englishQuestion"
-    },
-    {
-      question: "How well you know English?",
-      type: "text",
-      isRequired: true,
-      options: null,
-      isMultiple: false,
-      formControlName: "textFill"
-    },
-  ]
 
-  parentInteractionForm = new FormGroup({});
+  parentInteractionForm = new FormGroup({
+    questionList: new FormArray([])
+  });
 
   enquiryForm = new FormGroup({
     id: new FormControl<number>(0),
@@ -192,17 +170,21 @@ export class CreateEnquiryComponent {
   }
 
   parentInteractionFormControls() {
-    for (let i=0; i< this.questionList.length; i++){
-      this.parentInteractionForm.addControl(
-        this.questionList[i].formControlName,
-        this.questionList[i].isRequired ? new FormControl('', Validators.required) :new FormControl('')
-        );
-      this.parentInteractionForm.updateValueAndValidity();
+    if (this.questionList.length) {
+      for (let i=0; i< this.questionList.length; i++){
+        this.parentInteractionControls.push(new FormGroup({
+          question: new FormControl({value: this.questionList[i].question, disabled: true}),
+          response: new FormControl(null,this.questionList[i].isRequired ? [Validators.required] : []),
+          type: new FormControl(this.questionList[i].type),
+          isMultiple: new FormControl(this.questionList[i].isMultiple),
+          options: new FormControl(this.questionList[i].options)
+        }))
+      }
     }
   }
 
-  get parentInteractionControls(): {[key: string]: AbstractControl<any>} {
-    return this.parentInteractionForm.controls;
+  get parentInteractionControls() {
+    return this.parentInteractionForm.get('questionList') as FormArray;
   }
 
   getEnquireFormById(): void {
@@ -222,9 +204,14 @@ export class CreateEnquiryComponent {
             this.enquiryPaymentForm.patchValue(res.result.paymentsEnquiry ?? res.paymentsEnquiry);
             this.generateReceiptBtn = this.enquiryPaymentForm.value.paymentStatus === 'Completed'
           }
-          if (res.result.enquiry.parentInteraction ?? res.enquiry.parentInteraction) {
-            this.parentInteractionForm.patchValue({
-              ...JSON.parse(res.result.enquiry.parentInteraction) ?? JSON.parse(res.enquiry.parentInteraction)
+          if (res.result.enquiry.parentInteraction ?? res.enquiry.parentInteraction) {            
+            this.parentInteractionControls.clear(); 
+                JSON.parse(res.result.enquiry.parentInteraction).map((element: any) => {
+                this.parentInteractionControls.push(new FormGroup({
+                  question: new FormControl(element.question),
+                  response: new FormControl(element.response),
+                  type: new FormControl('text')  
+                }))
             });
             this.parentInteractionForm.disable();
             this.saveParentInteraction = true;
@@ -348,9 +335,16 @@ export class CreateEnquiryComponent {
     if (this.parentInteractionForm.invalid) {
       return;
     }
-    this.enquiryForm.patchValue({
-      parentInteraction: JSON.stringify(this.parentInteractionForm.value)
-    })
+    const form = this.parentInteractionForm.getRawValue();
+    if (form && form?.questionList?.length) {
+      const record: Array<{question: string; response: string}> = [];
+      form?.questionList.forEach((r: any) => {
+        record.push({question: r.question, response: r.response})
+      })
+      this.enquiryForm.patchValue({
+        parentInteraction: JSON.stringify(record)
+      })
+    }
     this.onSubmit(true);
   }
 
@@ -408,5 +402,24 @@ export class CreateEnquiryComponent {
 
   isMobile(): boolean {
     return window.innerWidth < 768;
+  }
+
+  addParentInteraction(): void {
+    this.parentInteractionControls.push(this.addQuestion())
+  }
+
+  addQuestion(): FormGroup {
+    return new FormGroup({
+      question: new FormControl(null,[Validators.required]),
+      response: new FormControl(null,[Validators.required]),
+      type: new FormControl('text'),
+      isMultiple: new FormControl(false),
+      options: new FormControl(null)
+    })
+  }
+
+  removeQuestion(index: number): void {
+    this.parentInteractionControls.removeAt(index);
+    this.parentInteractionControls.updateValueAndValidity();
   }
 }

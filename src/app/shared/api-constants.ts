@@ -45,6 +45,7 @@ export const URLs = {
     deleteSectionSettings: `${environment.apiUrl}settings/section/`,
     enquiryQuestionsSettings: `${environment.apiUrl}settings/enquiryQuestion`,
     getEnquiryQuestionsSettings: `${environment.apiUrl}settings/enquiryQuestions`,
+    deleteEnquiryQuestionSettings: `${environment.apiUrl}settings/enquiryQuestion/`,
     paymentAllotmentsSettings: `${environment.apiUrl}settings/paymentAllotment`,
     subjectCreate: `${environment.apiUrl}settings/subjectCreate`,
     subjectList: `${environment.apiUrl}settings/subjectList`,

@@ -277,39 +277,63 @@
             <mat-step>
                 <form [formGroup]="parentInteractionForm">
                     <ng-template matStepLabel>Parent(s) Interaction</ng-template>
+                    @if (!saveParentInteraction) {
+                    <div class="row float-end">
+                        <button 
+                            (click)="addParentInteraction()"
+                            class="btn btn-primary">
+                            <i class="bi bi-plus me-1"></i>
+                            Add Question
+                        </button>
+                    </div>
+                    }
+                    <br>
                     <div class="row mt-3">
-                        @for (item of questionList; track item; let i = $index) {
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <mat-label><strong>
-                                    {{item.question}}
-                                </strong></mat-label>
-                        <!-- </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12"> -->
-                            @if(item.type == "dropdown") {
-                            <mat-form-field appearance="outline">
-                                <mat-select [multiple]="item.isMultiple" [formControlName]="item.formControlName">
-                                    @for(opt of item.options; track opt; let j = $index) {
-                                    <mat-option [value]="opt">{{opt}}</mat-option>
-                                    }
-                                </mat-select>
-                                @if(parentInteractionControls && parentInteractionControls[item.formControlName].errors
-                                &&
-                                parentInteractionControls[item.formControlName].touched){
-                                <mat-error>This field is required.</mat-error>
-                                }
-                            </mat-form-field>
-                            }
-                            @else if(item.type == "text") {
-                            <mat-form-field appearance="outline">
-                                <input matInput [formControlName]="item.formControlName" />
-                                @if(parentInteractionControls && parentInteractionControls[item.formControlName].errors
-                                &&
-                                parentInteractionControls[item.formControlName].touched){
-                                <mat-error>This field is required.</mat-error>
-                                }
-                            </mat-form-field>
-                            }
+                        <div class="col-lg-5 col-md-5 col-sm-12 text-center">
+                            Question(s)
                         </div>
+                        <div class="col-lg-5 col-md-5 col-sm-12 text-center">
+                            Response(s)
+                        </div>
+                    </div>
+                    <div class="row mt-3" formArrayName="questionList">
+                        @for (item of parentInteractionControls.controls; track item; let i = $index) {
+                        <ng-container [formGroupName]="i">
+                            <div class="col-lg-5 col-md-5 col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="question" />
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-11">
+                                @if(item.value.type == "dropdown") {
+                                <mat-form-field appearance="outline">
+                                    <mat-select [multiple]="item.value.isMultiple" formControlName="response">
+                                        @for(opt of item.value.options; track opt; let j = $index) {
+                                        <mat-option [value]="opt">{{opt}}</mat-option>
+                                        }
+                                    </mat-select>
+                                    @if(item.get('response')?.errors
+                                    && item.get('response')?.touched){
+                                    <mat-error>This field is required.</mat-error>
+                                    }
+                                </mat-form-field>
+                                }
+                                @else if(item.value.type == "text") {
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="response" />
+                                    @if(item.get('response')?.invalid
+                                    && item.get('response')?.touched){
+                                    <mat-error>This field is required.</mat-error>
+                                    }
+                                </mat-form-field>
+                                }
+                            </div>
+                            @if (!saveParentInteraction) {
+                            <div class="col-sm-1 col-md-1 col-lg-1">
+                                <i class="bi bi-trash" (click)="removeQuestion(i)"></i>
+                            </div>
+                            }
+                        </ng-container>
                         }
                     </div>
                     <div class="interaction-actions">

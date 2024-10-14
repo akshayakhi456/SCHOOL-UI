@@ -28,8 +28,8 @@
                     Action
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <i class="bi bi-pencil" (click)="editQuestion(element)"></i>
-                    <i class="bi bi-trash ms-1" (click)="deleteQuestion(element)"></i>
+                    <i class="bi bi-pencil pe-auto" matTooltipPosition="above" matTooltip="Edit" (click)="editQuestion(element)"></i>
+                    <i class="bi bi-trash ms-1 pe-auto" matTooltipPosition="above" matTooltip="Delete" (click)="deleteQuestion(element)"></i>
                 </td>
             </ng-container>
 

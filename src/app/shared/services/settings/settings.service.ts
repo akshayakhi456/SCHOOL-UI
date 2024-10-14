@@ -36,7 +36,7 @@ export class SettingsService {
     return this.http.get(URLs.getSectionSettings);
   }
 
-  getSectionByClassName(id: string): Observable<any> {
+  getSectionByClassName(id: number): Observable<any> {
     return this.http.get(`${URLs.getSectionSettingsById}${id}/sections`);
   }
 

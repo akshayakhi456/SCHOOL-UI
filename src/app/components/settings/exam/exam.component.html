@@ -6,7 +6,7 @@
             <mat-error>Exam Name is Required.</mat-error>
         }
     </mat-form-field>
-    <button class="btn btn-primary" (click)="saveExam()">Save</button>
+    <button class="btn btn-primary ms-1" (click)="saveExam()">Save</button>
 </div>
 <div>
     <table mat-table [dataSource]="examDataSource" matSort #sectionSort (matSortChange)="announceSortChange($event)">

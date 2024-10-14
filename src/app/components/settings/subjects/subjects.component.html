@@ -6,7 +6,7 @@
             <mat-error>Subject Name is Required.</mat-error>
         }
     </mat-form-field>
-    <button class="btn btn-primary" (click)="saveSubject()">Save</button>
+    <button class="btn btn-primary ms-1" (click)="saveSubject()">Save</button>
 </div>
 <div>
     <table mat-table [dataSource]="subjectDataSource" matSort #sectionSort (matSortChange)="announceSortChange($event)">

@@ -139,6 +139,8 @@ export class EnquiryFormQuestionsComponent {
       this.spinnerService.show();
       this.service.createQuestion(payload).pipe(take(1)).subscribe(res => {
         this.spinnerService.dispose();
+        this.questionForm.reset();
+        this.dialog.closeAll();
         const result = res.message;
         this.snackbar.openSuccessSnackbar(result);
         this.getEnquiryQuestionList();

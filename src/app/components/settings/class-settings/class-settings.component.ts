@@ -14,6 +14,7 @@ import { SubjectService } from '../../../shared/services/subject/subject.service
 import { IClassWiseSubject } from '../../../shared/models/subject.models';
 import { HTTP_CODES } from '../../../shared/constants/common.constants';
 import { ISubjectModel } from '../../../shared/models/setting.models';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-class-settings',
@@ -115,7 +116,7 @@ export class ClassSettingsComponent {
 
   getSectionList() {
     this.spinnerService.show();
-    this.service.getSectionByClassName(this.openedClass!['className']).subscribe((res) => {
+    this.service.getSectionByClassName(this.openedClass!['id']).pipe(take(1)).subscribe({next: (res) => {
       this.spinnerService.dispose();
       this.sectionDataSource.data = (res.res ?? res).map((x: any) => {
         return {
@@ -123,10 +124,9 @@ export class ClassSettingsComponent {
           isEditSectionMode: false
         }
       });
-      // this.sectionDataSource.paginator = this.paginator;
-    },()=>{
+    },error: ()=>{
       this.spinnerService.dispose();
-    })
+    }})
   }
 
   openSectionModal(element: any) {

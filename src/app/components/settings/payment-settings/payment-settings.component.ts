@@ -1,10 +1,11 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { SharedModule } from '../../../shared/shared.module';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../../shared/shared.module';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
@@ -13,12 +14,13 @@ import { GlobalService } from '../../../shared/signal-service/global.service';
 @Component({
   selector: 'app-payment-settings',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, CommonModule],
   templateUrl: './payment-settings.component.html',
   styleUrl: './payment-settings.component.scss'
 })
 export class PaymentSettingsComponent {
   @ViewChild('openPaymentAllotment') openPaymentAllotment!: TemplateRef<any>;
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
   displayedColumns: string[] = ['className', 'action'];
   displayedPaymentColumns: string[] = ['paymentName', 'amount', 'action'];
   classDataSource = new MatTableDataSource([]);
@@ -39,8 +41,6 @@ export class PaymentSettingsComponent {
       })
     }
 
-  @ViewChild('feeNameSort') sort: MatSort = new MatSort();
-
   ngOnInit() {
     this.getClassList();
   }
@@ -50,6 +50,7 @@ export class PaymentSettingsComponent {
     this.service.getClasses().subscribe({next: (res) => {
       this.spinnerService.dispose();
       this.classDataSource.data = res.result ?? res;
+      this.classDataSource.sort = this.sort;
     },error: ()=>{
       this.spinnerService.dispose();
     }});

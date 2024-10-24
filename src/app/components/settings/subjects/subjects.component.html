@@ -1,12 +1,5 @@
-<div class="section-form mt-2">
-    <mat-form-field appearance="outline">
-        <mat-label>Subject Name</mat-label>
-        <input matInput [formControl]="subjectName"/>
-        @if (subjectName.invalid && subjectName.touched) {
-            <mat-error>Subject Name is Required.</mat-error>
-        }
-    </mat-form-field>
-    <button class="btn btn-primary ms-1" (click)="saveSubject()">Save</button>
+<div>
+    <button type="button" class="btn btn-primary mt-1 float-end" (click)="addSubject()">Add Subject</button>
 </div>
 <div>
     <table mat-table [dataSource]="subjectDataSource" matSort #sectionSort (matSortChange)="announceSortChange($event)">
@@ -48,3 +41,23 @@
         <tr mat-row *matRowDef="let row; columns: displayedSubjectColumns;"></tr>
     </table>
 </div>
+
+<ng-template #openSubjectPopup>
+    <h1 mat-dialog-title>Subject</h1>
+    <mat-dialog-content>
+        <mat-form-field appearance="outline" class="py-2">
+            <mat-label>Subject Name</mat-label>
+            <input matInput [formControl]="subjectName"/>
+            @if (subjectName.hasError('required') && subjectName.touched) {
+                <mat-error>Subject Name is Required.</mat-error>
+            }
+            @else if (subjectName.hasError('maxlength') && subjectName.touched) {
+                <mat-error>Subject Name  must not be exceed 50 characters.</mat-error>
+            }
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button class="btn btn-primary ms-1" [mat-dialog-close]="true" (click)="saveSubject()">Save</button>
+        <button type="button" class="btn btn-light" mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</ng-template>

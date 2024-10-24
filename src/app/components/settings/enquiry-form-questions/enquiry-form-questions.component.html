@@ -48,10 +48,13 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Question</mat-label>
                     <input matInput formControlName="question" />
-                    @if(f['question'].errors &&
-                        f['question'].errors['required'] &&
+                    @if(questionForm.get('question')?.hasError('required') === true &&
+                        questionForm.get('question')?.touched === true) {
+                        <mat-error class="d-block">Question is Requried</mat-error>
+                    }
+                    @else if(questionForm.get('question')?.hasError('maxlength') &&
                         f['question'].touched) {
-                        <mat-error>Question is Requried</mat-error>
+                        <mat-error class="d-block">Question must not exceed 255 characters</mat-error>
                     }
                 </mat-form-field>
                 <mat-form-field appearance="outline">

@@ -1,7 +1,7 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Sort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { HTTP_CODES } from '../../../shared/constants/common.constants';
 import { IClasses, IExamModel, ISubjectModel } from '../../../shared/models/setting.models';
@@ -19,7 +19,8 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './exam.component.scss'
 })
 export class ExamComponent {
-  @ViewChild('openSubjectPopup') openSubjectPopup!: TemplateRef<any>;
+  @ViewChild('openExamPopup') openExamPopup!: TemplateRef<any>;
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
   examName = new FormControl('', Validators.required);
   examDataSource = new MatTableDataSource<IExamModel>([]);
   subject = new FormControl('', Validators.required);
@@ -30,6 +31,7 @@ export class ExamComponent {
   subjectList: Array<ISubjectModel> = [];
   classList: Array<IClasses> = [];
   openExam = {examName: '', id: 0};
+  originalExamName: string = '';
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private spinnerService: SpinnerService,
     private snackbarService: SnackbarService,
@@ -59,6 +61,7 @@ export class ExamComponent {
         this.spinnerService.dispose();
         if (res.statusCode == HTTP_CODES.SUCCESS) {
           this.examDataSource.data = res.result!;
+          this.examDataSource.sort = this.sort;
         }
       },
       error: () => {
@@ -69,7 +72,6 @@ export class ExamComponent {
 
   saveExam() {
     if (!this.examName.value) {
-      this.snackbarService.openWarningSnackbar("examName is required");
       return
     }
     this.spinnerService.show();
@@ -107,4 +109,18 @@ export class ExamComponent {
     })
   }
 
+  changeExamName(element: IExamModel & {isEditSubjectMode: boolean}) {
+    element.isEditSubjectMode = !element.isEditSubjectMode;
+    this.originalExamName = element.examName;
+  }
+
+  cancelChangingExmaName(element: IExamModel & {isEditSubjectMode: boolean}) {
+    element.isEditSubjectMode = !element.isEditSubjectMode;
+    element.examName = this.originalExamName;
+  }
+
+  addExam() {
+    this.examName.reset();
+    this.dialog.open(this.openExamPopup);
+  }
 }

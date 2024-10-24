@@ -28,6 +28,8 @@ export class ClassSettingsComponent {
   @ViewChild('openSectionPopup') openSectionPopup!: TemplateRef<any>;
   @ViewChild('openSubjectPopup') openSubjectPopup!: TemplateRef<any>;
   @ViewChild('paginator') paginator!: MatPaginator | null;
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
+  @ViewChild('sectionSort') sectionSort: MatSort = new MatSort();
   className = new FormControl('', Validators.required);
   sectionName = new FormControl('', Validators.required);
   subjectName = new FormControl('', [Validators.required]);
@@ -50,9 +52,6 @@ export class ClassSettingsComponent {
     private snackbar:SnackbarService,
     private spinnerService: SpinnerService,
     public dialog: MatDialog) {}
-
-  @ViewChild(MatSort) sort: MatSort = new MatSort();
-  @ViewChild('sectionSort') sectionSort: MatSort = new MatSort();
 
   ngAfterViewInit() {
     this.classDataSource.sort = this.sort;

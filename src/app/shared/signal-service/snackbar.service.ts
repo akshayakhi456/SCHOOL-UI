@@ -8,7 +8,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 export class SnackbarService {
     constructor(private snackbar: MatSnackBar) {}
 
-    openSuccessSnackbar(message: string, action: string = 'OKAY', icon: string = 'done') {
+    openSuccessSnackbar(message: string, action: string = 'Ok', icon: string = 'done') {
         this.snackbar.openFromComponent(SnackbarComponent, {
             data: {
                 message,
@@ -23,7 +23,7 @@ export class SnackbarService {
         })
     }
 
-    openWarningSnackbar(message: string, action: string = 'OKAY', icon: string = 'warning') {
+    openWarningSnackbar(message: string, action: string = 'Ok', icon: string = 'warning') {
         this.snackbar.openFromComponent(SnackbarComponent, {
             data: {
                 message,
@@ -53,7 +53,7 @@ export class SnackbarService {
         })
     }
 
-    openInfoSnackbar(message: string, action: string = 'OKAY', icon: string = 'info') {
+    openInfoSnackbar(message: string, action: string = 'Ok', icon: string = 'info') {
         this.snackbar.openFromComponent(SnackbarComponent, {
             data: {
                 message,

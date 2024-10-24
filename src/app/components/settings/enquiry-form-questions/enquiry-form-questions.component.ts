@@ -6,18 +6,19 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { SharedModule } from '../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SettingsService } from '../../../shared/services/settings/settings.service';
 import { SpinnerService } from '../../../shared/services/spinner/spinner.service';
 import { SnackbarService } from '../../../shared/signal-service/snackbar.service';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { take } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-enquiry-form-questions',
   standalone: true,
-  imports: [SharedModule, CommonModule],
+  imports: [SharedModule, CommonModule, MatFormFieldModule, ReactiveFormsModule],
   templateUrl: './enquiry-form-questions.component.html',
   styleUrl: './enquiry-form-questions.component.scss'
 })
@@ -31,7 +32,7 @@ export class EnquiryFormQuestionsComponent {
   dataSource = new MatTableDataSource();
   questionForm = new FormGroup({
     id: new FormControl<number | null>(0),
-    question: new FormControl<string>('', Validators.required),
+    question: new FormControl<string>('', [Validators.required, Validators.maxLength(255)]),
     type: new FormControl<string>('', Validators.required),
     options: new FormArray([]),
     isRequired: new FormControl<boolean>(false),

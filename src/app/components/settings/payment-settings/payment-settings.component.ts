@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormControl, Validators } from '@angular/forms';
@@ -30,11 +30,13 @@ export class PaymentSettingsComponent {
   selectedClass: {id: number; className: string} = {id: 0, className: ''};
   isEditMode= false;
   academicYearId=0;
+  originalSavedPaymentRecord: string = '';
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private service: SettingsService,
     private spinnerService: SpinnerService,
     private snackbar:SnackbarService,
     private globalService: GlobalService,
+    private detectchanges: ChangeDetectorRef,
     public dialog: MatDialog) {
       globalService.academicYearData.subscribe((res) =>{
         this.academicYearId = Number(res);
@@ -134,4 +136,15 @@ export class PaymentSettingsComponent {
       })
     }
   }
-}
+
+  clkPaymentEdit(element: any) {
+    this.originalSavedPaymentRecord = JSON.stringify(element);
+    element.isEditPaymentNameMode = true;
+  }
+
+  cancelPaymentEdit(element: any) {
+    element.isEditPaymentNameMode = false;
+    element.paymentName = JSON.parse(this.originalSavedPaymentRecord).paymentName;
+    element.amount = JSON.parse(this.originalSavedPaymentRecord).amount;
+  }
+} 

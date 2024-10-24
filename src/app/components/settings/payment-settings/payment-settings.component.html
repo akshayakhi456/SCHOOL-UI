@@ -106,10 +106,10 @@
                     <td mat-cell *matCellDef="let element">
                         @if (element.isEditPaymentNameMode) {
                             <button type="button" class="btn btn-primary" (click)="updatePaymentAlloted(element)">Save</button>
-                            <button type="button" class="btn btn-light" (click)="element.isEditPaymentNameMode = !element.isEditPaymentNameMode">Cancel</button>
+                            <button type="button" class="btn btn-light" (click)="cancelPaymentEdit(element)">Cancel</button>
                         }
                         @else {
-                            <button type="button" class="btn btn-primary" (click)="element.isEditPaymentNameMode = !element.isEditPaymentNameMode">Edit Payment</button>
+                            <button type="button" class="btn btn-primary" (click)="clkPaymentEdit(element)">Edit Payment</button>
                         }
                     </td>
                 </ng-container>

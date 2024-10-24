@@ -24,6 +24,7 @@ export class SubjectsComponent {
   subjectName = new FormControl('', [Validators.required, Validators.maxLength(50)])
   subjectDataSource = new MatTableDataSource<ISubjectModel>([]);
   displayedSubjectColumns: string[] = ['subjectName', 'action'];
+  originalSubjectName: string = '';
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private spinnerService: SpinnerService,
     private snackbarService: SnackbarService,
@@ -100,6 +101,16 @@ export class SubjectsComponent {
         this.spinnerService.dispose();
       }
     })
+  }
+
+  changeSubjectName(element: ISubjectModel & {isEditSubjectMode: boolean}) {
+    element.isEditSubjectMode = !element.isEditSubjectMode;
+    this.originalSubjectName = element.subjectName;
+  }
+
+  cancelChangingSubjectName(element: ISubjectModel & {isEditSubjectMode: boolean}) {
+    element.isEditSubjectMode = !element.isEditSubjectMode;
+    element.subjectName = this.originalSubjectName;
   }
 
   addSubject() {

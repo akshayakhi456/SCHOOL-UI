@@ -29,7 +29,7 @@ export class CreateEnquiryComponent {
   @ViewChild('receipt') receipt!: ElementRef;
   paymentStatusList = ['Pending', 'Completed'];
   id = 0;
-  hourList = ['09', '10', '11', '12', '13', '14', '15', '16', '17'];
+  hourList = ['08','09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
   minutesList = ['00', '15', '30', '45'];
   paymentModeList: Array<string> = ['Cash', 'Card', 'Cheque', 'Online'];
   isOpenReceipt = false;
@@ -202,6 +202,7 @@ export class CreateEnquiryComponent {
           });
           if(res.result.paymentsEnquiry ?? res.paymentsEnquiry) {
             this.enquiryPaymentForm.patchValue(res.result.paymentsEnquiry ?? res.paymentsEnquiry);
+            this.enquiryPaymentForm.get('feeName')?.disable();
             this.generateReceiptBtn = this.enquiryPaymentForm.value.paymentStatus === 'Completed'
           }
           if (res.result.enquiry.parentInteraction ?? res.enquiry.parentInteraction) {            

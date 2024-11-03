@@ -44,7 +44,7 @@ export class EnquiryListComponent {
   searchForm = new FormGroup({
     name: new FormControl<string>(''),
     className: new FormControl<string>(''),
-    status: new FormControl<boolean | null>(null)
+    status: new FormControl<boolean | string>('')
   })
   displayedColumns: string[] = ['firstName', 'className', 'guardian', 'status', 'action'];
   dataSource = new MatTableDataSource();
@@ -131,7 +131,7 @@ export class EnquiryListComponent {
       x.lastName.toLowerCase().includes(form.name?.toLowerCase()) ||
       x.id == form.name) &&
       ((form.className?.toString() == '' || x.className.toString() == form.className)) &&
-      ((form.status == null || x.status == form.status))
+      (((typeof form.status === 'string' && form.status == '') || x.status == form.status))
     )
   }
 

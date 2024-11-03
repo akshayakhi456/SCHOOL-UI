@@ -67,7 +67,7 @@ export class StudentSectionAssignmentComponent {
     this.getSectionList();
 
     this.className.valueChanges.subscribe(res => {
-      this.sectionList = this.orgSectionList.filter(x => x['className'] == res);
+      this.sectionList = this.orgSectionList.filter(x => x['classesId'] == res);
       this.isChangedData = false;
     })
 

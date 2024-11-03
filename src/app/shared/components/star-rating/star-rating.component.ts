@@ -29,7 +29,7 @@ export class StarRatingComponent {
   }
   onClick(rating:number) {
     this.rating = rating;
-    this.snackBar.openSuccessSnackbar('You rated ' + rating + ' / ' + this.starCount, '');
+    // this.snackBar.openSuccessSnackbar('You rated ' + rating + ' / ' + this.starCount, '');
     this.ratingUpdated.emit(rating);
     return false;
   }

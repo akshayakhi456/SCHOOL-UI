@@ -42,6 +42,7 @@ export class AdmissionFormComponent {
   spinner = inject(SpinnerService);
   breadcrumbService = inject(BreadCrumbService);
   orgSectionList = [];
+  isEditMode = false;
   sectionList: any;
   classList: any;
   breadcrumbData: IBreadcrumb = {
@@ -185,6 +186,7 @@ export class AdmissionFormComponent {
     this.spinner.show();
     this.service.getById(id).subscribe({next: res => {
       this.spinner.dispose();
+      this.isEditMode = true;
       const result = res.result ?? res;
       const studentPhoto = result.students.photo;
       const studentBase64Photo = 'data:image/jpg;base64,' + (this.sanitizer.bypassSecurityTrustResourceUrl(studentPhoto) as any).changingThisBreaksApplicationSecurity;
@@ -397,6 +399,14 @@ export class AdmissionFormComponent {
 
   imageClickable() {
     document.getElementById('filepaths')?.click();
+  }
+
+  deleteImage(): void {
+    this.imgViewer = '';
+    let fileSelected: any;
+    fileSelected = document.getElementById('filepaths');
+    fileSelected = fileSelected.files;
+    fileSelected = '';
   }
  
 }

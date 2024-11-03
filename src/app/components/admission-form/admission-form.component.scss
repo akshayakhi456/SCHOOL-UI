@@ -35,9 +35,27 @@ mat-form-field{
     height: 100px;
     width: 100px;
     margin: 9px;
+    position: relative;
+    border-radius: 15px;
+    img {
+        border-radius: 15px;
+    }
 }
 
 .box-header {
     color: #fff;
     background-color: #3596f7 !important;
+}
+
+.trash-img {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background-color: black;
+    width: 30px;
+    text-align: center;
+    height: 30px;
+    padding-top: 5px;
+    border-radius: 15px;
+    color: white;
 }

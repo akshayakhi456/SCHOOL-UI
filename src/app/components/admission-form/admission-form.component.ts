@@ -290,7 +290,7 @@ export class AdmissionFormComponent {
     fileSelected = document.getElementById('filepaths');
     fileSelected = fileSelected.files;
     const id = this.activatedRoute.snapshot.params['id'];
-    if (!id && !fileSelected) {
+    if ((!id && !fileSelected) || !this.imgViewer) {
       this.snackbarService.openWarningSnackbar("Photo is required.")
     }
     if (fileSelected.length > 0) {
@@ -400,13 +400,8 @@ export class AdmissionFormComponent {
   imageClickable() {
     document.getElementById('filepaths')?.click();
   }
-
-  deleteImage(): void {
-    this.imgViewer = '';
-    let fileSelected: any;
-    fileSelected = document.getElementById('filepaths');
-    fileSelected = fileSelected.files;
-    fileSelected = '';
-  }
  
+  removeImg() {
+    this.imgViewer = '';
+  }
 }

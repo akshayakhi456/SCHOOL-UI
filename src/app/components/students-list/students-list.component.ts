@@ -93,7 +93,8 @@ export class StudentsListComponent {
       this.classList = res.map((r: any) => {
         return {
           label: r.className,
-          value: r.className
+          value: r.className,
+          id: r.id
         }
       })
     },()=>{
@@ -219,7 +220,7 @@ export class StudentsListComponent {
           firstName: json[i].FirstName,
           lastName: json[i]?.LastName,
           dob: json[i]?.DateOfBirth.toString(),
-          classesId: this.classList.find((x: any)=> x.label == json[i]?.Class).value ?? '',
+          classesId: this.classList.find((x: any)=> x.label == json[i]?.Class).id ?? '',
           section: '',
           gender: json[i]?.Gender,
           status: true,
